@@ -14,10 +14,14 @@ module.exports = {
     colors: {
       'naranja-usach': '#F38A24',
       'azul-usach': '#004883',
+      'azulHoverUsach': '#0259A0',
       'gris-usach': '#C4C4C4',
       'white': colors.white,
+      'gray': colors.gray,
+      'indigo': colors.indigo,
     },
-    
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }
