@@ -1,3 +1,17 @@
+
+<template>
+  <RouterView />
+</template>
+
+<script>
+  import { RouterLink, RouterView } from "vue-router";
+  export default({
+  })
+</script>
+
+
+
+<!--
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
@@ -123,3 +137,4 @@ nav a:first-of-type {
   }
 }
 </style>
+-->
