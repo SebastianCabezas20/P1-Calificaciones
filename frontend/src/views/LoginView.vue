@@ -16,7 +16,11 @@
           <h2 class="text-center text-xl">Facultad de Ingeniería</h2>
         </div>
 
-        <form class="mt-4 space-y-8 pb-5" action="#" method="post">
+        <div v-if="incorrectAuth">
+            <p class="text-center">Rut o contraseña incorrecta. Intente nuevamente</p>
+        </div>
+
+        <form class="mt-4 space-y-8 pb-5" action="#" method="POST" v-on:submit.prevent="login">
           <div class="px-5">
             <label for="rut" class="sr-only">Rut</label>
             <input
@@ -57,14 +61,10 @@
                 transition
                 ease-in-out
                 m-0
-                focus:text-gray-700 focus:bg-white focus:border-azul-usach focus:outline-none" aria-label="Default select example">
-                  <option selected>Escoge tu rol</option>
-                  <option value="1">Estudiante</option>
-                  <option value="2">Docente</option>
-                  <option value="3">Coordinador</option>
-                  <option value="4">Jefe de Carrera</option>
-                  <option value="5">Subdirector Docente</option>
-                  <option value="6">Vicedecano de Docencia</option>
+                focus:text-gray-700 focus:bg-white focus:border-azul-usach focus:outline-none" v-model="rol">
+                  <option v-for="opcion in opciones" v-bind:value="opcion.value">
+                    {{ opcion.text }}
+                  </option>
               </select>
             </div>
           </div>
@@ -87,9 +87,33 @@
 import NavbarLogin from "../components/NavbarLogin.vue";
 
 export default {
-  components: {
-    NavbarLogin,
-  },
+    name: 'login',
+    data() {
+        return {
+            rut: '',
+            password: '',
+            rol: null,
+            opciones: [
+                {value: null, text: 'Seleccione un rol'},
+                {value: 'Estudiante', text: 'Estudiante'},
+                {value: 'Docente', text: 'Docente'},
+                {value: 'Coordinador', text: 'Coordinador'},
+                {value: 'Jefe_Carrera', text: 'Jefe de Carrera'},
+                {value: 'Subdirector_Docente', text: 'Subdirector Docente'},
+                {value: 'Vicedecano_Docencia', text: 'Vicedecano de Docencia'},
+            ],
+            incorrectAuth: false
+        }
+    },
+    methods: {
+        login() {
+            
+        }
+    },
+  
+    components: {
+        NavbarLogin,
+    },
 };
 </script>
 
