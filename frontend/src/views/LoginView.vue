@@ -107,7 +107,18 @@ export default {
     },
     methods: {
         login() {
-            
+            this.$store.dispatch('userLogin', {
+                rut: this.rut,
+                password: this.password,
+                rol: this.rol
+            })
+            .then(() => {
+                this.$router.push({ name: 'calificaciones' })
+            })
+            .catch(err => {
+                console.log(err)
+                this.incorrectAuth = true
+            })
         }
     },
   
