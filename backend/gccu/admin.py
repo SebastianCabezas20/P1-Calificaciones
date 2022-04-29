@@ -5,9 +5,7 @@ from gccu.models import *
 
 admin.site.register(Estudiante)
 admin.site.register(Mensaje)
-admin.site.register(Tipo_Observacion)
 admin.site.register(Tipo_Evaluacion)
-admin.site.register(Estado_Evaluacion)
 admin.site.register(Vicedecano_Docencia)
 admin.site.register(Subdirector_Docente)
 admin.site.register(Jefe_Carrera)
