@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+from pyexpat import model
 from django.conf import settings
 from django.db import models
 from django.core.validators import MinLengthValidator
@@ -152,3 +153,16 @@ class Solicitud_Revision(models.Model):
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_docente = models.ForeignKey(Docente, null = False, on_delete = models.CASCADE)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
+
+class Calificacion(models.Model):
+    nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
+    fecha_entrega = models.DateTimeField(null = False)
+    id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
+    id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
+    id_observacion = models.ForeignKey(Observacion, null = False, on_delete = models.CASCADE)
+
+class Cambio_nota(models.Model):
+    anterior_nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
+    actual_nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
+    motivo = models.TextField(blank = False)
+    id_calificacion = models.ForeignKey(Calificacion, null = False, on_delete = models.CASCADE)
