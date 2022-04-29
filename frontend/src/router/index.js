@@ -3,6 +3,7 @@ import CalificacionesView from "../views/CalificacionesView.vue";
 import LoginView from "../views/LoginView.vue"
 import LogoutView from "../views/LogoutView.vue"
 import HomeView from "../views/HomeView.vue";
+import ApelacionesAutoView from "../views/ApelacionesAutoView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +32,11 @@ const router = createRouter({
       path: "/calificaciones",
       name: "calificaciones",
       component: CalificacionesView,
+    },
+    {
+      path: "/apelaciones/autoridad",
+      name: "apelacionesAuto",
+      component: ApelacionesAutoView,
     },
   ],
 });

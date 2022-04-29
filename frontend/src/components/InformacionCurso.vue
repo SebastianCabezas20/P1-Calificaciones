@@ -23,6 +23,7 @@ div.col{
 div.row{
     background-color: #EEEEEE;
      border-radius: 5px;
+     padding: 20px;
 }
 
 </style>
