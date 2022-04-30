@@ -5,6 +5,7 @@ import LogoutView from "../views/LogoutView.vue"
 import HomeView from "../views/HomeView.vue";
 import ApelacionesAutoView from "../views/ApelacionesAutoView.vue";
 import RespuestaApelacionView from "../views/RespuestaApelacionView.vue";
+import DashboardEstudiante from "../views/DashboardEstudiante.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,11 @@ const router = createRouter({
       path: "/about",
       name: "about",
       component: () => import("../views/AboutView.vue"),
+    },
+    {
+      path: "/home",
+      name: "homeEstudiante",
+      component: DashboardEstudiante,
     },
     {
       path: "/calificaciones",
