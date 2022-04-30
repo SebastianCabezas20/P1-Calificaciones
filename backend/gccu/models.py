@@ -1,5 +1,4 @@
 from asyncio.windows_events import NULL
-from pyexpat import model
 from django.conf import settings
 from django.db import models
 from django.core.validators import MinLengthValidator
@@ -28,19 +27,19 @@ class Tipos(models.Model):
 # -----------------------------------------------------------------------------
 
 class Vicedecano_Docencia(models.Model):
-    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
 
 class Subdirector_Docente(models.Model):
-    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
 
 class Jefe_Carrera(models.Model):
-    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
 
 class Docente(models.Model):
-    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE,null = True, blank = True)
 
 class Coordinador(models.Model):
-    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
 
 class Facultad(models.Model):
     nombre = models.CharField(max_length = 100, blank = False)
@@ -80,8 +79,8 @@ class Asignaturas_PlanEstudio(models.Model):
     id_planEstudio = models.ForeignKey(Plan_Estudio, blank = False, null = False, on_delete = models.CASCADE)
 
 class Semestre(models.Model):
-    year = models.PositiveSmallIntegerField
-    semestre = models.IntegerField(choices = SEMESTRES_CHOICES)
+    year = models.PositiveSmallIntegerField(null = False)
+    semestre = models.IntegerField(choices = SEMESTRES_CHOICES, blank = False)
     isActual = models.BooleanField
 
 class Coordinacion_Seccion(models.Model):
@@ -105,8 +104,9 @@ class Coordinacion_Docente(models.Model):
     id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = False, on_delete = models.CASCADE)
     
 class Estudiante(models.Model):
-    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = False)
-    id_semestreIngreso = models.ForeignKey(Semestre, on_delete = models.CASCADE, null = False)
+    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
+    id_planEstudio = models.ForeignKey(Plan_Estudio, null = True, blank = True, on_delete = models.CASCADE)
+    id_semestreIngreso = models.ForeignKey(Semestre, on_delete = models.CASCADE, null = True, blank = True)
 
 class Coordinacion_Estudiante(models.Model):
     promedioEstudiante = models.DecimalField(max_digits = 4, decimal_places = 3, null = True)
