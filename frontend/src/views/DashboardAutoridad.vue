@@ -4,13 +4,13 @@
 
     <div class="w-5/6">
       <Navbar> </Navbar>
-      <p>Contenido aquí del estudiante...</p>
+      <p>Contenido aquí de la autoridad...</p>
     </div>
   </div>
 </template>
 
 <script>
-import Sidebar from "../components/SidebarEstudianteDocente.vue";
+import Sidebar from "../components/SidebarAutoridad.vue";
 import Navbar from "../components/NavbarGeneral.vue";
 
 export default {

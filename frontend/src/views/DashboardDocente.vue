@@ -4,7 +4,7 @@
 
     <div class="w-5/6">
       <Navbar> </Navbar>
-      <p>Contenido aquí del estudiante...</p>
+      <p>Contenido aquí del docente...</p>
     </div>
   </div>
 </template>
