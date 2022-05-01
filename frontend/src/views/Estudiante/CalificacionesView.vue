@@ -1,10 +1,3 @@
-<script setup>
-import InformacionCurso from "../../components/InformacionCurso.vue";
-import CalificacionInfo from "../../components/Calificacion.vue";
-import Sidebar from "../../components/SidebarEstudianteDocente.vue";
-import Navbar from "../../components/NavbarGeneral.vue";
-</script>
-
 <template>
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -90,6 +83,22 @@ import Navbar from "../../components/NavbarGeneral.vue";
 
     </body>
 </template>
+
+<script>
+import Sidebar from "../../components/SidebarEstudianteDocente.vue";
+import Navbar from "../../components/NavbarGeneral.vue";
+import InformacionCurso from "../../components/InformacionCurso.vue";
+import CalificacionInfo from "../../components/Calificacion.vue";
+
+export default {
+  components: {
+    Sidebar,
+    Navbar,
+    InformacionCurso,
+    CalificacionInfo,
+  },
+};
+</script>
 
 <style>
 body#A{
