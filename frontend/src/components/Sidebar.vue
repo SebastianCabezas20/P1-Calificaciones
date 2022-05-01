@@ -7,7 +7,7 @@
     </div>
 
     <div>
-      <ul class="space-y-3 text-md">
+      <ul class="space-y-3 text-lg">
         <li>
           <a
             href="#"
@@ -66,14 +66,12 @@
                 class="h-8"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
                 stroke="currentColor"
+                stroke-width="1"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"
                 />
               </svg>
             </span>
@@ -92,12 +90,9 @@
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                stroke-width="2"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 />
               </svg>
             </span>
@@ -107,7 +102,7 @@
       </ul>
     </div>
 
-    <div class="absolute bottom-0 my-10">
+    <div class="absolute bottom-0 my-10 text-lg">
       <a
         href="#"
         class="flex items-center space-x-5 text-white py-2 px-5 rounded-md font-medium hover:bg-gray-800 focus:bg-gray-800 focus:shadow-outline active:bg-gray-400"
