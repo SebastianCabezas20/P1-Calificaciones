@@ -8,7 +8,7 @@
       >
         <div>
           <img
-            src="../assets/Logo_usach.png"
+            src="../../assets/Logo_usach.png"
             class="mx-auto h-52 w-auto pt-5"
             alt="Logo Usach"
           />
@@ -16,19 +16,15 @@
           <h2 class="text-center text-xl">Facultad de Ingeniería</h2>
         </div>
 
-        <div v-if="incorrectAuth">
-            <p class="text-center">Rut o contraseña incorrecta. Intente nuevamente</p>
-        </div>
-
         <form class="mt-4 space-y-8 pb-5" action="#" method="POST" v-on:submit.prevent="login">
           <div class="px-5">
-            <label for="rut" class="sr-only">Rut</label>
+            <label for="username" class="sr-only">Nombre de Usuario</label>
             <input
               type="text"
-              name="rut"
-              id="rut"
-              v-model="rut"
-              placeholder="Rut"
+              name="username"
+              id="username"
+              v-model="username"
+              placeholder="Usuario sin @usach.cl"
               required
               class="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-azul-usach focus:border-azul-usach focus:z-10 sm:text-md"
             />
@@ -69,6 +65,13 @@
             </div>
           </div>
 
+          <div class="px-5" v-if="incorrectAuth">
+            <div class = "bg-red-500 text-white font-medium relative block w-full px-3 py-2">
+              <p class="text-center">Rut o contraseña incorrecta. Intente nuevamente</p>
+            </div>
+            
+        </div>
+
           <div class="px-5">
             <button
               type="submit"
@@ -90,7 +93,7 @@ export default {
     name: 'login',
     data() {
         return {
-            rut: '',
+            username: '',
             password: '',
             rol: null,
             opciones: [
@@ -108,15 +111,13 @@ export default {
     methods: {
         login() {
             this.$store.dispatch('userLogin', {
-                rut: this.rut,
-                password: this.password,
-                rol: this.rol
+                username: this.username,
+                password: this.password
             })
             .then(() => {
-                this.$router.push({ name: 'calificaciones' })
+                this.$router.push({ name: 'homeEstudiante' })
             })
             .catch(err => {
-                console.log(err)
                 this.incorrectAuth = true
             })
         }
