@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import NavbarLogin from "../components/NavbarLogin.vue";
+import NavbarLogin from "../../components/NavbarLogin.vue";
 
 export default {
     name: 'login',

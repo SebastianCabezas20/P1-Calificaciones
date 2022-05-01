@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import Sidebar from "../components/SidebarEstudianteDocente.vue";
-import Navbar from "../components/NavbarGeneral.vue";
+import Sidebar from "../../components/SidebarEstudianteDocente.vue";
+import Navbar from "../../components/NavbarGeneral.vue";
 
 export default {
   components: {

@@ -1,6 +1,6 @@
 <script setup>
-import InformacionCurso from "../components/InformacionCurso.vue";
-import CalificacionInfo from "../components/Calificacion.vue";
+import InformacionCurso from "../../components/InformacionCurso.vue";
+import CalificacionInfo from "../../components/Calificacion.vue";
 </script>
 
 <template>

@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import CalificacionesView from "../views/CalificacionesView.vue";
-import LoginView from "../views/LoginView.vue"
+import CalificacionesView from "../views/Estudiante/CalificacionesView.vue";
+import LoginView from "../views/General/LoginView.vue"
 import LogoutView from "../views/LogoutView.vue"
-import HomeView from "../views/HomeView.vue";
-import ApelacionesAutoView from "../views/ApelacionesAutoView.vue";
-import RespuestaApelacionView from "../views/RespuestaApelacionView.vue";
-import DashboardEstudiante from "../views/DashboardEstudiante.vue";
+import HomeView from "../views/Otros/HomeView.vue";
+import ApelacionesAutoView from "../views/Autoridad/ApelacionesAutoView.vue";
+import RespuestaApelacionView from "../views/Docente/RespuestaApelacionView.vue";
+import DashboardEstudiante from "../views/Estudiante/DashboardEstudiante.vue";
+import EstudianteCursoSeleccionado from "../views/Estudiante/EstudianteCursoSeleccionado.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,7 +29,7 @@ const router = createRouter({
     {
       path: "/about",
       name: "about",
-      component: () => import("../views/AboutView.vue"),
+      component: () => import("../views/Otros/AboutView.vue"),
     },
     {
       path: "/home",
@@ -42,14 +43,19 @@ const router = createRouter({
     },
     {
       path: "/apelaciones/autoridad",
-      name: "apelacionesAuto",
+      name: "apelacionesAutoAutoridad",
       component: ApelacionesAutoView,
     },
     {
       path: "/apelaciones/respuesta",
-      name: "respuestaApelacion",
+      name: "responderApelacionDocente",
       component: RespuestaApelacionView,
     },
+    {
+      path: "/home/cursoseleccionado",
+      name: "cursoseleccionado",
+      component: EstudianteCursoSeleccionado,
+    }
   ],
 });
 
