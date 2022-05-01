@@ -8,6 +8,7 @@ import RespuestaApelacionView from "../views/Docente/RespuestaApelacionView.vue"
 import DashboardEstudiante from "../views/Estudiante/DashboardEstudiante.vue";
 import EstudianteCursoSeleccionado from "../views/Estudiante/EstudianteCursoSeleccionado.vue";
 import DashboardAutoridad from "../views/Autoridad/DashboardAutoridad.vue";
+import Apelacion from "../views/Estudiante/Apelacion.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,11 @@ const router = createRouter({
       path: "/home/calificaciones",
       name: "calificaciones",
       component: CalificacionesView,
+    },
+    {
+      path: "/home/apelacion",
+      name: "apelacion",
+      component: Apelacion,
     },
     {
       path: "/apelaciones/autoridad",
