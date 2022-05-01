@@ -11,7 +11,7 @@
         <li>
           <a
             href="#"
-            class="flex items-center space-x-5 text-white font-bold px-5 rounded-md font-medium"
+            class="flex items-center space-x-5 text-white font-bold py-2 px-5 rounded-md font-medium hover:bg-gray-800 focus:bg-gray-800 focus:shadow-outline active:bg-gray-400"
           >
             <span class="text-white">
               <svg
@@ -35,7 +35,7 @@
         <li>
           <a
             href="#"
-            class="flex items-center space-x-5 text-white py-2 px-5 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
+            class="flex items-center space-x-5 text-white py-2 px-5 rounded-md font-medium hover:bg-gray-800 focus:bg-gray-800 focus:shadow-outline active:bg-gray-400"
           >
             <span class="text-white">
               <svg
@@ -56,13 +56,61 @@
             <span>Mi Cuenta</span>
           </a>
         </li>
+        <li>
+          <a
+            href="#"
+            class="flex items-center space-x-5 text-white py-2 px-5 rounded-md font-medium hover:bg-gray-800 focus:bg-gray-800 focus:shadow-outline active:bg-gray-400"
+          >
+            <span class="text-white">
+              <svg
+                class="h-8"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+            </span>
+            <span>Mis Cursos</span>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="flex items-center space-x-5 text-white py-2 px-5 rounded-md font-medium hover:bg-gray-800 focus:bg-gray-800 focus:shadow-outline active:bg-gray-400"
+          >
+            <span class="text-white">
+              <svg
+                class="h-8"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+            </span>
+            <span>Solicitudes</span>
+          </a>
+        </li>
       </ul>
     </div>
 
     <div class="absolute bottom-0 my-10">
       <a
         href="#"
-        class="flex items-center space-x-5 text-white py-2 px-5 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
+        class="flex items-center space-x-5 text-white py-2 px-5 rounded-md font-medium hover:bg-gray-800 focus:bg-gray-800 focus:shadow-outline active:bg-gray-400"
       >
         <span class="text-white">
           <svg
