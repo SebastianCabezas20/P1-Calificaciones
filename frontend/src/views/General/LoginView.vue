@@ -115,7 +115,7 @@ export default {
                 password: this.password
             })
             .then(() => {
-                this.$router.push({ name: 'homeEstudiante' })
+                this.$router.push({ name: 'homeEstudiante' })   
             })
             .catch(err => {
                 this.incorrectAuth = true

@@ -75,7 +75,7 @@
                 />
               </svg>
             </span>
-            <span>Mis Cursos</span>
+            <span>Asignaturas</span>
           </a>
         </li>
         <li>
