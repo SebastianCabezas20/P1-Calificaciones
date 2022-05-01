@@ -1,6 +1,8 @@
 <script setup>
 import InformacionCurso from "../../components/InformacionCurso.vue";
 import CalificacionInfo from "../../components/Calificacion.vue";
+import Sidebar from "../../components/SidebarEstudianteDocente.vue";
+import Navbar from "../../components/NavbarGeneral.vue";
 </script>
 
 <template>
@@ -8,76 +10,86 @@ import CalificacionInfo from "../../components/Calificacion.vue";
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     </head>
     <body id="A">
+    <div class="flex flex-wrap bg-gray-100 w-full h-screen">
+        <Sidebar></Sidebar>
+        <div class="w-5/6">
+            <Navbar> </Navbar>
+
             <div class="container-fluid" id="FondoSuperior">
-            <div class="col-11" style="margin-left:20px; border-radius: 5px;">
-                <InformacionCurso />
-            </div>
-            </div>
-            <div class="container-fluid" id="ParteInferior">
-                <div class="col-11" id="informacion">
-                    <h3 id="titulo" style="padding-left:50px">Calificaciones Catedra</h3>
-                </div> 
-                    <div class="table-responsive" id="tabla">
-                        <table class="table">
-                        <thead id="a">
-                            <tr>
-                            <th>Evaluacion</th>
-                            <th>Observacion</th>
-                            <th>Calificacion</th>
-                            <th>Ponderacion</th>
-                            <th>Estado</th>
-                            <th>Fecha</th>
-                            <th>Apelar</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                        <tr v-for="i in 5" :key="i">
-                            <CalificacionInfo />
-                        </tr>
-                    </tbody>
-
-                </table>
-                </div> 
-                <div id="estadoEstudiante" class="col-11">
-                    <h4>Estado del estudiante</h4>
+                <div class="col-11" style="margin-left:20px; border-radius: 5px;">
+                    <InformacionCurso />
                 </div>
-            </div>
-            <br>
-            <div class="container-fluid" id="ParteInferior">
-                <div class="col-11" id="informacion">
-                    <h3 id="titulo" style="padding-left:50px">Calificaciones laboratorio</h3>
-                </div> 
-                    <div class="table-responsive" id="tabla">
-                        <table class="table">
-                        <thead id="a">
-                            <tr>
-                            <th>Evaluacion</th>
-                            <th>Observacion</th>
-                            <th>Calificacion</th>
-                            <th>Ponderacion</th>
-                            <th>Estado</th>
-                            <th>Fecha</th>
-                            <th>Apelar</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                        <tr v-for="i in 5" :key="i">
-                            <CalificacionInfo />
-                        </tr>
-                    </tbody>
-
-                </table>
-                </div> 
-                <div id="estadoEstudiante" class="col-11">
-                    <h4>Estado del estudiante</h4>
                 </div>
-            </div>
-            <br>
-            <br>
+                <div class="container-fluid" id="ParteInferior">
+                    <div class="col-11" id="informacion">
+                        <h3 id="titulo" style="padding-left:50px">Calificaciones Catedra</h3>
+                    </div> 
+                        <div class="table-responsive" id="tabla">
+                            <table class="table">
+                            <thead id="a">
+                                <tr>
+                                <th>Evaluacion</th>
+                                <th>Observacion</th>
+                                <th>Calificacion</th>
+                                <th>Ponderacion</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Apelar</th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                            <tr v-for="i in 5" :key="i">
+                                <CalificacionInfo />
+                            </tr>
+                        </tbody>
+    
+                    </table>
+                    </div> 
+                    <div id="estadoEstudiante" class="col-11">
+                        <h4>Estado del estudiante</h4>
+                    </div>
+                </div>
+                <br>
+                <div class="container-fluid" id="ParteInferior">
+                    <div class="col-11" id="informacion">
+                        <h3 id="titulo" style="padding-left:50px">Calificaciones laboratorio</h3>
+                    </div> 
+                        <div class="table-responsive" id="tabla">
+                            <table class="table">
+                            <thead id="a">
+                                <tr>
+                                <th>Evaluacion</th>
+                                <th>Observacion</th>
+                                <th>Calificacion</th>
+                                <th>Ponderacion</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Apelar</th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                            <tr v-for="i in 5" :key="i">
+                                <CalificacionInfo />
+                            </tr>
+                        </tbody>
+    
+                    </table>
+                    </div> 
+                    <div id="estadoEstudiante" class="col-11">
+                        <h4>Estado del estudiante</h4>
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+        </div>
+
+    </div>
+            
 
     </body>
 </template>
-
 
 <style>
 body#A{
