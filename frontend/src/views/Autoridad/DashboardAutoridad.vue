@@ -2,7 +2,7 @@
   <div class="flex flex-wrap bg-gray-100 w-full h-screen">
     <Sidebar> </Sidebar>
 
-    <div class="w-5/6">
+    <div class="w-5/6 ml-80">
       <Navbar> </Navbar>
       <p>Contenido aquí de la autoridad...</p>
     </div>
