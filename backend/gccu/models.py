@@ -5,19 +5,6 @@ from django.core.validators import MinLengthValidator
 from .choices import COMPONENTES_CHOICES, ESTADOS_EVALUACION_CHOICES, ESTADOS_SOLICITUD_CHOICES, SEMESTRES_CHOICES, TIPO_OBS_CHOICES
 
 # Create your models here.
-
-# Modelos heredables - Clases abstractas.
-class Usuario(models.Model):
-    nombre = models.CharField(max_length = 40, blank = True)
-    apellido = models.CharField(max_length = 40, blank = True)
-    rut = models.PositiveIntegerField(blank = False)
-    dig_verificador = models.CharField(max_length = 1, blank = False)
-    email = models.EmailField(max_length = 254, blank = False)
-    password = models.CharField(max_length = 30, blank = False)
-
-    class Meta:
-        abstract = True
-
 class Tipos(models.Model):
     nombre = models.CharField(max_length = 40)
 
@@ -27,52 +14,94 @@ class Tipos(models.Model):
 # -----------------------------------------------------------------------------
 
 class Vicedecano_Docencia(models.Model):
+    rut = models.PositiveIntegerField(blank = False, null = True)
+    dig_verificador = models.CharField(max_length = 1, blank = False, null = True)
     id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
+
+    def __str__(self):
+        return '%s Rut: %s-%s' % (self.id_usuario, self.rut, self.dig_verificador)
 
 class Subdirector_Docente(models.Model):
+    rut = models.PositiveIntegerField(blank = False, null = True)
+    dig_verificador = models.CharField(max_length = 1, blank = False, null = True)
     id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
+
+    def __str__(self):
+        return '%s Rut: %s-%s' % (self.id_usuario, self.rut, self.dig_verificador)
 
 class Jefe_Carrera(models.Model):
+    rut = models.PositiveIntegerField(blank = False, null = True)
+    dig_verificador = models.CharField(max_length = 1, blank = False, null = True)
     id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
+
+    def __str__(self):
+        return '%s Rut: %s-%s' % (self.id_usuario, self.rut, self.dig_verificador)
 
 class Docente(models.Model):
-    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE,null = True, blank = True)
+    rut = models.PositiveIntegerField(blank = False, null = True)
+    dig_verificador = models.CharField(max_length = 1, blank = False, null = True)
+    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
+
+    def __str__(self):
+        return '%s Rut: %s-%s' % (self.id_usuario, self.rut, self.dig_verificador)
 
 class Coordinador(models.Model):
+    rut = models.PositiveIntegerField(blank = False, null = True)
+    dig_verificador = models.CharField(max_length = 1, blank = False, null = True)
     id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
+
+    def __str__(self):
+        return '%s Rut: %s-%s' % (self.id_usuario, self.rut, self.dig_verificador)
 
 class Facultad(models.Model):
     nombre = models.CharField(max_length = 100, blank = False)
     siglas = models.CharField(max_length = 10, blank = True)
     id_vicedecano = models.ForeignKey(Vicedecano_Docencia, blank = False , null = False, on_delete = models.CASCADE)
 
+    def __str__(self):
+        return self.nombre
+
 class Departamento(models.Model):
     nombre = models.CharField(max_length = 50, blank = False)
     id_subdirector = models.ForeignKey(Subdirector_Docente, blank = False , null = False, on_delete = models.CASCADE)
     id_vicedecano = models.ForeignKey(Vicedecano_Docencia, blank = False, null = False, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
 
 class Carrera(models.Model):
     nombre = models.CharField(max_length = 100, blank = False)
     id_jefeCarrera = models.ForeignKey(Jefe_Carrera, blank = False, null = False, on_delete = models.CASCADE)
     id_departamento = models.ForeignKey(Departamento, blank = False, null = False, on_delete = models.CASCADE)
 
+    def __str__(self):
+        return self.nombre
+
 class Plan_Estudio(models.Model):
-    codigo = models.CharField(max_length = 10, blank = False, unique = True)
+    codigo = models.CharField(max_length = 10, blank = False)
     year_crecion = models.CharField(max_length = 4, validators = [MinLengthValidator(4)])
     id_carrera = models.ForeignKey(Carrera, blank = False, null = False, on_delete = models.CASCADE)
 
+    def __str__(self):
+        return '%s de %s' % (self.codigo, self.id_carrera)
+
 class Tipo_Asignatura(Tipos):
-    pass
+
+    def __str__(self):
+        return self.nombre
 
 class Asignatura(models.Model):
     nombre = models.CharField(max_length = 40, blank = False)
-    codigo = models.CharField(max_length = 20, unique = True, blank = False)
+    codigo = models.CharField(max_length = 20, blank = False)
     nivel = models.PositiveSmallIntegerField(blank = True, null = True)
     componente = models.CharField(max_length = 1, choices = COMPONENTES_CHOICES, blank = False)
-    isMBI = models.BooleanField
-    isAutogestionada = models.BooleanField
-    id_tipoAsignatura = models.ForeignKey(Tipo_Asignatura, blank = False, null = False, on_delete = models.CASCADE)
-    id_coordinador = models.ForeignKey(Coordinador, blank = False, null = False, on_delete = models.CASCADE)
+    isMBI = models.BooleanField(default = False)
+    isAutogestionada = models.BooleanField(default = False)
+    id_tipoAsignatura = models.ForeignKey(Tipo_Asignatura, blank = True, null = True, on_delete = models.CASCADE)
+    id_coordinador = models.ForeignKey(Coordinador, blank = True, null = True, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return '%s - %s (%s)' % (self.nombre, self.codigo, self.componente)
 
 class Asignaturas_PlanEstudio(models.Model):
     id_asignatura = models.ForeignKey(Asignatura, blank = False, null = False, on_delete = models.CASCADE)
@@ -81,15 +110,21 @@ class Asignaturas_PlanEstudio(models.Model):
 class Semestre(models.Model):
     year = models.PositiveSmallIntegerField(null = False)
     semestre = models.IntegerField(choices = SEMESTRES_CHOICES, blank = False)
-    isActual = models.BooleanField
+    isActual = models.BooleanField(default = False)
+
+    def __str__(self):
+        return 'Semestre %s/%s' % (self.year, self.semestre)
 
 class Coordinacion_Seccion(models.Model):
     coordinacion = models.CharField(max_length = 1, blank = False)
     seccion = models.PositiveSmallIntegerField(blank = False)
-    isActive = models.BooleanField
+    isActive = models.BooleanField(default = False)
     bloques_horario = models.CharField(max_length = 16, blank = False)
     id_semetre = models.ForeignKey(Semestre, null = False, on_delete = models.CASCADE)
     id_asignatura = models.ForeignKey(Asignatura, null = False, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return '%s sección %s-%s (%s)' % (self.id_asignatura, self.coordinacion, self.seccion, self.bloques_horario)
 
 class Estadistica_Curso(models.Model):
     promedio_general = models.DecimalField(max_digits = 4, decimal_places = 3)
@@ -104,9 +139,14 @@ class Coordinacion_Docente(models.Model):
     id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = False, on_delete = models.CASCADE)
     
 class Estudiante(models.Model):
+    rut = models.PositiveIntegerField(blank = False, null = True)
+    dig_verificador = models.CharField(max_length = 1, blank = False, null = True)
     id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, blank = True)
     id_planEstudio = models.ForeignKey(Plan_Estudio, null = True, blank = True, on_delete = models.CASCADE)
     id_semestreIngreso = models.ForeignKey(Semestre, on_delete = models.CASCADE, null = True, blank = True)
+
+    def __str__(self):
+        return '%s Rut: %s-%s' % (self.id_usuario, self.rut, self.dig_verificador)
 
 class Coordinacion_Estudiante(models.Model):
     promedioEstudiante = models.DecimalField(max_digits = 4, decimal_places = 3, null = True)
@@ -114,7 +154,9 @@ class Coordinacion_Estudiante(models.Model):
     id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = False, on_delete = models.CASCADE)
     
 class Tipo_Evaluacion(Tipos):
-    pass
+    
+    def __str__(self):
+        return self.nombre
 
 class Observacion(models.Model):
     contenido = models.TextField(blank = True)
@@ -130,6 +172,10 @@ class Evaluacion(models.Model):
     id_tipoEvaluacion = models.ForeignKey(Tipo_Evaluacion, null = True, on_delete = models.CASCADE)
     id_docente = models.ForeignKey(Docente, null = False, on_delete = models.CASCADE)
     id_observacion = models.ForeignKey(Observacion, null = True, on_delete = models.CASCADE)
+    id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = True, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return '%s de %s' % (self.nombre, self.id_coordinacion)
 
 class Cambio_Ponderacion(models.Model):
     ponderacionAnterior = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
@@ -160,6 +206,9 @@ class Calificacion(models.Model):
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
     id_observacion = models.ForeignKey(Observacion, null = False, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return 'Nota %s de %s de la ev %s' % (self.nota, self.id_estudiante, self.id_evaluacion)
 
 class Cambio_nota(models.Model):
     anterior_nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
