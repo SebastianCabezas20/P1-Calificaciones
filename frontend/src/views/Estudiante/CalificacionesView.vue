@@ -32,8 +32,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="i in 5" :key="i">
-                  <CalificacionInfo />
+                <tr v-for="calificacion in calificaciones" :key="calificacion.id">
+                  <CalificacionInfo 
+                  :calificacion="calificacion" />
                 </tr>
               </tbody>
             </table>
@@ -64,8 +65,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="i in 5" :key="i">
-                  <CalificacionInfo />
+                <tr v-for="calificacion in calificaciones" :key="calificacion.id">
+                  <CalificacionInfo 
+                  :calificacion="calificacion" />
                 </tr>
               </tbody>
             </table>
@@ -84,14 +86,27 @@ import Sidebar from "../../components/SidebarEstudianteDocente.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import InformacionCurso from "../../components/InformacionCurso.vue";
 import CalificacionInfo from "../../components/Calificacion.vue";
+import axios from "axios";
 
 export default {
+  data(){
+    return{
+      calificaciones:[],
+    }
+  },
   components: {
     Sidebar,
     Navbar,
     InformacionCurso,
     CalificacionInfo,
   },
+  mounted(){
+    let ins = this;
+    axios.get('http://localhost:8000/calificaciones').then(function(response){
+      console.log(response.data);
+      ins.calificaciones = response.data;
+    })
+  }
 };
 </script>
 
