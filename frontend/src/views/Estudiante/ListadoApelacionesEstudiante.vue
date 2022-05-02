@@ -4,8 +4,15 @@
 
     <div class="w-5/6 ml-80">
       <Navbar> </Navbar>
-      <p>Contenido aquí del estudiante...</p>
-      
+      <div class="py-3">
+        <div
+          class="container-fluid bg-azul-usach rounded-lg"
+          id="FondoSuperior"
+        >
+        listado apelaciones para Estudiante
+          <div class="rounded-lg mx-4"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
