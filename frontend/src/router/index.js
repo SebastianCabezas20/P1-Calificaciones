@@ -6,10 +6,10 @@ import HomeView from "../views/Otros/HomeView.vue";
 import ApelacionesAutoView from "../views/Autoridad/ApelacionesAutoView.vue";
 import RespuestaApelacionView from "../views/Docente/RespuestaApelacionView.vue";
 import DashboardEstudiante from "../views/Estudiante/DashboardEstudiante.vue";
-import ListadoApelacionesEstudiante from "../views/Estudiante/ListadoApelacionesestudiante.vue";
+import ListadoApelacionesEstudiante from "../views/Estudiante/ListadoApelacionesEstudiante.vue";
 import EstudianteCursoSeleccionado from "../views/Estudiante/EstudianteCursoSeleccionado.vue";
 import DashboardAutoridad from "../views/Autoridad/DashboardAutoridad.vue";
-import Apelacion from "../views/Estudiante/Apelacion.vue";
+import SolicitudApelacion from "../views/Estudiante/SolicitudApelacion.vue";
 import ListadoApelacionesDocente from "../views/Docente/ListadoApelacionesDocente.vue";
 import DashboardDocente from "../views/Docente/DashboardDocente.vue";
 
@@ -54,7 +54,7 @@ const router = createRouter({
     {
       path: "/home/apelacion",
       name: "apelacion",
-      component: Apelacion,
+      component: SolicitudApelacion,
     },
     {
       path: "/apelaciones/autoridad",

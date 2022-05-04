@@ -3,16 +3,16 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     </head>
     <body id="A">
-    <div class="flex flex-wrap bg-gray-100 w-full h-screen">
+    <div class="flex flex-wrap bg-gray-100">
         <Sidebar></Sidebar>
-        <div class="w-5/6">
+        <div class="w-5/6 ml-80">
             <Navbar> </Navbar>
 
-            <div class="container-fluid" id="ParteInferior">    
+            <div class="container-fluid" id="ThisParteInferior">    
                 <div class="col-11" id="informacion">
                     <h3 id="titulo" style="padding-left:50px">Solicitud de Apelación</h3>
                 </div>
-                    <div class="col-11" style="margin-left:20px; border-radius: 5px;" id="apelacion">
+                    <div class="col-11" style="margin-left:350px; border-radius: 5px;" id="apelacion">
                         <h5 id="titulo" style="padding-left:20px; padding-top:20px">Titulo de la Evaluación</h5>
                         <h5 id="titulo" style="padding-left:20px">Nombre de la asignatura</h5>
                         <h5 id="titulo" style="padding-left:20px">Nota</h5>
@@ -89,7 +89,7 @@ div#FondoSuperior
     
 }
 
-div#ParteInferior
+div#ThisParteInferior
 {
     width: 1200px;
     height: 575px;
