@@ -4,7 +4,7 @@
 
     <div class="w-5/6 ml-80">
       <Navbar> </Navbar>
-      <p>Contenido del curso seleccionado para el estudiante...</p>
+      <p>Contenido del curso seleccionado para el Docente...</p>
     </div>
   </div>
 </template>
