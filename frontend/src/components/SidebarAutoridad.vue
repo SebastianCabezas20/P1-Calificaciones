@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/6 bg-azul-usach p-3 h-screen">
+  <div class="w-80 bg-azul-usach p-3 h-full fixed">
     <div class="flex items-center space-x-4 p-2 mb-5">
       <div>
         <img src="../assets/Usach-Trans.png" alt="Logo Usach" />
