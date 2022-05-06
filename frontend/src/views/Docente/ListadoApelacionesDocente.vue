@@ -1,17 +1,17 @@
 <template>
-  <div class="flex flex-wrap bg-gray-100 w-full h-screen">
-    <Sidebar> </Sidebar>
+  <div>
+    <Navbar> </Navbar>
+  </div>
 
-    <div class="w-5/6 ml-80">
-      <Navbar> </Navbar>
-      <div class="py-3">
-        <div
-          class="container-fluid bg-azul-usach rounded-lg"
-          id="FondoSuperior"
-        >
+  <div>
+    <Sidebar> </Sidebar>
+  </div>
+
+  <div class="contentViews">
+    <div class="centralContent">
+      <div class="container-fluid bg-azul-usach rounded-lg" id="FondoSuperior">
         listado apelaciones para docente
-          <div class="rounded-lg mx-4"></div>
-        </div>
+        <div class="rounded-lg mx-4"></div>
       </div>
     </div>
   </div>

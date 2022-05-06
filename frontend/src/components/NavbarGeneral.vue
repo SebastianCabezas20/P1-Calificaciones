@@ -1,26 +1,36 @@
 <template>
-  <nav>
-    <div class="bg-naranja-usach">
-      <div class="mx-auto px-2 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex justify-start">
-            <p class="font-Inter text-white font-semibold text-xl">
-              Gestión y Control de Calificaciones USACH
-            </p>
-          </div>
-          <div class="flex justify-end">
-            <p class="font-Inter text-white font-semibold text-xl">
-              Nombre del Usuario (Cambiar)
-            </p>
-          </div>
-        </div>
-      </div>
+  <div id="navbarDocente">
+    <div>
+      <p class="textNavbar">
+        Gestión y Control de Calificaciones USACH
+      </p>
     </div>
-  </nav>
+    <div>
+      <p class="textNavbar">
+        Nombre del Usuario (Cambiar)
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {};
 </script>
 
-<style></style>
+<style>
+#navbarDocente {
+  background-color: #f38a24;
+  height: 60px;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.textNavbar{
+  font-family: "Inter", sans-serif;
+  color: #fff;
+  font-weight: 600;
+  font-size: 22px;
+}
+</style>

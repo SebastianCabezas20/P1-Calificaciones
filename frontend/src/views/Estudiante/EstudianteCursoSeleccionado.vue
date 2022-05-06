@@ -1,10 +1,15 @@
 <template>
-  <div class="flex flex-wrap bg-gray-100 w-full h-screen">
-    <Sidebar> </Sidebar>
+  <div>
+    <Navbar> </Navbar>
+  </div>
 
-    <div class="w-5/6 ml-80">
-      <Navbar> </Navbar>
-      <p>Contenido del curso seleccionado para el estudiante...</p>
+  <div>
+    <Sidebar> </Sidebar>
+  </div>
+
+  <div class="contentViews">
+    <div class="centralContent">
+      <p>Contenido aquí del docente...</p>
     </div>
   </div>
 </template>

@@ -21,7 +21,8 @@ const store = createStore({
                     password: usercredential.password
                 })
                 .then(response => {
-                    context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh }) 
+                    context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh })
+                    localStorage.setItem('accessToken', response.data.access);
                     resolve()
                   })
                 .catch(err => {

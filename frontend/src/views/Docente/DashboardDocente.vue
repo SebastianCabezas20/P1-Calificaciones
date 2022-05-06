@@ -1,9 +1,14 @@
 <template>
-  <div class="flex flex-wrap bg-gray-100 w-full h-screen">
-    <Sidebar> </Sidebar>
+  <div>
+    <Navbar> </Navbar>
+  </div>
 
-    <div class="w-5/6 ml-80">
-      <Navbar> </Navbar>
+  <div>
+    <Sidebar> </Sidebar>
+  </div>
+
+  <div class="contentViews">
+    <div class="centralContent">
       <p>Contenido aquí del docente...</p>
     </div>
   </div>
@@ -21,4 +26,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.contentViews {
+  position: relative;
+  width: calc(100% - 260px);
+  height: 100%;
+  margin-left: 260px;
+}
+</style>

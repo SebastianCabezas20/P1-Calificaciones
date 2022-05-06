@@ -1,40 +1,46 @@
 <template>
-    <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    </head>
-    <body id="A">
-    <div class="flex flex-wrap bg-gray-100">
-        <Sidebar></Sidebar>
-        <div class="w-5/6 ml-80">
-            <Navbar> </Navbar>
+  <head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div>
+      <Navbar> </Navbar>
+    </div>
 
-            <div class="container-fluid" id="ThisParteInferior">    
-                <div class="col-11" id="informacion">
-                    <h3 id="titulo" style="padding-left:50px">Solicitud de Apelación</h3>
-                </div>
-                    <div class="col-11" style="margin-left:350px; border-radius: 5px;" id="apelacion">
-                        <h5 id="titulo" style="padding-left:20px; padding-top:20px">Titulo de la Evaluación</h5>
-                        <h5 id="titulo" style="padding-left:20px">Nombre de la asignatura</h5>
-                        <h5 id="titulo" style="padding-left:20px">Nota</h5>
-                        <h5 id="titulo" style="padding-left:20px; padding-bottom:20px">Profesor:</h5>
-                        <h5 id="titulo" style="padding-left:20px">Motivo de la solicitud</h5>
-                        <textarea class="ml-5 p-2.5 w-10/12 rounded-lg placeholder-gray-400" placeholder="Escriba acá su solicitud"></textarea>
-                        <div>
-                            <div class="col-11" style="padding-left:20px; padding-top:20px">
-                                <button class="bg-azul-usach hover:bg-gray-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-                                    Apelar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-            </div>
+    <div>
+      <Sidebar> </Sidebar>
+    </div>
 
+    <div class="contentViews">
+      <div class="centralContent">
+        <div class="titleSection">
+          <h3 class="textTitle">Solicitud de Apelación</h3>
         </div>
 
-    </div>
-            
+        <div id="formApelacion">
+          <h5 class="formText">Titulo de la Evaluación</h5>
+          <h5 class="formText">Nombre de la asignatura</h5>
+          <h5 class="formText">Nota</h5>
+          <h5 class="formText">Profesor:</h5>
+          <h5 class="formText">Motivo de la solicitud</h5>
 
-    </body>
+          <textarea
+            placeholder="Escriba acá su solicitud"
+            id="motivoSolicitud"
+          ></textarea>
+
+          <div class="divbuttonForm">
+            <button class="buttonForm">Apelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </template>
 
 <script>
@@ -54,91 +60,52 @@ export default {
 </script>
 
 <style>
-body#A{
-    background-color:#222831;
-;
-}
-div#apelacion{
-    position: absolute;
-    background: #EEEEEE;
-    margin-top: 130px;
-    margin-left: 20px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-    width: 500px;
-    height: 350px;
-    overflow-y: auto;
-    overflow-x: hidden;
-
+#formApelacion {
+  background: #eeeeee;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 50%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 5px;
+  padding: 20px;
 }
 
-thead#a tr th{
-    position: sticky;
-            top: 0;
-            z-index: 10;
-            background-color: #755454 !important; 
-}
-div#FondoSuperior
-{
-    background: #00ADB5;
-    border-radius: 5px;
-    width: 1200px;
-    padding: 10px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    position: relative;
-    
+.formText {
+  display: block;
 }
 
-div#ThisParteInferior
-{
-    width: 1200px;
-    height: 575px;
-    background: #00ADB5;
-    border-radius: 5px; 
-    position: relative;    
-    margin-top: 50px;
-    
+.divbuttonForm {
+  display: block;
+  margin-top: 10px;
+  background-color: #004883;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  width: 25%;
+  text-align: center;
 }
 
-div#informacion{
-
-    background: #EEEEEE;
-    margin-top: 50px;
-    margin-left: 20px;
-    padding: 0;
-    display: inline-block;
-    position: absolute ;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-
-   
+.buttonForm {
+  font-weight: bold;
+  color: #fff;
+  padding: 10px 15px;
 }
 
-div#estadoEstudiante{
-    background-color: #EEEEEE;  
-    position: absolute;
-    display: inline-block;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-    position:absolute;
-    padding-left: 30px;
-    bottom: 0;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    
+#motivoSolicitud {
+  display: block;
+  width: 95%;
+  border: 1px solid #004883;
 }
 
-div#contenidoApelación{
-    background-color: #EEEEEE;  
-    position: absolute;
-    display: inline-block;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-    position:absolute;
-    padding-left: 30px;
-    bottom: 0;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    
+div#contenidoApelación {
+  background-color: #eeeeee;
+  position: absolute;
+  display: inline-block;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  position: absolute;
+  padding-left: 30px;
+  bottom: 0;
+  margin-bottom: 20px;
+  margin-left: 20px;
 }
 </style>
