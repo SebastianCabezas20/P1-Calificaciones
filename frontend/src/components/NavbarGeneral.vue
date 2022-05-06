@@ -1,5 +1,5 @@
 <template>
-  <div id="navbarDocente">
+  <div id="navbar">
     <div>
       <p class="textNavbar">
         Gestión y Control de Calificaciones USACH
@@ -18,7 +18,7 @@ export default {};
 </script>
 
 <style>
-#navbarDocente {
+#navbar {
   background-color: #f38a24;
   height: 60px;
   padding: 0px 20px;

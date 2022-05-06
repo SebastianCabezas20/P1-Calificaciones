@@ -1,23 +1,22 @@
 <template>
-    <nav>
-        <div class="bg-naranja-usach">
-            <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-center h-16">
-                    <p class="font-Inter text-white font-semibold text-xl">
-                        Gestión y Control de Calificaciones USACH 
-                    </p>
-                </div>
-            </div>
-        </div>
-    </nav>
+  <div id="navbarLogin">
+    <div>
+      <p class="textNavbar">Gestión y Control de Calificaciones USACH</p>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
+#navbarLogin {
+  background-color: #f38a24;
+  height: 60px;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

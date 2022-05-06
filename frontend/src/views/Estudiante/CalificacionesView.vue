@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import Sidebar from "../../components/SidebarEstudianteDocente.vue";
+import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import InformacionCurso from "../../components/InformacionCurso.vue";
 import CalificacionInfo from "../../components/Calificacion.vue";

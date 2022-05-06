@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import CalificacionesView from "../views/Estudiante/CalificacionesView.vue";
-import LoginView from "../views/General/LoginView.vue"
-import LogoutView from "../views/LogoutView.vue"
+import LoginView from "../views/General/LoginView.vue";
+import LogoutView from "../views/LogoutView.vue";
 import HomeView from "../views/Otros/HomeView.vue";
 import ApelacionesAutoView from "../views/Autoridad/ApelacionesAutoView.vue";
 import RespuestaApelacionView from "../views/Docente/RespuestaApelacionView.vue";
@@ -25,6 +25,7 @@ import ModificacionCalificacionesDocente from "../views/Docente/ModificacionCali
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // Vistas Generales
     {
       path: "/",
       name: "home",
@@ -40,106 +41,107 @@ const router = createRouter({
       name: "logout",
       component: LogoutView,
     },
+
+    // Vistas de Estudiantes
     {
-      path: "/about",
-      name: "about",
-      component: () => import("../views/Otros/AboutView.vue"),
-    },
-    {
-      path: "/home",
+      path: "/estudiante/home",
       name: "homeEstudiante",
       component: DashboardEstudiante,
     },
     {
-      path: "/home/cursos",
+      path: "/estudiante/cursos",
       name: "cursosEstudiante",
       component: CursosEstudiante,
     },
     {
-      path: "/home/calificaciones",
+      path: "/estudiante/calificaciones",
       name: "calificaciones",
       component: CalificacionesView,
     },
     {
-      path: "/home/apelaciones",
+      path: "/estudiante/apelaciones",
       name: "ApelacionesEstudiante",
       component: ListadoApelacionesEstudiante,
     },
     {
-      path: "/home/apelacion",
+      path: "/estudiante/add/solicitud",
       name: "apelacion",
       component: SolicitudApelacion,
     },
     {
-      path: "/apelaciones/autoridad",
-      name: "apelacionesAutoAutoridad",
-      component: ApelacionesAutoView,
-    },
-    {
-      path: "/apelaciones/respuesta",
-      name: "responderApelacionDocente",
-      component: RespuestaApelacionView,
-    },
-    {
-      path: "/home/cursoseleccionado",
+      path: "/estudiante/curso",
       name: "cursoseleccionado",
       component: EstudianteCursoSeleccionado,
     },
+
+    // Vistas de Docentes
     {
-      path: "/homeAutoridad",
-      name: "homeAutoridad",
-      component: DashboardAutoridad,
-    },
-    {
-      path: "/homeAutoridad/cursos",
-      name: "cursosAutoridad",
-      component: CursosJCSubdirector,
-    },
-    {
-      path: "/homeAutoridad/cursosVicedecano",
-      name: "cursosAutoridadVicedecano",
-      component: CursosVicedecano,
-    },
-    {
-      path: "/homeAutoridad/registrovicedecano",
-      name: "registroVicedecano",
-      component: RegCambiosSolicitudesVicedecano,
-    },
-    {
-      path: "/homeAutoridad/cursoseleccionadoCoordinador",
-      name: "cursoSeleccionadoCoordinador",
-      component: CoordinadorCursoSeleccionado,
-    },
-    {
-      path: "/homedocente",
+      path: "/docente/home",
       name: "homeDocente",
       component: DashboardDocente,
     },
     {
-      path: "/homedocente/cursos",
+      path: "/docente/cursos",
       name: "cursosDocente",
       component: CursosDocente,
     },
     {
-      path: "/homedocente/cursoseleccionado",
+      path: "/docente/curso",
       name: "cursoSeleccionadoDocente",
       component: DocenteCursoSeleccionado,
     },
     {
-      path: "/homedocente/subircalificaciones",
+      path: "/docente/apelacion/answer",
+      name: "responderApelacionDocente",
+      component: RespuestaApelacionView,
+    },
+    {
+      path: "/docente/add/calificacion",
       name: "cursosubircalificaciones",
       component: SubirCalificacionesDocente,
     },
     {
-      path: "/homedocente/modificacioncalificaciones",
+      path: "/docente/modify/calificacion",
       name: "cursomodificarcalificaciones",
       component: ModificacionCalificacionesDocente,
     },
     {
-      path: "/homedocente/apelaciones",
+      path: "/docente/solicitudes",
       name: "Apelacionesdocente",
       component: ListadoApelacionesDocente,
-    }
+    },
+
+    // Vistas de Autoridades
+    {
+      path: "/autoridad/home",
+      name: "homeAutoridad",
+      component: DashboardAutoridad,
+    },    
+    {
+      path: "/autoridad/solicitudes",
+      name: "apelacionesAutoAutoridad",
+      component: ApelacionesAutoView,
+    }, 
+    {
+      path: "/autoridad/asignaturas",
+      name: "cursosAutoridad",
+      component: CursosJCSubdirector,
+    },
+    {
+      path: "/autoridad/cursosVicedecano",
+      name: "cursosAutoridadVicedecano",
+      component: CursosVicedecano,
+    },
+    {
+      path: "/autoridad/registros",
+      name: "registroVicedecano",
+      component: RegCambiosSolicitudesVicedecano,
+    },
+    {
+      path: "/autoridad/asignatura",
+      name: "cursoSeleccionadoCoordinador",
+      component: CoordinadorCursoSeleccionado,
+    },
   ],
 });
 

@@ -10,7 +10,7 @@
       <div class="linkSidebar">
         <ul>
           <li>
-            <a href="/autoridad/home">
+            <a href="/docente/home">
               <span class="icon"><i class="fa-solid fa-house"></i></span>
               <span>Inicio</span>
             </a>
@@ -22,17 +22,17 @@
             </a>
           </li>
           <li>
-            <a href="/autoridad/asignaturas">
+            <a href="/docente/cursos">
               <span class="icon"><i class="fa-solid fa-book"></i></span>
-              <span>Asignaturas</span>
+              <span>Mis Cursos</span>
             </a>
           </li>
           <li>
-            <a href="/autoridad/registros">
+            <a href="/docente/solicitudes">
               <span class="icon"
                 ><i class="fa-solid fa-file-circle-question"></i
               ></span>
-              <span>Registros</span>
+              <span>Solicitudes</span>
             </a>
           </li>
           <li>
