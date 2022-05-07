@@ -16,7 +16,6 @@
         <table class="table">
           <thead>
             <tr>
-              <th>Título</th>
               <th>Curso</th>
               <th>Evaluación</th>
               <th>Estado</th>
@@ -26,6 +25,7 @@
           </thead>
           <tbody>
             <tr v-for="solicitud in solicitudes" :key="solicitud.id">
+              <Solicitudes :solicitud="solicitud" />
             </tr>
           </tbody>
         </table>
@@ -37,6 +37,7 @@
 <script>
 import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
+import Solicitudes from "../../components/Solicitud.vue";
 import axios from "axios";
 
 export default {
@@ -48,6 +49,7 @@ export default {
   components: {
     Sidebar,
     Navbar,
+    Solicitudes
   },
   mounted() {
     let ins = this;

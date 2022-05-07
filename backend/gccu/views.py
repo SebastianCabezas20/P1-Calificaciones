@@ -40,7 +40,7 @@ def getDataAsignaturaLab(request):
 @api_view(['GET'])
 def getDataSolicitud(request):
     print(Solicitud_Revision.objects.select_related('id_estudiante').filter(id_estudiante__id = 2).all().query)
-    solicitudes = Solicitud_Revision.objects.select_related('id_estudiante').filter(id_estudiante__id = 2).all()
+    solicitudes = Solicitud_Revision.objects.select_related('id_estudiante').filter(id_estudiante__id = "2").all()
 
     serializer = SolicitudSerializer(solicitudes, many = "true")
     return Response(serializer.data)
