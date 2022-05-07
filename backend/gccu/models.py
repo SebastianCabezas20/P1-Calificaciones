@@ -192,14 +192,13 @@ class Cambio_Fecha(models.Model):
 class Solicitud_Revision(models.Model):
     motivo = models.TextField(blank = False)
     fecha_creacion = models.DateTimeField(null = False)
-    archivoAdjunto = models.FileField(null = True)
-    respuesta = models.TextField(blank = True, default = '')
-    fecha_respuesta = models.DateTimeField(null = True, default = NULL)
+    archivoAdjunto = models.FileField(blank = True, null = True)
+    respuesta = models.TextField(blank = True, null = True, default = '')
+    fecha_respuesta = models.DateTimeField(blank = True, null = True, default = NULL)
     estado = models.CharField(max_length = 1, choices = ESTADOS_SOLICITUD_CHOICES, blank = False, default = '')
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_docente = models.ForeignKey(Docente, null = False, on_delete = models.CASCADE)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
-    id_coordinacionSeccion =  models.ForeignKey(Coordinacion_Seccion, null= True, on_delete= models.CASCADE)
 
 class Calificacion(models.Model):
     nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)

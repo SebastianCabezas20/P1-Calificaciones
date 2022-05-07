@@ -6,7 +6,6 @@ class AsignaturaSerializer(serializers.ModelSerializer):
         model = Asignatura      
         fields = '__all__'  
 
-
 class EvaluacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion   
