@@ -4,6 +4,7 @@
     </head>
         <td>{{asignatura.id_coordinacion.id_asignatura.codigo}}</td>
         <td>{{asignatura.id_coordinacion.id_asignatura.nombre}}</td>
+        <td>{{asignatura.id_coordinacion.bloques_horario}}</td>
         <td>{{asignatura.id_coordinacion.id_asignatura.componente}}</td>
         <td>{{asignatura.id_coordinacion.id_asignatura.nivel}}</td>
 

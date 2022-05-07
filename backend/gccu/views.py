@@ -55,6 +55,15 @@ def getCursosByEstudiante(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def getCursosByDocente(request):
+    
+    print(Coordinacion_Docente.objects.filter(id_docente__id = 1).query)
+    cds = Coordinacion_Docente.objects.filter(id_docente__id = 1)
+
+    serializer = CoordinacionDocenteSerializer(cds, many="true")
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def getEstudiante(request):
     
     print(Estudiante.objects.filter(id = 3).query)

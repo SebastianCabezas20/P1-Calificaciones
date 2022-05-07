@@ -19,6 +19,7 @@
             <tr>
               <th scope="col">Código</th>
               <th scope="col">Nombre</th>
+              <th scope="col">Horario</th>
               <th scope="col">Componente</th>
               <th scope="col">Nivel</th>
               <th scope="col">Detalles</th>
@@ -54,7 +55,7 @@ export default {
   },
   mounted() {
     let ins = this;
-    axios.get("http://localhost:8000/cursos").then(function (response) {
+    axios.get("http://localhost:8000/cursosEstudiante").then(function (response) {
       console.log(response.data);
       ins.asignaturas = response.data;
     });

@@ -25,6 +25,11 @@ class EstudianteSerializer(serializers.ModelSerializer):
         model = Estudiante   
         fields = ('id','rut','dig_verificador')  
 
+class DocenteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Docente  
+        fields = '__all__'
+
 class CalificacionSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
     id_estudiante = EstudianteSerializer()
@@ -36,7 +41,7 @@ class CoordinacionSeccionSerializer(serializers.ModelSerializer):
     id_asignatura = AsignaturaSerializer()
     class Meta:
         model = Coordinacion_Seccion      
-        fields = ('coordinacion','seccion','id_asignatura')  
+        fields = ('coordinacion','seccion', 'bloques_horario', 'id_asignatura')  
 
 class SolicitudSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
@@ -50,3 +55,10 @@ class CoordinacionEstudianteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coordinacion_Estudiante    
         fields = ('promedioEstudiante','id_estudiante','id_coordinacion')
+
+class CoordinacionDocenteSerializer(serializers.ModelSerializer):
+    #id_docente = DocenteSerializer()
+    id_coordinacion = CoordinacionSeccionSerializer()
+    class Meta:
+        model = Coordinacion_Docente    
+        fields = ('id_docente','id_coordinacion')
