@@ -33,7 +33,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="calificacion in calificaciones" :key="calificacion.id">
+              <tr v-for="calificacion in calificacionesTeoria" :key="calificacion.id">
                 <CalificacionInfo :calificacion="calificacion" />
               </tr>
             </tbody>
@@ -64,7 +64,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="calificacion in calificaciones" :key="calificacion.id">
+              <tr v-for="calificacion in calificacionesLaboratorio" :key="calificacion.id">
                 <CalificacionInfo :calificacion="calificacion" />
               </tr>
             </tbody>
@@ -89,7 +89,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      calificaciones: [],
+      calificacionesTeoria: [],
+      calificacionesLaboratorio: [],
     };
   },
   components: {
@@ -100,9 +101,13 @@ export default {
   },
   mounted() {
     let ins = this;
-    axios.get("http://localhost:8000/calificaciones").then(function (response) {
+    axios.get("http://localhost:8000/calificacionesTeoria").then(function (response) {
       console.log(response.data);
-      ins.calificaciones = response.data;
+      ins.calificacionesTeoria = response.data;
+    });
+    axios.get("http://localhost:8000/calificacionesLaboratorio").then(function (response) {
+      console.log(response.data);
+      ins.calificacionesLaboratorio = response.data;
     });
   },
 };

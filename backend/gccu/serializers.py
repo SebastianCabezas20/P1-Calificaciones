@@ -6,15 +6,22 @@ class AsignaturaSerializer(serializers.ModelSerializer):
         model = Asignatura      
         fields = '__all__'  
 
+class CoordinacionSeccionSerializer(serializers.ModelSerializer):
+    id_asignatura = AsignaturaSerializer()
+    class Meta:
+        model = Coordinacion_Seccion      
+        fields = ('coordinacion','seccion','id_asignatura') 
+        
 class EvaluacionSerializer(serializers.ModelSerializer):
+    id_coordinacion = CoordinacionSeccionSerializer()
     class Meta:
         model = Evaluacion   
-        fields = ('nombre','ponderacion','estado')  
+        fields = ('nombre','ponderacion','estado','id_coordinacion')  
 
 class EstudianteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estudiante   
-        fields = ('rut','dig_verificador')  
+        fields = ('id','rut','dig_verificador')  
 
 class CalificacionSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
@@ -22,11 +29,4 @@ class CalificacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Calificacion      
         fields = ('nota','fecha_entrega','id_evaluacion','id_estudiante','id_observacion')  
-
-class CoordinacionSeccionSerializer(serializers.ModelSerializer):
-    id_asignatura = AsignaturaSerializer()
-    class Meta:
-        model = Coordinacion_Seccion      
-        fields = ('coordinacion','seccion','id_asignatura')  
-
 
