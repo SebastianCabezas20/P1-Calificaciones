@@ -17,15 +17,15 @@
         <table class="table">
           <thead>
             <tr>
-              <th>Código</th>
-              <th>Nombre</th>
-              <th>Profesor</th>
-              <th>Horario</th>
-              <th>Icon Here</th>
+              <th scope="col">Código</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Componente</th>
+              <th scope="col">Nivel</th>
+              <th scope="col">Detalles</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="asignatura in asignaturas" :key="asignatura.id">
+            <tr scope="row" v-for="asignatura in asignaturas" :key="asignatura.id">
               <Asignatura :asignatura="asignatura" />
             </tr>
           </tbody>
@@ -38,11 +38,26 @@
 <script>
 import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
+import Asignatura from "../../components/Asignatura.vue";
+import axios from "axios";
 
 export default {
   components: {
     Sidebar,
     Navbar,
+    Asignatura,
+  },
+  data() {
+    return {
+      asignaturas: [],
+    };
+  },
+  mounted() {
+    let ins = this;
+    axios.get("http://localhost:8000/cursos").then(function (response) {
+      console.log(response.data);
+      ins.asignaturas = response.data;
+    });
   },
 };
 </script>

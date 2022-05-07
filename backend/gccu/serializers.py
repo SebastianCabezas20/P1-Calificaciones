@@ -43,3 +43,10 @@ class SolicitudSerializer(serializers.ModelSerializer):
     class Meta:
         model = Solicitud_Revision
         fields = '__all__'
+
+class CoordinacionEstudianteSerializer(serializers.ModelSerializer):
+    #id_estudiante = EstudianteSerializer()
+    id_coordinacion = CoordinacionSeccionSerializer()
+    class Meta:
+        model = Coordinacion_Estudiante    
+        fields = ('promedioEstudiante','id_estudiante','id_coordinacion')

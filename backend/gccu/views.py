@@ -44,3 +44,30 @@ def getDataSolicitud(request):
 
     serializer = SolicitudSerializer(solicitudes, many = "true")
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getCursosByEstudiante(request):
+    
+    print(Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3).query)
+    ces = Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3)
+
+    serializer = CoordinacionEstudianteSerializer(ces, many="true")
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getEstudiante(request):
+    
+    print(Estudiante.objects.filter(id = 3).query)
+    estudiantes = Estudiante.objects.filter(id=3)
+
+    serializer = EstudianteSerializer(estudiantes, many="true")
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def prueba(request):
+    
+    print(Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3).query)
+    ces = Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3)
+
+    serializer = CoordinacionEstudianteSerializer(ces, many="true")
+    return Response(serializer.data)
