@@ -19,4 +19,5 @@ from . import views
 urlpatterns = [
     path('calificacionesTeoria',views.getDataAsignatura),
     path('calificacionesLaboratorio',views.getDataAsignaturaLab),
+    path('solicitudes', views.getDataSolicitud),
 ]

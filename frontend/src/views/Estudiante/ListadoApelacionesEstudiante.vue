@@ -25,11 +25,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="solicitud_revision in solicitudes_revision"
-              :key="solicitud_revision.id"
-            >
-              <SolicitudRevision :solicitud_revision="solicitud_revision" />
+            <tr v-for="solicitud in solicitudes" :key="solicitud.id">
             </tr>
           </tbody>
         </table>
@@ -41,11 +37,24 @@
 <script>
 import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
+import axios from "axios";
 
 export default {
+  data() {
+    return {
+      solicitudes: [],
+    };
+  },
   components: {
     Sidebar,
     Navbar,
+  },
+  mounted() {
+    let ins = this;
+    axios.get("http://localhost:8000/solicitudes").then(function (response) {
+      console.log(response.data);
+      ins.solicitudes = response.data;
+    });
   },
 };
 </script>

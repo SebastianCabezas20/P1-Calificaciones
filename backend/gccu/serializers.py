@@ -1,3 +1,5 @@
+from dataclasses import field
+from pyexpat import model
 from rest_framework import serializers
 from .models import *
 
@@ -30,3 +32,13 @@ class CalificacionSerializer(serializers.ModelSerializer):
         model = Calificacion      
         fields = ('nota','fecha_entrega','id_evaluacion','id_estudiante','id_observacion')  
 
+class CoordinacionSeccionSerializer(serializers.ModelSerializer):
+    id_asignatura = AsignaturaSerializer()
+    class Meta:
+        model = Coordinacion_Seccion      
+        fields = ('coordinacion','seccion','id_asignatura')  
+
+class SolicitudSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Solicitud_Revision
+        fields = '__all__'
