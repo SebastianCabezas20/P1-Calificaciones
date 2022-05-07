@@ -199,6 +199,7 @@ class Solicitud_Revision(models.Model):
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_docente = models.ForeignKey(Docente, null = False, on_delete = models.CASCADE)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
+    id_coordinacionSeccion =  models.ForeignKey(Coordinacion_Seccion, null= True, on_delete= models.CASCADE)
 
 class Calificacion(models.Model):
     nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
