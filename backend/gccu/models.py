@@ -149,7 +149,7 @@ class Estudiante(models.Model):
         return '%s Rut: %s-%s' % (self.id_usuario, self.rut, self.dig_verificador)
 
 class Coordinacion_Estudiante(models.Model):
-    promedioEstudiante = models.DecimalField(max_digits = 4, decimal_places = 3, null = True)
+    promedioEstudiante = models.DecimalField(max_digits = 4, decimal_places = 3, null = True, blank = True)
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = False, on_delete = models.CASCADE)
     
@@ -171,7 +171,7 @@ class Evaluacion(models.Model):
     estado = models.CharField(max_length = 1, choices = ESTADOS_EVALUACION_CHOICES, blank = False)
     id_tipoEvaluacion = models.ForeignKey(Tipo_Evaluacion, null = True, on_delete = models.CASCADE)
     id_docente = models.ForeignKey(Docente, null = False, on_delete = models.CASCADE)
-    id_observacion = models.ForeignKey(Observacion, null = True, on_delete = models.CASCADE)
+    id_observacion = models.ForeignKey(Observacion, null = True, blank = True, on_delete = models.CASCADE)
     id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = True, on_delete = models.CASCADE)
 
     def __str__(self):
@@ -201,11 +201,11 @@ class Solicitud_Revision(models.Model):
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
 
 class Calificacion(models.Model):
-    nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
-    fecha_entrega = models.DateTimeField(null = False)
+    nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = True, blank = True)
+    fecha_entrega = models.DateTimeField(null = True, blank = True)
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
-    id_observacion = models.ForeignKey(Observacion, null = False, on_delete = models.CASCADE)
+    id_observacion = models.ForeignKey(Observacion, null = True, blank = True, on_delete = models.CASCADE)
 
     def __str__(self):
         return 'Nota %s de %s de la ev %s' % (self.nota, self.id_estudiante, self.id_evaluacion)

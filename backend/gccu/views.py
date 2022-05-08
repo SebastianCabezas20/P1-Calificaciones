@@ -1,9 +1,10 @@
-from urllib import response
-from django.shortcuts import render
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import *
 from .serializers import *
+from django.core import serializers
+import json
 
 @api_view(['GET'])
 def getData(request):
@@ -129,3 +130,13 @@ def actualizacionCalificacionEstudiante(request):
         return Response(calificacion_actualizada.errors)
     
 
+    return Response(serializer.data)
+
+# Primera parte para la subida de planilla de calificaciones.
+@api_view(['GET'])
+def getCalifiacionesEstudiantes(request):
+    
+    calificacionEstudiantes = Calificacion.objects.filter(id_evaluacion__id = 4).all()
+    
+    serializer = CalificacionSerializer(calificacionEstudiantes, many="true")
+    return Response(serializer.data)

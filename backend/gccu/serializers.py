@@ -43,12 +43,11 @@ class DocenteSerializer(serializers.ModelSerializer):
 
 class CalificacionSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
+    id_estudiante = EstudianteSerializer()
 
     class Meta:
         model = Calificacion      
         fields = ('nota','fecha_entrega','id_evaluacion','id_estudiante','id_observacion')  
-
-
 
 class SolicitudSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()

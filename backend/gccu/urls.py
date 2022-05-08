@@ -27,4 +27,5 @@ urlpatterns = [
     path('solicitudRespuesta', views.getDataSolicitudRespuesta),
     path('actualizar/solicitud', views.actualizacionSolicitudRespuesta),
     path('actualizar/calificacion', views.actualizacionCalificacionEstudiante),
+    path('calificacionesEstudiantes', views.getCalifiacionesEstudiantes),
 ]
