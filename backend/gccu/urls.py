@@ -24,4 +24,7 @@ urlpatterns = [
     path('cursosDocente', views.getCursosByDocente),
     path('estudiantes', views.getEstudiante),
     path('prueba', views.prueba),
+    path('solicitudRespuesta', views.getDataSolicitudRespuesta),
+    path('actualizar/solicitud', views.actualizacionSolicitudRespuesta),
+    path('actualizar/calificacion', views.actualizacionCalificacionEstudiante),
 ]

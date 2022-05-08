@@ -1,3 +1,4 @@
+from urllib import response
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -32,9 +33,8 @@ def getDataAsignaturaLab(request):
     calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = "10110", id_evaluacion__id_coordinacion__id_asignatura__componente = "L", id_estudiante__id = "1").all()
     serializer = CalificacionSerializer(calificaciones, many="true")
     print(Calificacion.objects.select_related('id_evaluacion').filter(id_evaluacion__nombre = "PEP2").all().query)
-    coordinacion_seccions = Coordinacion_Seccion.objects.select_related('').filter().all()
      
-    serializer = CoordinacionSeccionSerializer(coordinacion_seccions, many="true")
+    serializer = CalificacionSerializer(calificaciones, many="true")
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -79,4 +79,53 @@ def prueba(request):
     ces = Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3)
 
     serializer = CoordinacionEstudianteSerializer(ces, many="true")
-    return Response(serializer.data)
+
+## Obtener informacion para realizar la respuesta a una apelacion
+@api_view(['GET'])
+def getDataSolicitudRespuesta(request):
+    print(Solicitud_Revision.objects.filter(id_estudiante__id = 2).all().query)
+    solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id = 2, id_evaluacion__id = 2).all()
+    #Cambiar ids respecto a la solicitud realizada deberian ser las mismas
+    nota = Calificacion.objects.filter(id_estudiante = 2, id_evaluacion = 1).all()
+    #idEvaluacion = Solicitud_Revision.objects.filter(id_estudiante__id = 2).values('id_evaluacion').first().get('id_evaluacion')
+    #print(idEvaluacion)
+    serializer = SolicitudRespuestaSerializer(solicitudes, many = "true")
+    serializerNota = CalificacionEspecificaSerializer(nota, many = "true")
+    return Response([serializer.data,serializerNota.data])
+
+#####################POSIBLE COMBINACION DE SERIALIZERS getDataSolicitudRespuesta
+## Actualizacion de Solicitud respuesta id_motivo y id_calificacion para cambiar nota
+@api_view(['GET','PUT'])
+def actualizacionSolicitudRespuesta(request):
+
+    if request.method == 'GET':
+        solicitud = Solicitud_Revision.objects.all()
+        solicituds = SolicitudActualizacionSerializer(solicitud, many = "true")
+        return Response(solicituds.data)
+    elif request.method == 'PUT':
+        print("---------------------------------------------------------")
+        solicitud = Solicitud_Revision.objects.filter(id = 2).first()
+        solicitud_actualizada = SolicitudActualizacionSerializer(solicitud, data = request.data)
+        if solicitud_actualizada.is_valid():
+            solicitud_actualizada.save()
+            return Response(solicitud_actualizada.data)
+        return Response(solicitud_actualizada.errors)
+
+
+@api_view(['GET','PUT'])
+def actualizacionCalificacionEstudiante(request):
+
+    if request.method == 'GET':
+        calificacion = Calificacion.objects.all()
+        calificacions = CalificacionEspecificaSerializer(calificacion, many = "true")
+        return Response(calificacions.data)
+    elif request.method == 'PUT':
+        print("---------------------------------------------------------")
+        calificacion = Calificacion.objects.filter(id = 5).first()
+        calificacion_actualizada = CalificacionEspecificaSerializer(calificacion, data = request.data)
+        if calificacion_actualizada.is_valid():
+            calificacion_actualizada.save()
+            return Response(calificacion_actualizada.data)
+        return Response(calificacion_actualizada.errors)
+    
+
