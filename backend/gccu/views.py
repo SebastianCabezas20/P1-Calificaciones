@@ -160,10 +160,17 @@ def getCalifiacionesEstudiantes(request):
     serializer = CalificacionSerializer(calificacionEstudiantes, many="true")
     return Response(serializer.data)
 
-@api_view(['GET'])
-def getEvaluacionesCoordinacion(request):
+@api_view(['GET', 'DELETE'])
+def evaluacionesCoordinacion(request, idEvaluacion = None):
 
-    # Falta comprobar que el docente hace clase en cierta coordinacion (eso cuando ya se tenga el id de la vista)
-    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = 2).all()
-    serializer = EvaluacionSerializer(evaluacionCoordinacion, many = "true")
-    return Response(serializer.data)
+    # Falta comprobar que el docente hace clase en cierta coordinacion (eso cuando ya se tenga el id de la vista).
+    if request.method == 'GET':
+        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = 2).all()
+        serializer = EvaluacionSerializer(evaluacionCoordinacion, many = "true")
+        return Response(serializer.data)
+    
+    # Funcionando correctamente.
+    if request.method == 'DELETE':
+        evaluacion = Evaluacion.objects.filter(id = idEvaluacion).first()
+        evaluacion.delete()
+        return Response(status=status.HTTP_200_OK)

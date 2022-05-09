@@ -30,5 +30,6 @@ urlpatterns = [
     path('calificacionesEstudiantes', views.getCalifiacionesEstudiantes),
     path('solicitudesDocente', views.getDataSolicitudesDocente),
     path('calificacionespercursodocente', views.getCalificacionesPerCursoDocente),
-    path('coordinacion/evaluaciones', views.getEvaluacionesCoordinacion),
+    path('coordinacion/evaluaciones', views.evaluacionesCoordinacion),
+    path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),
 ]
