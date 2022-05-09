@@ -81,6 +81,25 @@ def prueba(request):
 
     serializer = CoordinacionEstudianteSerializer(ces, many="true")
 
+@api_view(['GET'])
+def getDataSolicitudesDocente(request):
+
+    print(Solicitud_Revision.objects.filter(id_docente__rut = 20900900).query)
+    solicitudes = Solicitud_Revision.objects.filter(id_docente__rut = 20900900)
+
+    serializer = SolicitudSerializer(solicitudes, many="true")
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getCalificacionesPerCursoDocente(request):
+
+    print(Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = "10110", id_evaluacion__id_coordinacion__id_asignatura__componente = "T").all().query)
+    
+    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = "10110", id_evaluacion__id_coordinacion__id_asignatura__componente = "T").all()
+
+    serializer = CalificacionSerializer(calificaciones, many='true')
+    return Response(serializer.data)
+
 ## Obtener informacion para realizar la respuesta a una apelacion
 @api_view(['GET'])
 def getDataSolicitudRespuesta(request):
