@@ -124,7 +124,7 @@ class Coordinacion_Seccion(models.Model):
     id_asignatura = models.ForeignKey(Asignatura, null = False, on_delete = models.CASCADE)
 
     def __str__(self):
-        return '%s sección %s-%s (%s)' % (self.id_asignatura, self.coordinacion, self.seccion, self.bloques_horario)
+        return '%s - %s sección %s-%s (%s)' % (self.id, self.id_asignatura, self.coordinacion, self.seccion, self.bloques_horario)
 
 class Estadistica_Curso(models.Model):
     promedio_general = models.DecimalField(max_digits = 4, decimal_places = 3)

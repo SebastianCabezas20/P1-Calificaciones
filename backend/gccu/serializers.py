@@ -11,6 +11,10 @@ class UsuariosSerializers(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+class TipoEvaluacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tipo_Evaluacion
+        fields = '__all__'
 
 class AsignaturaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,12 +26,15 @@ class CoordinacionSeccionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coordinacion_Seccion      
         fields = ('coordinacion','seccion', 'bloques_horario', 'id_asignatura')  
-        
+
+# Serializer modificado por Miguel. Para utilizarlo en las evaluaciones que tiene un curso.       
 class EvaluacionSerializer(serializers.ModelSerializer):
     id_coordinacion = CoordinacionSeccionSerializer()
+    id_tipoEvaluacion = TipoEvaluacionSerializer()
+    
     class Meta:
         model = Evaluacion   
-        fields = ('id','nombre','ponderacion','estado','id_coordinacion')  
+        fields = ('id','nombre','ponderacion','estado', 'fechaEvActual', 'id_coordinacion', 'id_tipoEvaluacion')  
 
 class EstudianteSerializer(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
@@ -88,8 +95,3 @@ class CalificacionEspecificaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Calificacion      
         fields = '__all__'
-
-
-
-
-        

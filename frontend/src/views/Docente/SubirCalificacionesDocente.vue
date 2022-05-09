@@ -51,12 +51,52 @@
                 <th>Calificación</th>
               </tr>
             </thead>
-            <tbody>
+            
+            <!-- Docente sube una planilla de notas.  -->
+            <tbody v-if="plantillaCargada">
+              <tr>
+                <td>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="defaultCheck1"
+                  />
+                </td>
+                <td>
+                  {{
+                    calificacionEstudiante.id_estudiante.id_usuario.first_name
+                  }}
+                  {{
+                    calificacionEstudiante.id_estudiante.id_usuario.last_name
+                  }}
+                </td>
+                <td>
+                  {{ calificacionEstudiante.id_estudiante.rut }}-{{
+                    calificacionEstudiante.id_estudiante.dig_verificador
+                  }}
+                </td>
+                <td>{{ calificacionEstudiante.nota }}</td>
+
+                <td>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Calificación"
+                  />
+                </td>
+              </tr>
+            </tbody>
+            
+            <!-- Docente no sube una planilla de notas -->
+            <tbody v-else>
               <tr
                 v-for="calificacion in calificacionesEstudiantes"
                 :key="calificacion.id"
               >
-                <CalificacionEstudiante :calificacionEstudiante="calificacion" />
+                <CalificacionEstudiante
+                  :calificacionEstudiante="calificacion"
+                />
               </tr>
             </tbody>
           </table>
@@ -89,6 +129,7 @@ export default {
     return {
       calificacionesEstudiantes: [],
       estudiantesPlanilla: [],
+      plantillaCargada: false,
     };
   },
   mounted() {
@@ -109,16 +150,18 @@ export default {
           /* Analizar el excel */
           const bstr = e.target.result;
           const wb = XLSX.read(bstr, { type: "binary" });
-          
+
           /* Obtener primera hoja. */
           const wsname = wb.SheetNames[0];
           const ws = wb.Sheets[wsname];
 
           /* Convertir los datos en un arreglo de arreglos. */
-          this.estudiantesPlanilla  = XLSX.utils.sheet_to_json(ws, { header: 1, range: 1 });
-          console.log(this.estudiantesPlanilla);
+          this.estudiantesPlanilla = XLSX.utils.sheet_to_json(ws, {
+            header: 1,
+            range: 1,
+          });
         };
-
+        this.plantillaCargada = true;
         reader.readAsBinaryString(this.file);
       }
     },

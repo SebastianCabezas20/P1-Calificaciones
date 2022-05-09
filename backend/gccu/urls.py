@@ -30,4 +30,5 @@ urlpatterns = [
     path('calificacionesEstudiantes', views.getCalifiacionesEstudiantes),
     path('solicitudesDocente', views.getDataSolicitudesDocente),
     path('calificacionespercursodocente', views.getCalificacionesPerCursoDocente),
+    path('coordinacion/evaluaciones', views.getEvaluacionesCoordinacion),
 ]

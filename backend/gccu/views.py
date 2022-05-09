@@ -159,3 +159,11 @@ def getCalifiacionesEstudiantes(request):
     
     serializer = CalificacionSerializer(calificacionEstudiantes, many="true")
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getEvaluacionesCoordinacion(request):
+
+    # Falta comprobar que el docente hace clase en cierta coordinacion (eso cuando ya se tenga el id de la vista)
+    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = 2).all()
+    serializer = EvaluacionSerializer(evaluacionCoordinacion, many = "true")
+    return Response(serializer.data)
