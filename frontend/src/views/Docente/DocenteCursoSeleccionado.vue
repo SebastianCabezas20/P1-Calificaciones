@@ -221,6 +221,7 @@ export default {
     Sidebar,
     Navbar,
   },
+  props: ['idCurso'],
   data() {
     return {
       evaluacionesCurso: [],
@@ -238,9 +239,10 @@ export default {
   },
 
   mounted() {
+    let identificacionCuro = this.idCurso;
     let that = this;
     axios
-      .get("http://localhost:8000/coordinacion/evaluaciones")
+      .get(`http://localhost:8000/evaluaciones/${identificacionCuro}`)
       .then(function (response) {
         that.evaluacionesCurso = response.data;
       });

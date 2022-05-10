@@ -166,7 +166,7 @@ class Observacion(models.Model):
 class Evaluacion(models.Model):
     nombre = models.CharField(max_length = 40, blank = False)
     fechaEvActual = models.DateField(null = False)
-    fechaEntrega = models.DateField(null = False)
+    fechaEntrega = models.DateField(null = True, blank = True)
     ponderacion = models.DecimalField(max_digits = 2, decimal_places = 1, null = False)
     estado = models.CharField(max_length = 1, choices = ESTADOS_EVALUACION_CHOICES, blank = False)
     id_tipoEvaluacion = models.ForeignKey(Tipo_Evaluacion, null = True, on_delete = models.CASCADE)

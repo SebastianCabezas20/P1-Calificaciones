@@ -19,11 +19,10 @@ from . import views
 urlpatterns = [
     path('calificacionesTeoria',views.getDataAsignatura),
     path('calificacionesLaboratorio',views.getDataAsignaturaLab),
-    path('solicitudes/<int:idUsuario>', views.getDataSolicitud),
+    path('solicitudes/<int:idUsuario>', views.getDataSolicitud),                        # Funcionando.
     path('cursosEstudiante', views.getCursosByEstudiante),
-    path('cursosDocente', views.getCursosByDocente),
+    path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.
     path('estudiantes', views.getEstudiante),
-    path('prueba', views.prueba),
     path('solicitudRespuesta', views.getDataSolicitudRespuesta), ## Ver los datos de la respuesta a la apelacion
     path('actualizar/solicitud', views.actualizacionSolicitudRespuesta), # Para poder actualizar respuesta y estado de una solicitud
     path('actualizar/calificacion', views.actualizacionCalificacionEstudiante), # Para poder actualizar calificaion de un estudiante 
@@ -31,8 +30,8 @@ urlpatterns = [
     path('solicitudesDocente', views.getDataSolicitudesDocente),
     path('calificacionespercursodocente', views.getCalificacionesPerCursoDocente),
     path('asignaturascoordinador', views.getAsignaturastoCoordinador),
-    path('coordinacion/evaluaciones', views.evaluacionesCoordinacion),
-    path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),
+    path('evaluaciones/<int:idCoordinacion>', views.evaluacionesCoordinacion),          # Funcionando.
+    path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando.
     path('add/evaluacion', views.evaluacionesCoordinacion),
     path('evaluacion/tipos', views.getTiposEvaluaciones),
     path('coordinador/coordinacion', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar

@@ -6,20 +6,6 @@ from .models import *
 from .serializers import *
 from django.contrib.auth.models import User, Group
 
-#########Creo que no se usa
-@api_view(['GET'])
-def getData(request):
-    
-    print(Calificacion.objects.select_related('id_evaluacion').filter(id_evaluacion__nombre = "PEP2").all().query)
-    calificaciones = Calificacion.objects.select_related('id_evaluacion').filter().all()
-    
-    for calificacion in calificaciones:
-        print(calificacion.id_evaluacion.nombre)
-    
- 
-    serializer = CalificacionSerializer(calificaciones, many="true")
-    return Response(serializer.data)
-
 @api_view(['GET'])
 def getDataAsignatura(request):
     
@@ -56,12 +42,9 @@ def getCursosByEstudiante(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getCursosByDocente(request):
-    
-    print(Coordinacion_Docente.objects.filter(id_docente__id = 1).query)
-    cds = Coordinacion_Docente.objects.filter(id_docente__id = 1)
-
-    serializer = CoordinacionDocenteSerializer(cds, many="true")
+def getCursosByDocente(request, idUsuario = None):
+    cursosDocente = Coordinacion_Docente.objects.filter(id_docente__id_usuario__id = idUsuario).all()
+    serializer = CoordinacionDocenteSerializer(cursosDocente, many="true")
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -72,14 +55,6 @@ def getEstudiante(request):
 
     serializer = EstudianteSerializer(estudiantes, many="true")
     return Response(serializer.data)
-
-@api_view(['GET'])
-def prueba(request):
-    
-    print(Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3).query)
-    ces = Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3)
-
-    serializer = CoordinacionEstudianteSerializer(ces, many="true")
 
 @api_view(['GET'])
 def getDataSolicitudesDocente(request):
@@ -168,12 +143,13 @@ def getCalifiacionesEstudiantes(request):
     return Response(serializer.data)
 
 @api_view(['GET', 'DELETE', 'POST'])
-def evaluacionesCoordinacion(request, idEvaluacion = None):
+def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None):
 
-    # Falta comprobar que el docente hace clase en cierta coordinacion (eso cuando ya se tenga el id de la vista).
+    # Funcionando.
     if request.method == 'GET':
-        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = 1).all()
+        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all()
         serializer = EvaluacionSerializer(evaluacionCoordinacion, many = "true")
+        print('Funca')
         return Response(serializer.data)
     
     # Funcionando correctamente.

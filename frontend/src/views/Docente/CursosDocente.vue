@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSection">
-        <h3 class="textTitle">Docencia: Mis Asignaturas (Teoría)</h3>
+        <h3 class="textTitle">Docencia: Mis Coordinaciones (Teoría)</h3>
       </div>
       <div class="tableContent">
         <table class="table">
@@ -24,9 +24,28 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="asignatura in asignaturas" :key="asignatura.id">
-              <tr v-if="asignatura.id_coordinacion.id_asignatura.componente === 'T'">
-                <Asignatura :asignatura="asignatura" />
+            <template v-for="coordinacion in coordinaciones" :key="coordinacion.id">
+              <tr
+                v-if="
+                  coordinacion.id_coordinacion.id_asignatura.componente === 'T'
+                "
+              >
+                <td>{{ coordinacion.id_coordinacion.id_asignatura.codigo }}</td>
+                <td>{{ coordinacion.id_coordinacion.id_asignatura.nombre }}</td>
+                <td>{{ coordinacion.id_coordinacion.bloques_horario }}</td>
+                <td>
+                  {{ coordinacion.id_coordinacion.id_asignatura.componente }}
+                </td>
+                <td>{{ coordinacion.id_coordinacion.id_asignatura.nivel }}</td>
+                <td>
+                  <button
+                    @click="getAsignatura($event, coordinacion.id_coordinacion.id)"
+                    type="button"
+                    class="btn btn-light"
+                  >
+                    Más Información
+                  </button>
+                </td>
               </tr>
             </template>
           </tbody>
@@ -38,7 +57,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSection">
-        <h3 class="textTitle">Docencia: Mis Asignaturas (Laboratorio)</h3>
+        <h3 class="textTitle">Docencia: Mis Coordinaciones (Laboratorio)</h3>
       </div>
       <div class="tableContent">
         <table class="table">
@@ -52,9 +71,28 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="asignatura in asignaturas" :key="asignatura.id">
-              <tr v-if="asignatura.id_coordinacion.id_asignatura.componente === 'L'">
-                <Asignatura :asignatura="asignatura" />
+            <template v-for="coordinacion in coordinaciones" :key="coordinacion.id">
+              <tr
+                v-if="
+                  coordinacion.id_coordinacion.id_asignatura.componente === 'L'
+                "
+              >
+                <td>{{ coordinacion.id_coordinacion.id_asignatura.codigo }}</td>
+                <td>{{ coordinacion.id_coordinacion.id_asignatura.nombre }}</td>
+                <td>{{ coordinacion.id_coordinacion.bloques_horario }}</td>
+                <td>
+                  {{ coordinacion.id_coordinacion.id_asignatura.componente }}
+                </td>
+                <td>{{ coordinacion.id_coordinacion.id_asignatura.nivel }}</td>
+                <td>
+                  <button
+                    v-on:click="getAsignatura($event, coordinacion.id_coordinacion.id)"
+                    type="button"
+                    class="btn btn-light"
+                  >
+                    Más Información
+                  </button>
+                </td>
               </tr>
             </template>
           </tbody>
@@ -67,25 +105,32 @@
 <script>
 import Sidebar from "../../components/SidebarDocente.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
-import Asignatura from "../../components/Asignatura.vue";
 import axios from "axios";
+
 export default {
   components: {
     Sidebar,
     Navbar,
-    Asignatura,
   },
   data() {
     return {
-      asignaturas: [],
+      coordinaciones: [],
     };
   },
   mounted() {
     let ins = this;
-    axios.get("http://localhost:8000/cursosDocente").then(function (response) {
-      console.log(response.data);
-      ins.asignaturas = response.data;
-    });
+    let idUsuarioLogeado = this.$store.getters.idUsuario;
+    axios
+      .get(`http://localhost:8000/cursosDocente/${idUsuarioLogeado}`)
+      .then(function (response) {
+        ins.coordinaciones = response.data;
+      });
+  },
+  methods: {
+    getAsignatura: function (event, idCoordinacion) {
+      // Como pasar ese valor a otra vista.
+      this.$router.push({ path: `/docente/curso/${idCoordinacion}` });
+    },
   },
 };
 </script>

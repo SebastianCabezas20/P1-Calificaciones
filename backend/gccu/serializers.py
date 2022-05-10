@@ -31,13 +31,20 @@ class TipoEvaluacionSerializer(serializers.ModelSerializer):
 class AsignaturaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Asignatura      
-        fields = '__all__'  
+        fields = '__all__' 
 
 class CoordinacionSeccionSerializer(serializers.ModelSerializer):
     id_asignatura = AsignaturaSerializer()
     class Meta:
         model = Coordinacion_Seccion      
-        fields = ('coordinacion','seccion', 'bloques_horario', 'id_asignatura')  
+        fields = ('id', 'coordinacion','seccion', 'bloques_horario', 'id_asignatura') 
+
+class CoordinacionDocenteSerializer(serializers.ModelSerializer):
+    #id_docente = DocenteSerializer()
+    id_coordinacion = CoordinacionSeccionSerializer()
+    class Meta:
+        model = Coordinacion_Docente    
+        fields = ('id', 'id_coordinacion')
 
 # Serializer modificado por Miguel. Para utilizarlo en las evaluaciones que tiene un curso.       
 class EvaluacionSerializer(serializers.ModelSerializer):
@@ -90,12 +97,7 @@ class CoordinacionEstudianteSerializer(serializers.ModelSerializer):
         model = Coordinacion_Estudiante    
         fields = ('promedioEstudiante','id_estudiante','id_coordinacion')
 
-class CoordinacionDocenteSerializer(serializers.ModelSerializer):
-    #id_docente = DocenteSerializer()
-    id_coordinacion = CoordinacionSeccionSerializer()
-    class Meta:
-        model = Coordinacion_Docente    
-        fields = ('id_docente','id_coordinacion')
+
 
 #Serializer para mostrar datos en respuesta de solicitud
 class SolicitudRespuestaSerializer(serializers.ModelSerializer):
