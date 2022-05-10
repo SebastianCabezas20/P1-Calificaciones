@@ -95,3 +95,55 @@ class CalificacionEspecificaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Calificacion      
         fields = '__all__'
+
+
+######################################################################################33
+## Saber las secciones de un coordinador con su asignatura
+class CoordinacionCoordinadorSerializer(serializers.ModelSerializer):
+    id_asignatura = AsignaturaSerializer()
+    class Meta:
+        model = Coordinacion_Seccion      
+        fields = '__all__'  
+
+
+# Para obtener las solicitudes respecto a un curso - 2
+class SolicitudesEvaluacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Evaluacion  
+        fields = ('id_coordinacion','id_docente')  
+# Para obtener las solicitudes respecto a un curso - 1
+class SolicitudesDocenteCursoSerializer(serializers.ModelSerializer):
+    id_evaluacion = SolicitudesEvaluacionSerializer()
+    class Meta:
+        model = Solicitud_Revision     
+        fields = ('id_docente','id_evaluacion')  
+###########################################################################################
+
+# Obtener los planes de estudios pertenecientes a un jefe de carrera - 1
+class CarreraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Carrera  
+        fields = ('id','id_jefeCarrera')  
+
+# Obtener los planes de estudios pertenecientes a un jefe de carrera - 2
+class PlanEstudioSerializer(serializers.ModelSerializer):
+    id_carrera = CarreraSerializer()
+    class Meta:
+        model = Plan_Estudio
+        fields = ('id','id_carrera')  
+
+# Obtener los planes de estudios pertenecientes a un jefe de carrera - 1
+class PlanesJefeSerializer(serializers.ModelSerializer):
+    id_planEstudio = PlanEstudioSerializer()
+    class Meta:
+        model = Asignaturas_PlanEstudio  
+        fields = '__all__'  
+
+class CoordinacionSeccionV2Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coordinacion_Seccion      
+        fields = ('id','coordinacion','seccion', 'bloques_horario', 'id_asignatura')  
+
+
+
+        

@@ -6,6 +6,7 @@ from .serializers import *
 from django.core import serializers
 import json
 
+#########Creo que no se usa
 @api_view(['GET'])
 def getData(request):
     
@@ -131,7 +132,7 @@ def actualizacionSolicitudRespuesta(request):
             return Response(solicitud_actualizada.data)
         return Response(solicitud_actualizada.errors)
 
-
+## ACtualizacion de calificaciones de una solicitud
 @api_view(['GET','PUT'])
 def actualizacionCalificacionEstudiante(request):
 
@@ -148,8 +149,6 @@ def actualizacionCalificacionEstudiante(request):
             return Response(calificacion_actualizada.data)
         return Response(calificacion_actualizada.errors)
     
-
-    return Response(serializer.data)
 
 # Primera parte para la subida de planilla de calificaciones.
 @api_view(['GET'])
@@ -180,3 +179,42 @@ def getTiposEvaluaciones(request):
     tiposEvaluaciones = Tipo_Evaluacion.objects.all()
     serializer = TipoEvaluacionSerializer(tiposEvaluaciones, many="true")
     return Response(serializer.data)
+
+# Saber que coordinacion quiere visualizar, de aqui sacar el id para ver la tabla CursoInscrito_docente o Solicitud revision
+@api_view(['GET'])
+def getCoordinacionesCoordinador(request):
+    
+    coordinacionesCoordinador = Coordinacion_Seccion.objects.filter(id_asignatura__id_coordinador = 1).all()
+    
+    serializer = CoordinacionCoordinadorSerializer(coordinacionesCoordinador, many="true")
+    return Response(serializer.data)
+
+## LUego de especificar la seccion se recogen las solicitudes de este curso-seccion
+@api_view(['GET'])
+def getSolicitudesCurso(request):
+    
+    solicitudesCurso = Solicitud_Revision.objects.filter().all()
+    
+    serializer = SolicitudesDocenteCursoSerializer(solicitudesCurso, many="true")
+    return Response(serializer.data)
+
+## Asignaturas de un jefe de carrera
+@api_view(['GET'])
+def getAsignaturasJefeCarrera(request):
+    
+    planesEstudio = Asignaturas_PlanEstudio.objects.distinct('id_asignatura').all()
+    
+    serializer = PlanesJefeSerializer(planesEstudio, many="true")
+    return Response(serializer.data)
+
+## Solicitudes de una asignatura (Jefe de carrera)
+@api_view(['GET'])
+def getCoordinacionSolicitudesJefeCarrera(request):
+    
+    coordinaciones = Coordinacion_Seccion.objects.filter().all()
+    
+    serializer = CoordinacionSeccionV2Serializer(coordinaciones, many="true")
+    return Response(serializer.data)
+
+
+

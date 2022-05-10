@@ -59,7 +59,8 @@
               type="radio"
               name="Estado"
               id="RadioAceptar"
-              value="Aceptado"
+              value="A"
+              v-model="EstadoActual"
               @click="cambiarAceptado"
             />
             <label class="form-check-label" for="RadioAceptar"> Aceptar </label>
@@ -70,7 +71,8 @@
               type="radio"
               name="Estado"
               id="RadioRechazar"
-              value="Rechazado"
+              v-model="EstadoActual"
+              value="R"
               @click="cambiarRechazado"
             />
             <label class="form-check-label" for="RadioRechazar">
@@ -103,6 +105,7 @@ export default {
       isAceptar: false,
       respuestaActual: "",
       notaActual: null,
+      EstadoActual:"",
 
 
     };
@@ -123,6 +126,7 @@ export default {
           motivo: this.apelacion[0].motivo,
           fecha_creacion: "2022-05-07T00:08:23-04:00",
           respuesta: this.respuestaActual,
+          estado: this.EstadoActual,
           id_estudiante:2,
           id_docente: 1,
           id_evaluacion: 2,
