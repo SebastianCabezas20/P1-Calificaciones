@@ -20,23 +20,13 @@
               <th>Estado</th>
               <th>Fecha Creacion</th>
               <th>Estudiante</th>
-              <th>Fecha Respuesta</th>
+              <th>Seccion</th>
+              <th>Docente</th>
               <th>Detalle</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="solicitud in solicitudes" :key="solicitud.id">
-              <td>{{solicitud.id_evaluacion.nombre}}</td>
-              <td>{{ solicitud.estado}} </td>
-              <td>{{solicitud.fecha_creacion}}</td>
-              <td>{{solicitud.id_estudiante.id_usuario.username}}</td>
-              <td>{{solicitud.fecha_respuesta}}</td>
-              <td>
-                <button type="button" class="btn btn-success">
-                  Detalles
-                </button>
-              </td>
-            </tr>
+          <tbody v-for="solicitud in solicitudes" :key="solicitud.id">
+            <ApelacionesAsignaJefe :solicitud="solicitud"/>
           </tbody>
         </table>
       </div>
@@ -48,12 +38,15 @@
 import Sidebar from "../../components/SidebarAutoridad.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from 'axios';
+import ApelacionesAsignaJefe from '../../components/ApelacionesAsignaJefe.vue';
+
 
 export default {
   components: {
     Sidebar,
     Navbar,
-  },
+    ApelacionesAsignaJefe
+},
   data(){
       return{
           solicitudes: []
