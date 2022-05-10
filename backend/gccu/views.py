@@ -39,11 +39,10 @@ def getDataAsignaturaLab(request):
     serializer = CalificacionSerializer(calificaciones, many="true")
     return Response(serializer.data)
 
+# Solicitudes de revisión realizadas por un estudiante.
 @api_view(['GET'])
-def getDataSolicitud(request):
-    print(Solicitud_Revision.objects.select_related('id_estudiante').filter(id_estudiante__id = 2).all().query)
-    solicitudes = Solicitud_Revision.objects.select_related('id_estudiante').filter(id_estudiante__id = "2").all()
-
+def getDataSolicitud(request, idUsuario = None):
+    solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id_usuario__id = idUsuario).all()
     serializer = SolicitudSerializer(solicitudes, many = "true")
     return Response(serializer.data)
 

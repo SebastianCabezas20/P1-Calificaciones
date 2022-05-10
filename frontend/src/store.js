@@ -15,9 +15,9 @@ const store = createStore({
   mutations: {
     updateUser(
       state,
-      { idUsario, nombreUsuario, nombre, apellido, email, idRol }
+      { idUsuario, nombreUsuario, nombre, apellido, email, idRol }
     ) {
-      state.idUsuario = idUsario;
+      state.idUsuario = idUsuario;
       state.nombreUsuario = nombreUsuario;
       state.nombre = nombre;
       state.apellido = apellido;
@@ -64,12 +64,16 @@ const store = createStore({
   },
   getters: {
     nameUser(state) {
-      let nombre = state.nombre + ' ' + state.apellido;
+      let nombre = state.nombre + " " + state.apellido;
       return nombre;
     },
-    idRolUsuario(state){
-        return state.idRol
-    }
+    idRolUsuario(state) {
+      return state.idRol;
+    },
+    idUsuario(state) {
+        let idUsuario = state.idUsuario;
+      return idUsuario;
+    },
   },
   // Forma de que no se pierdan los estados al refrescar la pág.
   plugins: [createPersistedState()],

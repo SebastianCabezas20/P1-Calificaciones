@@ -19,7 +19,7 @@ from . import views
 urlpatterns = [
     path('calificacionesTeoria',views.getDataAsignatura),
     path('calificacionesLaboratorio',views.getDataAsignaturaLab),
-    path('solicitudes', views.getDataSolicitud),
+    path('solicitudes/<int:idUsuario>', views.getDataSolicitud),
     path('cursosEstudiante', views.getCursosByEstudiante),
     path('cursosDocente', views.getCursosByDocente),
     path('estudiantes', views.getEstudiante),

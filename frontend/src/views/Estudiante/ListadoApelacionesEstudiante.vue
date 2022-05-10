@@ -49,14 +49,17 @@ export default {
   components: {
     Sidebar,
     Navbar,
-    Solicitudes
+    Solicitudes,
   },
   mounted() {
     let ins = this;
-    axios.get("http://localhost:8000/solicitudes").then(function (response) {
-      console.log(response.data);
-      ins.solicitudes = response.data;
-    });
+    let idUsuarioLogeado = this.$store.getters.idUsuario;
+    axios
+      .get(`http://localhost:8000/solicitudes/${idUsuarioLogeado}`)
+      .then(function (response) {
+        console.log(response.data);
+        ins.solicitudes = response.data;
+      });
   },
 };
 </script>
