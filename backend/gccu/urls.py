@@ -28,16 +28,14 @@ urlpatterns = [
     path('actualizar/solicitud', views.actualizacionSolicitudRespuesta), # Para poder actualizar respuesta y estado de una solicitud
     path('actualizar/calificacion', views.actualizacionCalificacionEstudiante), # Para poder actualizar calificaion de un estudiante 
     path('calificacionesEstudiantes', views.getCalifiacionesEstudiantes),
-<<<<<<< Updated upstream
     path('solicitudesDocente', views.getDataSolicitudesDocente),
     path('calificacionespercursodocente', views.getCalificacionesPerCursoDocente),
+    path('asignaturascoordinador', views.getAsignaturastoCoordinador),
     path('coordinacion/evaluaciones', views.evaluacionesCoordinacion),
     path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),
     path('evaluacion/tipos', views.getTiposEvaluaciones),
-=======
     path('coordinador/coordinacion', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar
     path('coordinacion/solicitudes', views.getSolicitudesCurso), # Dada la coordinacion mostrar sus solicitudes
     path('jefe/planes', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
     path('jefe/planes', views.getAsignaturasJefeCarrera), # 
->>>>>>> Stashed changes
 ]

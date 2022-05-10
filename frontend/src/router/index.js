@@ -10,6 +10,7 @@ import CursosEstudiante from "../views/Estudiante/CursosEstudiante.vue";
 import ListadoApelacionesEstudiante from "../views/Estudiante/ListadoApelacionesEstudiante.vue";
 import EstudianteCursoSeleccionado from "../views/Estudiante/EstudianteCursoSeleccionado.vue";
 import DashboardAutoridad from "../views/Autoridad/DashboardAutoridad.vue";
+import AsignaturasCoordinador from "../views/Autoridad/AsignaturasCoordinador.vue";
 import CursosJCSubdirector from "../views/Autoridad/CursosJCSubdirector.vue";
 import CursosVicedecano from "../views/Autoridad/CursosVicedecano.vue";
 import RegCambiosSolicitudesVicedecano from "../views/Autoridad/RegCambiosSolicitudesVicedecano.vue";
@@ -141,6 +142,11 @@ const router = createRouter({
       path: "/autoridad/asignatura",
       name: "cursoSeleccionadoCoordinador",
       component: CoordinadorCursoSeleccionado,
+    },
+    {
+      path: "/autoridad/coordinador/asignaturas",
+      name: "asignaturasCoordinador",
+      component: AsignaturasCoordinador,
     },
   ],
 });

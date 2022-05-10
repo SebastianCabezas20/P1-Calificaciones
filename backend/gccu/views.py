@@ -101,6 +101,15 @@ def getCalificacionesPerCursoDocente(request):
     serializer = CalificacionSerializer(calificaciones, many='true')
     return Response(serializer.data)
 
+@api_view(['GET'])
+def getAsignaturastoCoordinador(request):
+
+    print(Asignatura.objects.filter(id_coordinador = 1).query)
+    coordinador = Asignatura.objects.filter(id_coordinador = 1)
+
+    serializer = AsignaturaSerializer(coordinador, many = 'true')
+    return Response(serializer.data)
+
 ## Obtener informacion para realizar la respuesta a una apelacion
 @api_view(['GET'])
 def getDataSolicitudRespuesta(request):

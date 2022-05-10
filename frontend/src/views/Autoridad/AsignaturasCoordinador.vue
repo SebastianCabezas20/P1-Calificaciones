@@ -11,22 +11,22 @@
     <div class="centralContent">
       <div class="titleSection">
         <h3 class="textTitle">
-          Solicitudes de Apelacion
+          Cursos Coordinador
         </h3>
       </div>
       <div class="tableContent">
         <table class="table">
           <thead>
             <tr>
-              <th>Asignatura</th>
-              <th>Evaluacion</th>
-              <th>Motivo</th>
+              <th>Codigo</th>
+              <th>Curso</th>
+              <th>Componente</th>
               <th>Accion</th>
             </tr>
           </thead>
           <tbody>
-            <tr scope="row" v-for="solicitud in solicitudes" :key="solicitud.id">
-              <SolicitudesDocente :solicitud_revision="solicitud" />
+            <tr scope="row" v-for="asignatura in asignaturas" :key="asignatura.id">
+              <AsignaturasCoordinador :asignatura="asignatura" />
             </tr>
           </tbody>
         </table>
@@ -38,25 +38,25 @@
 <script>
 import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
-import SolicitudesDocente from "../../components/SolicitudesDocente.vue";
+import AsignaturasCoordinador from "../../components/AsignaturasCoordinador.vue";
 import axios from "axios";
 
 export default {
   components: {
     Sidebar,
     Navbar,
-    SolicitudesDocente,
+    AsignaturasCoordinador,
   },
   data() {
     return {
-      solicitudes: [],
+      asignaturas: [],
     };
   },
   mounted() {
     let ins = this;
-    axios.get("http://localhost:8000/solicitudesDocente").then(function (response) {
+    axios.get("http://localhost:8000/asignaturascoordinador").then(function (response) {
       console.log(response.data);
-      ins.solicitudes = response.data;
+      ins.asignaturas = response.data;
     });
   },
 };
