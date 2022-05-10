@@ -11,6 +11,13 @@ class UsuariosSerializers(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+class CoordinadorSerializers(serializers.ModelSerializer):
+    id_usuario = UsuariosSerializers()
+    class Meta:
+        model = Coordinador
+        fields = '__all__'
+
+
 class TipoEvaluacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tipo_Evaluacion
@@ -44,7 +51,7 @@ class PostEvaluacionSerializer(serializers.ModelSerializer):
 
 class EstudianteSerializer(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
-    class Meta:
+    class Meta: 
         model = Estudiante   
         fields = ('id','rut','dig_verificador','id_usuario')  
 
@@ -62,8 +69,10 @@ class CalificacionSerializer(serializers.ModelSerializer):
         model = Calificacion      
         fields = ('nota','fecha_entrega','id_evaluacion','id_estudiante','id_observacion')  
 
+## Usado para ver la solicitudes de una asignatura
 class SolicitudSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
+    id_estudiante = EstudianteSerializer()
     class Meta:
         model = Solicitud_Revision
         fields = '__all__'
@@ -81,6 +90,7 @@ class CoordinacionDocenteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coordinacion_Docente    
         fields = ('id_docente','id_coordinacion')
+
 #Serializer para mostrar datos en respuesta de solicitud
 class SolicitudRespuestaSerializer(serializers.ModelSerializer):
     id_estudiante = EstudianteSerializer()
@@ -104,11 +114,18 @@ class CalificacionEspecificaSerializer(serializers.ModelSerializer):
 
 
 ######################################################################################33
-## Saber las secciones de un coordinador con su asignatura
+## Saber las secciones de un coordinador con su asignatura - 2
 class CoordinacionCoordinadorSerializer(serializers.ModelSerializer):
     id_asignatura = AsignaturaSerializer()
     class Meta:
         model = Coordinacion_Seccion      
+        fields = '__all__'  
+## Saber las secciones de un coordinador con su asignatura - 1
+class DocenteCursoSerializer(serializers.ModelSerializer):
+    id_coordinacion = CoordinacionCoordinadorSerializer()
+    id_docente = DocenteSerializer()
+    class Meta:
+        model = Coordinacion_Docente      
         fields = '__all__'  
 
 
@@ -116,16 +133,17 @@ class CoordinacionCoordinadorSerializer(serializers.ModelSerializer):
 class SolicitudesEvaluacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion  
-        fields = ('id_coordinacion','id_docente')  
+        fields = ('id','id_coordinacion','nombre')  
 # Para obtener las solicitudes respecto a un curso - 1
 class SolicitudesDocenteCursoSerializer(serializers.ModelSerializer):
     id_evaluacion = SolicitudesEvaluacionSerializer()
+    id_estudiante = EstudianteSerializer()
     class Meta:
         model = Solicitud_Revision     
-        fields = ('id_docente','id_evaluacion')  
+        fields ='__all__'  
 ###########################################################################################
 
-# Obtener los planes de estudios pertenecientes a un jefe de carrera - 1
+# Obtener los planes de estudios pertenecientes a un jefe de carrera - 3
 class CarreraSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carrera  
@@ -137,19 +155,20 @@ class PlanEstudioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plan_Estudio
         fields = ('id','id_carrera')  
+        
+# Obtener los planes de estudios pertenecientes a un jefe de carrera - 2
+class AsignaturaV2Serializer(serializers.ModelSerializer):
+    id_coordinador = CoordinadorSerializers()
+    class Meta:
+        model = Asignatura      
+        fields = '__all__'  
 
 # Obtener los planes de estudios pertenecientes a un jefe de carrera - 1
 class PlanesJefeSerializer(serializers.ModelSerializer):
     id_planEstudio = PlanEstudioSerializer()
+    id_asignatura = AsignaturaV2Serializer()
     class Meta:
         model = Asignaturas_PlanEstudio  
         fields = '__all__'  
 
-class CoordinacionSeccionV2Serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Coordinacion_Seccion      
-        fields = ('id','coordinacion','seccion', 'bloques_horario', 'id_asignatura')  
 
-
-
-        

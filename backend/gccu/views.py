@@ -173,7 +173,7 @@ def evaluacionesCoordinacion(request, idEvaluacion = None):
 
     # Falta comprobar que el docente hace clase en cierta coordinacion (eso cuando ya se tenga el id de la vista).
     if request.method == 'GET':
-        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = 2).all()
+        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = 1).all()
         serializer = EvaluacionSerializer(evaluacionCoordinacion, many = "true")
         return Response(serializer.data)
     
@@ -197,20 +197,21 @@ def getTiposEvaluaciones(request):
     serializer = TipoEvaluacionSerializer(tiposEvaluaciones, many="true")
     return Response(serializer.data)
 
-# Saber que coordinacion quiere visualizar, de aqui sacar el id para ver la tabla CursoInscrito_docente o Solicitud revision
+# Saber que coordinacion quiere visualizar, de aqui sacar el id para ver la tabla Solicitud -> CursoInscrito
 @api_view(['GET'])
 def getCoordinacionesCoordinador(request):
+    ### ID del coordinador
+    coordinacionesCoordinador = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__id_coordinador = 1).all()
     
-    coordinacionesCoordinador = Coordinacion_Seccion.objects.filter(id_asignatura__id_coordinador = 1).all()
-    
-    serializer = CoordinacionCoordinadorSerializer(coordinacionesCoordinador, many="true")
+    serializer = DocenteCursoSerializer(coordinacionesCoordinador, many="true")
     return Response(serializer.data)
 
-## LUego de especificar la seccion se recogen las solicitudes de este curso-seccion
+## LUego de especificar la seccion se recogen las solicitudes de este curso-seccion id para ver la tabla Solicitud -> CursoInscrito
 @api_view(['GET'])
 def getSolicitudesCurso(request):
     
-    solicitudesCurso = Solicitud_Revision.objects.filter().all()
+    ### ID de cursoInscrito o Coordinacion Seccion
+    solicitudesCurso = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion = 2).all()
     
     serializer = SolicitudesDocenteCursoSerializer(solicitudesCurso, many="true")
     return Response(serializer.data)
@@ -218,19 +219,19 @@ def getSolicitudesCurso(request):
 ## Asignaturas de un jefe de carrera
 @api_view(['GET'])
 def getAsignaturasJefeCarrera(request):
-    
-    planesEstudio = Asignaturas_PlanEstudio.objects.distinct('id_asignatura').all()
+    ### ID jefe de carrera, se mostraran sus asignaturas
+    planesEstudio = Asignaturas_PlanEstudio.objects.filter(id_planEstudio__id_carrera__id_jefeCarrera = 1).distinct('id_asignatura').all()
     
     serializer = PlanesJefeSerializer(planesEstudio, many="true")
     return Response(serializer.data)
 
 ## Solicitudes de una asignatura (Jefe de carrera)
 @api_view(['GET'])
-def getCoordinacionSolicitudesJefeCarrera(request):
+def getSolicitudesAsignaturaJefeCarrera(request):
+    ## ID asignatura seleccionado jefe de carrera
+    solicitudes = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = 2).all()
     
-    coordinaciones = Coordinacion_Seccion.objects.filter().all()
-    
-    serializer = CoordinacionSeccionV2Serializer(coordinaciones, many="true")
+    serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
 
 

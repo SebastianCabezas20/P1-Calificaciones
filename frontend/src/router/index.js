@@ -22,6 +22,10 @@ import CursosDocente from "../views/Docente/CursosDocente.vue";
 import DocenteCursoSeleccionado from "../views/Docente/DocenteCursoSeleccionado.vue";
 import SubirCalificacionesDocente from "../views/Docente/SubirCalificacionesDocente.vue";
 import ModificacionCalificacionesDocente from "../views/Docente/ModificacionCalificacionesDocente.vue";
+import CoordinadorSecciones from "../views/Autoridad/CoordinadorSecciones.vue";
+import CoordinadorSolicitudesCurso from "../views/Autoridad/CoordinadorSolicitudesCurso.vue";
+import JefeAsignaturasApe from "../views/Autoridad/JefeAsignaturasApe.vue";
+import JefeApelacionesAsig from "../views/Autoridad/JefeApelacionesAsig.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,6 +127,26 @@ const router = createRouter({
       name: "apelacionesAutoAutoridad",
       component: ApelacionesAutoView,
     }, 
+    {
+      path: "/coordinador/seccion",
+      name: "seccionesCoordinador",
+      component: CoordinadorSecciones,
+    }, 
+    { //Solicitudes segun coordinacion-curso de un coordinador
+      path: "/coordinador/seccion/solicitudes",
+      name: "solicitudesSeccionCoordinador",
+      component: CoordinadorSolicitudesCurso,
+    },
+    { //Asignaturas de un jefe de carrera
+      path: "/jefe/asignaturas",
+      name: "asignaturasJefeDeCarrera",
+      component: JefeAsignaturasApe,
+    },
+    { //Apelaciones para un jefe de carrera segun asignatura
+      path: "/jefe/asignaturas/apelaciones",
+      name: "apelacionesAsignaturasJefeDeCarrera",
+      component: JefeApelacionesAsig,
+    },
     {
       path: "/autoridad/asignaturas",
       name: "cursosAutoridad",

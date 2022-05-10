@@ -36,7 +36,7 @@ urlpatterns = [
     path('add/evaluacion', views.evaluacionesCoordinacion),
     path('evaluacion/tipos', views.getTiposEvaluaciones),
     path('coordinador/coordinacion', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar
-    path('coordinacion/solicitudes', views.getSolicitudesCurso), # Dada la coordinacion mostrar sus solicitudes
-    path('jefe/planes', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
-    path('jefe/planes', views.getAsignaturasJefeCarrera), # 
+    path('coordinacion/solicitudes', views.getSolicitudesCurso), # Dada la coordinacion (seccion) mostrar sus solicitudes
+    path('jefe/asignaturas', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
+    path('jefe/asignatura/solicitudes', views.getSolicitudesAsignaturaJefeCarrera), # Apelaciones segun asignatura seleccionada por un jefe de carrera
 ]
