@@ -1,10 +1,10 @@
+from distutils.log import error
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import *
 from .serializers import *
-from django.core import serializers
-import json
+from django.contrib.auth.models import User, Group
 
 #########Creo que no se usa
 @api_view(['GET'])
@@ -252,3 +252,17 @@ def getAllEvaluaciones(request):
     serializer = EvaluacionEspecificaSerializer(evaluacionCoordinacion, many = "true")
     return Response(serializer.data)
 
+@api_view(['GET'])
+def getRolesUsuarios(request):
+    roles = Group.objects.all()
+    serializer = RolesSerializers(roles, many = "true")
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def isRolUser(request):
+
+    if User.objects.filter(username = request.data.get('nombreUsuario'), groups = request.data.get('idRolSeleccionado')).exists():
+        usuarioExiste = User.objects.filter(username = request.data.get('nombreUsuario')).first()
+        serializer = UsuariosSerializers(usuarioExiste)
+        return Response(serializer.data)
+    return Response(error)

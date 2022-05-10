@@ -44,4 +44,6 @@ urlpatterns = [
     path('jefe/planes', views.getAsignaturasJefeCarrera), # 
     path('update/evaluacion/<int:idEvaluacion>', views.updateFechaEvaluacion), 
     path('evaluaciones', views.getAllEvaluaciones),
+    path('usuario/roles', views.getRolesUsuarios),
+    path('authUser', views.isRolUser),
 ]

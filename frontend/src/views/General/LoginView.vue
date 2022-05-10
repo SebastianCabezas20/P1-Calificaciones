@@ -44,11 +44,15 @@
           <div class="flex justify-center px-5 pt-2">
             <div>
               <select
-                class="form-select appearance-none block w-full px-3 py-1.5 text-gray-900 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-azul-usach focus:outline-none"
-                v-model="rol"
+                class="form-select appearance-none block w-full px-3 py-1.5 text-gray-900 border border-solid border-gray-300 rounded-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-azul-usach focus:outline-none"
+                v-model="rolSeleccionado"
+                required
               >
-                <option v-for="opcion in opciones" v-bind:value="opcion.value">
-                  {{ opcion.text }}
+                <option selected disabled>
+                  Seleccione su tipo de usuario
+                </option>
+                <option v-for="rol in roles" v-bind:value="rol.id">
+                  {{ rol.name }}
                 </option>
               </select>
             </div>
@@ -76,23 +80,18 @@
 
 <script>
 import NavbarLogin from "../../components/NavbarLogin.vue";
+import axios from "axios";
 
 export default {
-  name: "login",
+  components: {
+    NavbarLogin,
+  },
   data() {
     return {
       username: "",
       password: "",
-      rol: null,
-      opciones: [
-        { value: null, text: "Seleccione un rol" },
-        { value: "Estudiante", text: "Estudiante" },
-        { value: "Docente", text: "Docente" },
-        { value: "Coordinador", text: "Coordinador" },
-        { value: "Jefe_Carrera", text: "Jefe de Carrera" },
-        { value: "Subdirector_Docente", text: "Subdirector Docente" },
-        { value: "Vicedecano_Docencia", text: "Vicedecano de Docencia" },
-      ],
+      rolSeleccionado: null,
+      roles: [],
       incorrectAuth: false,
     };
   },
@@ -100,20 +99,25 @@ export default {
     login() {
       this.$store
         .dispatch("userLogin", {
-          username: this.username,
+          nombreUsuario: this.username,
           password: this.password,
+          idRolSeleccionado: this.rolSeleccionado
         })
         .then(() => {
-          this.$router.push({ name: "homeEstudiante" });
+          /* this.$router.push({ name: "homeEstudiante" }); */
+          console.log(this.$store.getters.infoUser)
         })
         .catch((err) => {
           this.incorrectAuth = true;
         });
     },
   },
-
-  components: {
-    NavbarLogin,
+  mounted() {
+    let that = this;
+    axios.get("http://localhost:8000/usuario/roles").then(function (response) {
+      console.log("Hola");
+      that.roles = response.data;
+    });
   },
 };
 </script>

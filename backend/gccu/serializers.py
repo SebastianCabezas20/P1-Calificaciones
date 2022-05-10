@@ -4,11 +4,16 @@ from rest_framework import serializers
 from .models import *
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 class UsuariosSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = '__all__'
+
+class RolesSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Group
         fields = '__all__'
 
 class CoordinadorSerializers(serializers.ModelSerializer):
