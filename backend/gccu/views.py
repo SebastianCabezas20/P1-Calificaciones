@@ -234,5 +234,21 @@ def getSolicitudesAsignaturaJefeCarrera(request):
     serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
 
-
+## Modificar fecha de una evaluación
+@api_view(['PUT'])
+def updateFechaEvaluacion(request, idEvaluacion = None):
+    evaluacion = Evaluacion.objects.get(id = idEvaluacion)
+    evaluacion_actualizada = EvaluacionEspecificaSerializer(evaluacion, data = request.data)
+    if evaluacion_actualizada.is_valid():
+        evaluacion_actualizada.save()
+        print(evaluacion_actualizada.data)
+        return Response(evaluacion_actualizada.data)
+    print(evaluacion_actualizada.errors)
+    return Response(evaluacion_actualizada.errors)
+    
+@api_view(['GET'])
+def getAllEvaluaciones(request):
+    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = 1).all()
+    serializer = EvaluacionEspecificaSerializer(evaluacionCoordinacion, many = "true")
+    return Response(serializer.data)
 

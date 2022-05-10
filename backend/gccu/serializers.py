@@ -48,6 +48,7 @@ class PostEvaluacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion
         fields = '__all__'
+        fields = ('id','nombre','ponderacion','estado', 'fechaEvActual', 'id_coordinacion', 'id_tipoEvaluacion') 
 
 class EstudianteSerializer(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
@@ -171,4 +172,14 @@ class PlanesJefeSerializer(serializers.ModelSerializer):
         model = Asignaturas_PlanEstudio  
         fields = '__all__'  
 
+class CoordinacionSeccionV2Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coordinacion_Seccion      
+        fields = ('id','coordinacion','seccion', 'bloques_horario', 'id_asignatura')  
+
+
+class EvaluacionEspecificaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Evaluacion      
+        fields = '__all__'
 

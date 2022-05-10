@@ -20,6 +20,7 @@
               <th>Evaluación</th>
               <th>Tipo</th>
               <th>Fecha de Rendición</th>
+              <th>Modificar Fecha</th>
               <th>Estado</th>
               <th>Ponderación</th>
               <th>Icono de Calificar</th>
@@ -31,6 +32,13 @@
               <td>{{ evaluacion.nombre }}</td>
               <td>{{ evaluacion.id_tipoEvaluacion.nombre }}</td>
               <td>{{ evaluacion.fechaEvActual }}</td>
+              <td>
+                <div class="text-center">
+                  <button @click="showModalFecha = true, modalIndex = index"
+                    class="fa-solid fa-pencil"
+                  ></button>
+                </div>
+              </td>
               <td>{{ evaluacion.estado }}</td>
               <td>{{ evaluacion.ponderacion }}</td>
               <td>
@@ -147,6 +155,58 @@
           </div>
         </div>
       </transition>
+
+      <!-- Modal Modificar Fecha-->
+      <transition name="fase" appear>
+        <div class="modal-overlay" v-if="showModalFecha">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Modificar Fecha Evaluación
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  @click="showModalFecha = false"
+                ></button>
+              </div>
+
+              <div class="modal-body">
+                <form
+                  action="#"
+                  method="PUT"
+                  v-on:submit.prevent="modificarFecha($event, modalIndex)"
+                >
+                  <div class="mb-3">
+                    <label class="form-label">Nueva Fecha de la Evaluación</label>
+                    <input
+                      v-model="fechaEvaluacion"
+                      class="form-control"
+                      placeholder="2022-01-01"
+                      required
+                    />
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      v-on:click="showModalFecha = false"
+                    >
+                      Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+
     </div>
   </div>
 </template>
@@ -165,11 +225,15 @@ export default {
     return {
       evaluacionesCurso: [],
       tiposEvaluaciones: [],
+      evaluacionesFull: [],
       showModal: false,
+      showModalFecha: false,
       nombreEvaluacion: "",
       tipoEvaluacion: "",
       porcentajeEvaluacion: "",
       fechaEvActual: null,
+      fechaEvaluacion: "",
+      modalIndex: "",
     };
   },
 
@@ -185,6 +249,12 @@ export default {
       .get("http://localhost:8000/evaluacion/tipos")
       .then(function (response) {
         that.tiposEvaluaciones = response.data;
+      });
+      
+    axios
+      .get("http://localhost:8000/evaluaciones")
+      .then(function (response) {
+        that.evaluacionesFull = response.data;
       });
   },
 
@@ -225,6 +295,28 @@ export default {
           id_observacion: null,
           id_coordinacion: 2,
         })
+        .then(function (response) {
+          location.reload();
+        });
+    },
+    modificarFecha: function (event, index){
+      console.log(this.evaluacionesFull[index]);
+      let idFechaModificar = this.evaluacionesFull[index].id;
+      let nuevaEvaluacion = {
+          nombre: this.evaluacionesFull[index].nombre,
+          fechaEvActual: this.fechaEvaluacion,
+          fechaEntrega: this.evaluacionesFull[index].fechaEntrega,
+          ponderacion: this.evaluacionesFull[index].ponderacion,
+          estado: this.evaluacionesFull[index].estado,
+          id_docente: this.evaluacionesFull[index].id_docente,
+          id_observacion: this.evaluacionesFull[index].id_observacion,
+          id_tipoEvaluacion: this.evaluacionesFull[index].id_tipoEvaluacion,
+          id_coordinacion: this.evaluacionesFull[index].id_coordinacion,
+          
+      }
+      console.log(nuevaEvaluacion);
+      axios
+        .put(`http://localhost:8000/update/evaluacion/${idFechaModificar}`, nuevaEvaluacion)
         .then(function (response) {
           location.reload();
         });
