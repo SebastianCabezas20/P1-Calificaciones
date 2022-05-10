@@ -32,4 +32,5 @@ urlpatterns = [
     path('calificacionespercursodocente', views.getCalificacionesPerCursoDocente),
     path('coordinacion/evaluaciones', views.evaluacionesCoordinacion),
     path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),
+    path('evaluacion/tipos', views.getTiposEvaluaciones),
 ]

@@ -174,3 +174,9 @@ def evaluacionesCoordinacion(request, idEvaluacion = None):
         evaluacion = Evaluacion.objects.filter(id = idEvaluacion).first()
         evaluacion.delete()
         return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def getTiposEvaluaciones(request):
+    tiposEvaluaciones = Tipo_Evaluacion.objects.all()
+    serializer = TipoEvaluacionSerializer(tiposEvaluaciones, many="true")
+    return Response(serializer.data)
