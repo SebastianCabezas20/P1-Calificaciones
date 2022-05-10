@@ -168,7 +168,7 @@ def getCalifiacionesEstudiantes(request):
     serializer = CalificacionSerializer(calificacionEstudiantes, many="true")
     return Response(serializer.data)
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'DELETE', 'POST'])
 def evaluacionesCoordinacion(request, idEvaluacion = None):
 
     # Falta comprobar que el docente hace clase en cierta coordinacion (eso cuando ya se tenga el id de la vista).
@@ -182,6 +182,14 @@ def evaluacionesCoordinacion(request, idEvaluacion = None):
         evaluacion = Evaluacion.objects.filter(id = idEvaluacion).first()
         evaluacion.delete()
         return Response(status=status.HTTP_200_OK)
+
+    # Funcionando correctamente. Salvo problemas en la vista.
+    if request.method == 'POST':
+        evaluacionAgregada = PostEvaluacionSerializer(data = request.data)
+        if evaluacionAgregada.is_valid():
+            evaluacionAgregada.save()
+            return Response(evaluacionAgregada.data)
+        return Response(evaluacionAgregada.errors)
 
 @api_view(['GET'])
 def getTiposEvaluaciones(request):

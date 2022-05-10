@@ -90,12 +90,34 @@
 
                   <div class="mb-3">
                     <label class="form-label">Tipo de Evaluación</label>
-                    <select class="form-select" v-model="tipoEvaluacion" required>
-                      <option selected disabled> Seleccione un tipo de evaluación </option>
-                      <option v-for="tipo in tiposEvaluaciones" v-bind:value="tipo.id">
+                    <select
+                      class="form-select"
+                      v-model="tipoEvaluacion"
+                      required
+                    >
+                      <option selected disabled>
+                        Seleccione un tipo de evaluación
+                      </option>
+                      <option
+                        v-for="tipo in tiposEvaluaciones"
+                        v-bind:value="tipo.id"
+                      >
                         {{ tipo.nombre }}
                       </option>
                     </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="fechaDeEvaluacion"
+                      >Fecha tentativa de evaluación</label
+                    >
+                    <input
+                      v-model="fechaEvActual"
+                      id="fechaDeEvaluacion"
+                      class="form-control"
+                      type="date"
+                      required
+                    />
                   </div>
 
                   <div class="mb-3">
@@ -115,7 +137,7 @@
                     >
                       Cancelar
                     </button>
-                    <button type="submit" class="btn btn-primary">
+                    <button @click="showModal = false" type="submit" class="btn btn-primary">
                       Guardar Cambios
                     </button>
                   </div>
@@ -147,6 +169,7 @@ export default {
       nombreEvaluacion: "",
       tipoEvaluacion: "",
       porcentajeEvaluacion: "",
+      fechaEvActual: null,
     };
   },
 
@@ -178,11 +201,33 @@ export default {
         });
     },
     crearEvaluacion: function (event) {
-      
       // Funcionando. Ahora falta tirar los datos al back y estamos.
-      console.log(this.nombreEvaluacion);
-      console.log(this.tipoEvaluacion);
-      console.log(this.porcentajeEvaluacion);
+      let fecha = new Date(this.fechaEvActual);
+      let fechaEntrega = new Date();
+
+      // Se suman 14 dias desde la fecha tentativa de realización. Y se pasa a String del tipo YYYY-MM-DD
+      fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
+      fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
+
+      // Se transforma el porcentaje 40% -> 0.4
+      this.porcentajeEvaluacion = this.porcentajeEvaluacion / 100;
+
+      // Id del docente y id de coordinacion se deben capturar (Ahora son solo de prueba).
+      axios
+        .post("http://localhost:8000/add/evaluacion", {
+          nombre: this.nombreEvaluacion,
+          fechaEvActual: this.fechaEvActual,
+          fechaEntrega: fechaEntrega,
+          ponderacion: this.porcentajeEvaluacion,
+          estado: "P",
+          id_tipoEvaluacion: this.tipoEvaluacion,
+          id_docente: 1,
+          id_observacion: null,
+          id_coordinacion: 2,
+        })
+        .then(function (response) {
+          location.reload();
+        });
     },
   },
 };

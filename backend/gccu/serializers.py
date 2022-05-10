@@ -34,7 +34,13 @@ class EvaluacionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Evaluacion   
-        fields = ('id','nombre','ponderacion','estado', 'fechaEvActual', 'id_coordinacion', 'id_tipoEvaluacion')  
+        fields = ('id','nombre','ponderacion','estado', 'fechaEvActual', 'id_coordinacion', 'id_tipoEvaluacion')
+
+# Serializer exclusivo para agregar evaluaciones.
+class PostEvaluacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Evaluacion
+        fields = '__all__'
 
 class EstudianteSerializer(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
