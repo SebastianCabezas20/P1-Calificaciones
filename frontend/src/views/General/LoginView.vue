@@ -48,9 +48,7 @@
                 v-model="rolSeleccionado"
                 required
               >
-                <option selected disabled>
-                  Seleccione su tipo de usuario
-                </option>
+                <option selected disabled>Seleccione su tipo de usuario</option>
                 <option v-for="rol in roles" v-bind:value="rol.id">
                   {{ rol.name }}
                 </option>
@@ -101,11 +99,17 @@ export default {
         .dispatch("userLogin", {
           nombreUsuario: this.username,
           password: this.password,
-          idRolSeleccionado: this.rolSeleccionado
+          idRolSeleccionado: this.rolSeleccionado,
         })
         .then(() => {
-          /* this.$router.push({ name: "homeEstudiante" }); */
-          console.log(this.$store.getters.infoUser)
+          if (this.$store.getters.idRolUsuario == 1)
+            this.$router.push({ name: "homeEstudiante" });
+          else if (
+            this.$store.getters.idRolUsuario == 2 ||
+            this.$store.getters.idRolUsuario == 3
+          )
+            this.$router.push({ name: "homeDocente" });
+          else this.$router.push({ name: "homeAutoridad" });
         })
         .catch((err) => {
           this.incorrectAuth = true;
@@ -115,7 +119,6 @@ export default {
   mounted() {
     let that = this;
     axios.get("http://localhost:8000/usuario/roles").then(function (response) {
-      console.log("Hola");
       that.roles = response.data;
     });
   },

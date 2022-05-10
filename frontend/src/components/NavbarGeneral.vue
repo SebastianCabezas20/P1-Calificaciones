@@ -1,20 +1,25 @@
 <template>
   <div id="navbar">
     <div>
-      <p class="textNavbar">
-        Gestión y Control de Calificaciones USACH
-      </p>
+      <p class="textNavbar">Gestión y Control de Calificaciones USACH</p>
     </div>
     <div>
-      <p class="textNavbar">
-        Nombre del Usuario (Cambiar)
-      </p>
+      <p class="textNavbar">{{ nombreUsuario }}</p>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      nombreUsuario: "",
+    };
+  },
+  mounted() {
+    this.nombreUsuario = this.$store.getters.nameUser;
+  },
+};
 </script>
 
 <style>
@@ -27,7 +32,7 @@ export default {};
   justify-content: space-between;
 }
 
-.textNavbar{
+.textNavbar {
   font-family: "Inter", sans-serif;
   color: #fff;
   font-weight: 600;

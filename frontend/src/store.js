@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 import { getAPI } from "./axios-api";
 
 const store = createStore({
@@ -12,7 +13,10 @@ const store = createStore({
   },
 
   mutations: {
-    updateUser(state, { idUsario, nombreUsuario, nombre, apellido, email, idRol }) {
+    updateUser(
+      state,
+      { idUsario, nombreUsuario, nombre, apellido, email, idRol }
+    ) {
       state.idUsuario = idUsario;
       state.nombreUsuario = nombreUsuario;
       state.nombre = nombre;
@@ -38,20 +42,18 @@ const store = createStore({
                 idRolSeleccionado: usercredential.idRolSeleccionado,
               })
               .then(function (response2) {
-                  console.log(response2.data)
                 context.commit("updateUser", {
                   idUsuario: response2.data.id,
                   nombreUsuario: response2.data.username,
                   nombre: response2.data.first_name,
                   apellido: response2.data.last_name,
                   email: response2.data.email,
-                  idRol: usercredential.idRolSeleccionado
+                  idRol: usercredential.idRolSeleccionado,
                 });
-                localStorage.setItem("accessToken", response.data.access);
                 resolve();
               })
               .catch(function (err) {
-                  reject(err);
+                reject(err);
               });
           })
           .catch((err) => {
@@ -61,15 +63,16 @@ const store = createStore({
     },
   },
   getters: {
-      infoUser(state){
-        // solo prueba de que funciona.  
-        let algo = {
-              a: state.idUsuario,
-                b: state.idRol
-          }
-          return algo;
-      }
-  }
+    nameUser(state) {
+      let nombre = state.nombre + ' ' + state.apellido;
+      return nombre;
+    },
+    idRolUsuario(state){
+        return state.idRol
+    }
+  },
+  // Forma de que no se pierdan los estados al refrescar la pág.
+  plugins: [createPersistedState()],
 });
 
 export default store;
