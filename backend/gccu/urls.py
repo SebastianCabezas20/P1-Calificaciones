@@ -20,6 +20,7 @@ urlpatterns = [
     # URLs para obtener IDs de tipos de Usuarios.
     path('api/docente/<int:idUsuario>', views.getDocente),                              # Funcionando.
     path('api/jefeCarrera/<int:idUsuario>', views.getJefeCarrera),                      # Funcionando.
+    path('api/coordinador/<int:idUsuario>', views.getCoordinador),                      # Funcionando.
 
     # Demás URLs
     path('calificacionesTeoria/<int:codigo>',views.getDataAsignatura),
@@ -36,7 +37,7 @@ urlpatterns = [
     path('calificacion/coordinacion/<int:idCoordinacion>', views.getCalifiacionesEstudiantes),
     path('solicitudesDocente', views.getDataSolicitudesDocente),
     path('getCalificacionesPerAsignaturaEvaluacion/<int:idAsignatura>/<int:idEvaluacion>', views.getCalificacionesPerAsignaturaEvaluacion),
-    path('asignaturascoordinador', views.getAsignaturastoCoordinador),
+    path('asignaturascoordinador/<int:idCoordinador>', views.getAsignaturastoCoordinador),
     path('evaluaciones/<int:idCoordinacion>', views.evaluacionesCoordinacion),          # Funcionando.
     path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando.
     path('add/evaluacion', views.evaluacionesCoordinacion),                             # Funcionando.

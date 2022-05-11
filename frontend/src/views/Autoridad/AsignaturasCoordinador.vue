@@ -50,13 +50,22 @@ export default {
   data() {
     return {
       asignaturas: [],
+      idCoordinador:0,
     };
   },
   mounted() {
-    let ins = this;
-    axios.get("http://localhost:8000/asignaturascoordinador").then(function (response) {
+    // Forma de capturar el id del Jefe de Carrera, dado el id del usuario que inició sesión.
+    const that = this;
+    let identificacionUsuario = this.$store.getters.idUsuario;
+    axios
+      .get(`http://localhost:8000/api/coordinador/${identificacionUsuario}`)
+      .then(function (response) {
+        that.idCoordinador = response.data.id;
+      });
+    let idCoor = this.idCoordinador;
+    axios.get(`http://localhost:8000/asignaturascoordinador/${idCoor}`).then(function (response) {
       console.log(response.data);
-      ins.asignaturas = response.data;
+      that.asignaturas = response.data;
     });
   },
 };

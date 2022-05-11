@@ -79,7 +79,14 @@ class DocenteSerializer(serializers.ModelSerializer):
 class JefeCarreraSerializer(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
     class Meta:
-        model = Docente  
+        model = Jefe_Carrera  
+        fields = ('id', 'rut', 'dig_verificador', 'id_usuario')
+    
+# Serializer que ayuda a obtener el id del coordinador, dado su id de usuario.
+class CoordinadorSerializer(serializers.ModelSerializer):
+    id_usuario = UsuariosSerializers()
+    class Meta:
+        model = Coordinador 
         fields = ('id', 'rut', 'dig_verificador', 'id_usuario')
 
 class CalificacionSerializer(serializers.ModelSerializer):

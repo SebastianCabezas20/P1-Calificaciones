@@ -19,6 +19,13 @@ def getJefeCarrera(request, idUsuario = None):
     serializer = JefeCarreraSerializer(infoJefe)
     return Response(serializer.data)
 
+# Vista que retorna el coordinador, dado su id de usuario.
+@api_view(['GET'])
+def getCoordinador(request, idUsuario = None):
+    infoCoordinador = Coordinador.objects.filter(id_usuario__id = idUsuario).first()
+    serializer = CoordinadorSerializer(infoCoordinador)
+    return Response(serializer.data)
+
 @api_view(['GET'])
 def getDataAsignatura(request, codigo = None):
     
@@ -102,9 +109,10 @@ def getCalificacionesPerAsignaturaEvaluacion(request, idAsignatura, idEvaluacion
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getAsignaturastoCoordinador(request):
+def getAsignaturastoCoordinador(request, idCoordinador = None):
 
-    print(Asignatura.objects.filter(id_coordinador = 1).query)
+    # 1
+    print(Asignatura.objects.filter(id_coordinador = idCoordinador).query)
     coordinador = Asignatura.objects.filter(id_coordinador = 1)
 
     serializer = AsignaturaSerializer(coordinador, many = 'true')

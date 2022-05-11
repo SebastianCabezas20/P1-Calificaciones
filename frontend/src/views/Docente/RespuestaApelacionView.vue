@@ -112,6 +112,7 @@ export default {
       respuestaActual: "",
       notaActual: null,
       EstadoActual:"",
+      idDocente: 0,
 
 
     };
@@ -180,14 +181,21 @@ export default {
     },
   },
   created() {
-    let ins = this;
+    const that = this;
     let idEstudianteURL = this.idEstudiante
     let idEvaluacionURL = this.idEvaluacion
     axios.get(`http://localhost:8000/solicitudRespuesta/${idEstudianteURL}/${idEvaluacionURL}`).then(function (response) {
       console.log(response.data);
-      ins.apelacion = response.data[0];
-      ins.notaJson = response.data[1];
+      that.apelacion = response.data[0];
+      that.notaJson = response.data[1];
     });
+    
+    let identificacionUsuario = this.$store.getters.idUsuario;
+    axios
+      .get(`http://localhost:8000/api/docente/${identificacionUsuario}`)
+      .then(function (response) {
+        that.idDocente = response.data.id;
+      });
 },
 };
 </script>

@@ -63,15 +63,24 @@ export default {
   },
   data(){
       return{
-          asignaturas: []
+          asignaturas: [],
+          idJefeCarrera: 0,
       }
   },
   created() {
-    let ins = this;
-    // ID JEFE DE CARRERA PARA MOSTRAR SUS ASIGNATURAS
-    axios.get("http://localhost:8000/jefe/1/asignaturas").then(function (response) {
-      console.log(response.data);
-      ins.asignaturas = response.data;
+    // Forma de capturar el id del Jefe de Carrera, dado el id del usuario que inició sesión.
+    const that = this;
+    let identificacionUsuario = this.$store.getters.idUsuario;
+    axios
+    .get(`http://localhost:8000/api/jefeCarrera/${identificacionUsuario}`)
+    .then(function (response) {
+      that.idJefeCarrera = response.data.id;
+    });
+    let idJefe = this.idJefeCarrera
+    // ID JEFE DE CARRERA PARA MOSTRAR SUS ASIGNATURAS #1
+    axios.get(`http://localhost:8000/jefe/${idJefe}/asignaturas`).then(function (response) {
+    console.log(response.data);
+    ins.asignaturas = response.data;
     });
   },
   methods:{
