@@ -10,60 +10,75 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSection">
-        <h3 class="textTitle">Docencia: Evaluaciones del curso X</h3>
+        <h3 class="textTitle">Evaluaciones</h3>
       </div>
 
       <div class="tableContent">
         <table class="table">
-          <thead>
+          <thead class="text-center">
             <tr>
               <th>Evaluación</th>
               <th>Tipo</th>
               <th>Fecha de Rendición</th>
               <th>Estado</th>
               <th>Ponderación</th>
-              <th>Modificar Fecha</th>
-              <th>Icono de Calificar</th>
-              <th>Icono de Modificar Calificacion</th>
-              <th>Icono de Eliminar</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="text-center">
             <tr v-for="(evaluacion, index) in evaluacionesCurso" :key="index">
               <td>{{ evaluacion.nombre }}</td>
               <td>{{ evaluacion.id_tipoEvaluacion.nombre }}</td>
               <td>{{ evaluacion.fechaEvActual }}</td>
-              <td>{{ evaluacion.estado }}</td>
+              <td v-if="evaluacion.estado == 'E'">Evaluada</td>
+              <td v-else>Pendiente</td>
               <td>{{ evaluacion.ponderacion }}</td>
               <td>
                 <div class="text-center">
                   <button
-                    @click="(showModalFecha = true), (modalIndex = index)"
-                    class="fa-solid fa-pencil"
-                  ></button>
-                </div>
-              </td>
-              <td>
-                <div class="text-center">
-                  <button
-                    class="fa-solid fa-pencil"
+                    class="fa-solid fa-pencil botonTabla"
                     v-on:click="calificarEvaluacion($event, evaluacion.id)"
+                    :disabled="evaluacion.estado == 'E'"
+                    title="Ingresar calificaciones"
                   ></button>
                 </div>
               </td>
               <td>
                 <div class="text-center">
                   <button
-                    class="fa-solid fa-pencil"
+                    class="fa-solid fa-gear botonTabla"
                     v-on:click="modificarCalificacion($event, evaluacion.id)"
+                    :disabled="evaluacion.estado == 'P'"
+                    title="Modificar calificaciones"
                   ></button>
                 </div>
               </td>
               <td>
                 <div class="text-center">
                   <button
-                    class="fa-solid fa-trash-can"
+                    @click="(showModalFecha = true), (modalIndex = index)"
+                    class="fa-solid fa-calendar botonTabla"
+                    :disabled="
+                      (evaluacion.id_coordinacion.id_asignatura
+                        .isAutogestionada == 'False') || (evaluacion.estado == 'E')
+                    "
+                    title="Modificar fecha de evaluación"
+                  ></button>
+                </div>
+              </td>
+              <td>
+                <div class="text-center">
+                  <button
+                    class="fa-solid fa-trash-can botonTabla"
                     v-on:click="deleteEvaluacion($event, index)"
+                    :disabled="
+                      (evaluacion.id_coordinacion.id_asignatura
+                        .isAutogestionada == 'False') || (evaluacion.estado == 'E')
+                    "
+                    title="Eliminar evaluación"
                   ></button>
                 </div>
               </td>
@@ -357,11 +372,36 @@ export default {
       });
     },
     modificarCalificacion: function (event, idEvaluacion) {
-      this.$router.push({ path: `/docente/curso/${this.idCurso}/evaluacion/${idEvaluacion}`,
+      this.$router.push({
+        path: `/docente/curso/${this.idCurso}/evaluacion/${idEvaluacion}`,
       });
-    }
+    },
   },
 };
 </script>
 
-<style></style>
+<style>
+.botonTabla {
+  background: #004883;
+  border-radius: 999px;
+  box-shadow: #004883 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #ffffff;
+  opacity: 1;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}
+
+.botonTabla:disabled {
+  opacity: 0.5;
+}
+</style>
