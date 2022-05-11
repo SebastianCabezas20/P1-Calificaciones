@@ -166,15 +166,6 @@ export default {
       });
   },
 
-  updated() {
-    let ins = this;
-    let identificacionEvaluacion = this.idEvaluacion;
-    axios
-      .get(`http://localhost:8000/evaluacion/${identificacionEvaluacion}`)
-      .then(function (response) {
-        ins.informacionEvaluacion = response.data;
-      });
-  },
   methods: {
     onChange(event) {
       this.file = event.target.files ? event.target.files[0] : null;
@@ -251,7 +242,9 @@ export default {
           `http://localhost:8000/update/evaluacion/${this.idEvaluacion}`,
           nuevaEvaluacion
         )
-        .then(function (response) {});
+        .then(function (response) {
+          location.reload();
+        });
     },
   },
 };
