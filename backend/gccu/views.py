@@ -94,6 +94,7 @@ def getAsignaturastoCoordinador(request):
 ## ID estudiante - ID evaluacion - 
 @api_view(['GET'])
 def getDataSolicitudRespuesta(request,idEstudiante = None, idEvaluacion = None):
+    ## Prueba idEstudiante 2 IdEval 2
     print(Solicitud_Revision.objects.filter(id_estudiante__id = 2).all().query)
     solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id = idEstudiante, id_evaluacion__id = idEvaluacion).all()
     #Cambiar ids respecto a la solicitud realizada deberian ser las mismas
@@ -107,7 +108,7 @@ def getDataSolicitudRespuesta(request,idEstudiante = None, idEvaluacion = None):
 #####################POSIBLE COMBINACION DE SERIALIZERS getDataSolicitudRespuesta
 ## Actualizacion de Solicitud respuesta id_motivo y id_calificacion para cambiar nota
 @api_view(['GET','PUT'])
-def actualizacionSolicitudRespuesta(request):
+def actualizacionSolicitudRespuesta(request, idSolicitud = None):
 
     if request.method == 'GET':
         solicitud = Solicitud_Revision.objects.all()
@@ -115,8 +116,8 @@ def actualizacionSolicitudRespuesta(request):
         return Response(solicituds.data)
     elif request.method == 'PUT':
         print("---------------------------------------------------------")
-        #### ID de la solicitud 
-        solicitud = Solicitud_Revision.objects.filter(id = 2).first()
+        #### ID de la solicitud  ## Prueba 2
+        solicitud = Solicitud_Revision.objects.filter(id = idSolicitud).first()
         solicitud_actualizada = SolicitudActualizacionSerializer(solicitud, data = request.data)
         if solicitud_actualizada.is_valid():
             solicitud_actualizada.save()
@@ -125,7 +126,7 @@ def actualizacionSolicitudRespuesta(request):
 
 ## ACtualizacion de calificaciones de una solicitud
 @api_view(['GET','PUT'])
-def actualizacionCalificacionEstudiante(request):
+def actualizacionCalificacionEstudiante(request, idCalificacion = None):
 
     if request.method == 'GET':
         calificacion = Calificacion.objects.all()
@@ -133,7 +134,8 @@ def actualizacionCalificacionEstudiante(request):
         return Response(calificacions.data)
     elif request.method == 'PUT':
         print("---------------------------------------------------------")
-        calificacion = Calificacion.objects.filter(id = 5).first()
+        ### ID de calificacion a modificar Prueba 2
+        calificacion = Calificacion.objects.filter(id = idCalificacion).first()
         calificacion_actualizada = CalificacionEspecificaSerializer(calificacion, data = request.data)
         if calificacion_actualizada.is_valid():
             calificacion_actualizada.save()

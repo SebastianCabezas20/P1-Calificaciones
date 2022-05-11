@@ -106,7 +106,7 @@ class SolicitudRespuestaSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
     class Meta:
         model = Solicitud_Revision
-        fields = ('motivo', 'id_evaluacion','id_estudiante')
+        fields = ('id','motivo', 'id_evaluacion','id_estudiante')
 
 #Serializer para actualizar datos en respuesta de solicitud
 class SolicitudActualizacionSerializer(serializers.ModelSerializer):

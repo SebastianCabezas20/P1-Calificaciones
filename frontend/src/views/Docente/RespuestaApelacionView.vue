@@ -92,6 +92,7 @@
 import Sidebar from "../../components/SidebarDocente.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from 'axios';
+import router from "../../router";
 
 export default {
   components: {
@@ -133,8 +134,10 @@ export default {
           id_evaluacion: 2,
 
         } 
-      
-        axios.put('http://localhost:8000/actualizar/solicitud', solicitud).then(function (response){
+        let idSolicitud = this.apelacion[0].id
+        console.log(idSolicitud)
+        /// Actualizar solicitud con motivo, fecha de respuesta,etc
+        axios.put(`http://localhost:8000/actualizar/solicitud/${idSolicitud}`, solicitud).then(function (response){
           console.log(response.data);
         });
 
@@ -147,14 +150,19 @@ export default {
               id_evaluacion: this.notaJson[0].id_evaluacion,
               id_observacion:this.notaJson[0].id_observacion,
             }
-            axios.put('http://localhost:8000/actualizar/calificacion', notaNueva).then(function (response){
+            let idCalificacion = this.notaJson[0].id;
+            console.log(idCalificacion + "nota")
+            axios.put(`http://localhost:8000/actualizar/calificacion/${idCalificacion}`, notaNueva).then(function (response){
             console.log(response.data);
           });
+          router.push(`/docente/solicitudes`)
           }
           else{
             alert("ingrese una nota")
           }
           
+        }else{
+          router.push(`/docente/solicitudes`)
         }
       }
       
