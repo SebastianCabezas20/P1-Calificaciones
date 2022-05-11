@@ -28,7 +28,7 @@
               <td>{{seccion.id_docente.rut}}-{{seccion.id_docente.dig_verificador}}</td>
               <td>{{seccion.id_coordinacion.bloques_horario}}</td>
               <td>
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" @click.prevent="Ingresar(seccion.id_coordinacion.id)">
                   Seleccionar
                 </button>
               </td>
@@ -44,6 +44,7 @@
 import Sidebar from "../../components/SidebarAutoridad.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from 'axios';
+import router from "../../router";
 
 export default {
   components: {
@@ -57,11 +58,18 @@ export default {
   },
   created() {
     let ins = this;
-    axios.get("http://localhost:8000/coordinador/coordinacion").then(function (response) {
+    /// ID DEL COORDINADOR 
+    axios.get("http://localhost:8000/coordinador/coordinacion/1").then(function (response) {
       console.log(response.data);
       ins.secciones = response.data;
     });
-},
+  },
+  methods:{
+    Ingresar(key){
+      console.log(key)
+      router.push(`/coordinador/seccion/solicitudes/${key}`)
+    }
+  }
 };
 </script>
 

@@ -37,6 +37,8 @@ import Sidebar from "../../components/SidebarAutoridad.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from 'axios';
 import ApelacionesCoordinador from "../../components/ApelacionesCoordinador.vue";
+import router from "../../router";
+
 
 export default {
   components: {
@@ -44,6 +46,7 @@ export default {
     Navbar,
     ApelacionesCoordinador
 },
+props:['idCurso'],
   data(){
       return{
           solicitudes: [],
@@ -51,7 +54,8 @@ export default {
   },
   created() {
     let ins = this;
-    axios.get("http://localhost:8000/coordinacion/solicitudes").then(function (response) {
+    let IDcurso = this.idCurso;
+    axios.get(`http://localhost:8000/coordinacion/solicitudes/${IDcurso}`).then(function (response) {
       console.log(response.data);
       ins.solicitudes = response.data;
     });

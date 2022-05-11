@@ -35,13 +35,10 @@ urlpatterns = [
     path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando.
     path('add/evaluacion', views.evaluacionesCoordinacion),                             # Funcionando.
     path('evaluacion/tipos', views.getTiposEvaluaciones),
-    path('coordinador/coordinacion', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar
-    path('coordinacion/solicitudes', views.getSolicitudesCurso), # Dada la coordinacion (seccion) mostrar sus solicitudes
-    path('jefe/asignaturas', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
-    path('jefe/asignatura/solicitudes', views.getSolicitudesAsignaturaJefeCarrera), # Apelaciones segun asignatura seleccionada por un jefe de carrera
-    path('coordinacion/solicitudes', views.getSolicitudesCurso), # Dada la coordinacion mostrar sus solicitudes
-    path('jefe/planes', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
-    path('jefe/planes', views.getAsignaturasJefeCarrera), # 
+    path('coordinador/coordinacion/<int:idCoordinador>', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar segun coordinador
+    path('coordinacion/solicitudes/<int:idCoordinacion>', views.getSolicitudesCurso), # Dada la coordinacion (seccion) mostrar sus solicitudes
+    path('jefe/<int:idJefe>/asignaturas', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
+    path('jefe/asignatura/solicitudes/<int:idAsignatura>', views.getSolicitudesAsignaturaJefeCarrera), # Apelaciones segun asignatura seleccionada por un jefe de carrera
     path('update/evaluacion/<int:idEvaluacion>', views.updateFechaEvaluacion), 
     path('evaluaciones', views.getAllEvaluaciones),
     path('usuario/roles', views.getRolesUsuarios),

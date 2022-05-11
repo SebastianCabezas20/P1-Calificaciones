@@ -134,9 +134,10 @@ const router = createRouter({
       component: CoordinadorSecciones,
     }, 
     { //Solicitudes segun coordinacion-curso de un coordinador
-      path: "/coordinador/seccion/solicitudes",
+      path: "/coordinador/seccion/solicitudes/:idCurso",
       name: "solicitudesSeccionCoordinador",
       component: CoordinadorSolicitudesCurso,
+      props: true
     },
     { //Asignaturas de un jefe de carrera
       path: "/jefe/asignaturas",
@@ -144,9 +145,10 @@ const router = createRouter({
       component: JefeAsignaturasApe,
     },
     { //Apelaciones para un jefe de carrera segun asignatura
-      path: "/jefe/asignaturas/apelaciones",
+      path: "/jefe/asignaturas/apelaciones/:idAsignatura",
       name: "apelacionesAsignaturasJefeDeCarrera",
       component: JefeApelacionesAsig,
+      props: true
     },
     {
       path: "/autoridad/asignaturas",

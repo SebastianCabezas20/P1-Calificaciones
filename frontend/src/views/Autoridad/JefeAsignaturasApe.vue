@@ -38,7 +38,7 @@
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" @click="Ingresar(asignatura.id_asignatura.id)">
                   Seleccionar
                 </button>
               </td>
@@ -54,6 +54,7 @@
 import Sidebar from "../../components/SidebarAutoridad.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from 'axios';
+import router from "../../router";
 
 export default {
   components: {
@@ -67,11 +68,18 @@ export default {
   },
   created() {
     let ins = this;
-    axios.get("http://localhost:8000/jefe/asignaturas").then(function (response) {
+    // ID JEFE DE CARRERA PARA MOSTRAR SUS ASIGNATURAS
+    axios.get("http://localhost:8000/jefe/1/asignaturas").then(function (response) {
       console.log(response.data);
       ins.asignaturas = response.data;
     });
-},
+  },
+  methods:{
+    Ingresar(key){
+      console.log("holas")
+      router.push(`/jefe/asignaturas/apelaciones/${key}`)
+    }
+  }
 };
 </script>
 

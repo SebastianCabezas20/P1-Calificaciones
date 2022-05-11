@@ -47,6 +47,7 @@ export default {
     Navbar,
     ApelacionesAsignaJefe
 },
+props:['idAsignatura'],
   data(){
       return{
           solicitudes: []
@@ -54,11 +55,13 @@ export default {
   },
   created() {
     let ins = this;
-    axios.get("http://localhost:8000/jefe/asignatura/solicitudes").then(function (response) {
+    let IDasignatura  = this.idAsignatura;
+    axios.get(`http://localhost:8000/jefe/asignatura/solicitudes/${IDasignatura}`).then(function (response) {
       console.log(response.data);
       ins.solicitudes = response.data;
     });
-},
+  },
+ 
 };
 </script>
 

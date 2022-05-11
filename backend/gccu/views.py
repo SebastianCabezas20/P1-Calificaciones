@@ -179,37 +179,37 @@ def getTiposEvaluaciones(request):
 
 # Saber que coordinacion quiere visualizar, de aqui sacar el id para ver la tabla Solicitud -> CursoInscrito
 @api_view(['GET'])
-def getCoordinacionesCoordinador(request):
+def getCoordinacionesCoordinador(request, idCoordinador = None):
     ### ID del coordinador
-    coordinacionesCoordinador = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__id_coordinador = 1).all()
+    coordinacionesCoordinador = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__id_coordinador = idCoordinador).all()
     
     serializer = DocenteCursoSerializer(coordinacionesCoordinador, many="true")
     return Response(serializer.data)
 
 ## LUego de especificar la seccion se recogen las solicitudes de este curso-seccion id para ver la tabla Solicitud -> CursoInscrito
 @api_view(['GET'])
-def getSolicitudesCurso(request):
+def getSolicitudesCurso(request, idCoordinacion = None):
     
     ### ID de cursoInscrito o Coordinacion Seccion
-    solicitudesCurso = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion = 2).all()
+    solicitudesCurso = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion = idCoordinacion).all()
     
     serializer = SolicitudesDocenteCursoSerializer(solicitudesCurso, many="true")
     return Response(serializer.data)
 
 ## Asignaturas de un jefe de carrera
 @api_view(['GET'])
-def getAsignaturasJefeCarrera(request):
+def getAsignaturasJefeCarrera(request, idJefe = None):
     ### ID jefe de carrera, se mostraran sus asignaturas
-    planesEstudio = Asignaturas_PlanEstudio.objects.filter(id_planEstudio__id_carrera__id_jefeCarrera = 1).distinct('id_asignatura').all()
+    planesEstudio = Asignaturas_PlanEstudio.objects.filter(id_planEstudio__id_carrera__id_jefeCarrera = idJefe).distinct('id_asignatura').all()
     
     serializer = PlanesJefeSerializer(planesEstudio, many="true")
     return Response(serializer.data)
 
 ## Solicitudes de una asignatura (Jefe de carrera)
 @api_view(['GET'])
-def getSolicitudesAsignaturaJefeCarrera(request):
+def getSolicitudesAsignaturaJefeCarrera(request, idAsignatura = None):
     ## ID asignatura seleccionado jefe de carrera
-    solicitudes = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = 2).all()
+    solicitudes = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).all()
     
     serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
