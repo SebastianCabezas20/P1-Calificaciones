@@ -268,7 +268,7 @@ export default {
       });
 
     // Comentario de Miguel: Para que sirve esto?
-    axios.get("http://localhost:8000/evaluaciones").then(function (response) {
+    axios.get(`http://localhost:8000/allInfoEvaluaciones/${identificacionCurso}`).then(function (response) {
       that.evaluacionesFull = response.data;
     });
   },

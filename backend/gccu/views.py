@@ -148,7 +148,7 @@ def getCalifiacionesEstudiantes(request):
     serializer = CalificacionSerializer(calificacionEstudiantes, many="true")
     return Response(serializer.data)
 
-@api_view(['GET', 'DELETE', 'POST'])
+@api_view(['GET', 'DELETE', 'POST', 'PUT'])
 def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None):
 
     # Funcionando.
@@ -163,13 +163,23 @@ def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None
         evaluacion.delete()
         return Response(status=status.HTTP_200_OK)
 
-    # Funcionando correctamente. Salvo problemas en la vista.
+    # Funcionando correctamente.
     if request.method == 'POST':
         evaluacionAgregada = PostEvaluacionSerializer(data = request.data)
         if evaluacionAgregada.is_valid():
             evaluacionAgregada.save()
             return Response(evaluacionAgregada.data)
         return Response(evaluacionAgregada.errors)
+    
+    # Funcionando correctamente. Modificar fecha de una evaluación.
+    if request.method == 'PUT':
+        evaluacion = Evaluacion.objects.get(id = idEvaluacion)
+        evaluacion_actualizada = EvaluacionEspecificaSerializer(evaluacion, data = request.data)
+        if evaluacion_actualizada.is_valid():
+            evaluacion_actualizada.save()
+            print(evaluacion_actualizada.data)
+            return Response(evaluacion_actualizada.data)
+        return Response(evaluacion_actualizada.errors)
 
 @api_view(['GET'])
 def getTiposEvaluaciones(request):
@@ -213,22 +223,10 @@ def getSolicitudesAsignaturaJefeCarrera(request, idAsignatura = None):
     
     serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
-
-## Modificar fecha de una evaluación
-@api_view(['PUT'])
-def updateFechaEvaluacion(request, idEvaluacion = None):
-    evaluacion = Evaluacion.objects.get(id = idEvaluacion)
-    evaluacion_actualizada = EvaluacionEspecificaSerializer(evaluacion, data = request.data)
-    if evaluacion_actualizada.is_valid():
-        evaluacion_actualizada.save()
-        print(evaluacion_actualizada.data)
-        return Response(evaluacion_actualizada.data)
-    print(evaluacion_actualizada.errors)
-    return Response(evaluacion_actualizada.errors)
     
 @api_view(['GET'])
-def getAllEvaluaciones(request):
-    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = 1).all()
+def getAllEvaluaciones(request, idCoordinacion = None):
+    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all()
     serializer = EvaluacionEspecificaSerializer(evaluacionCoordinacion, many = "true")
     return Response(serializer.data)
 

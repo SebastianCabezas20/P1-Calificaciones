@@ -39,8 +39,8 @@ urlpatterns = [
     path('coordinacion/solicitudes/<int:idCoordinacion>', views.getSolicitudesCurso), # Dada la coordinacion (seccion) mostrar sus solicitudes
     path('jefe/<int:idJefe>/asignaturas', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
     path('jefe/asignatura/solicitudes/<int:idAsignatura>', views.getSolicitudesAsignaturaJefeCarrera), # Apelaciones segun asignatura seleccionada por un jefe de carrera
-    path('update/evaluacion/<int:idEvaluacion>', views.updateFechaEvaluacion), 
-    path('evaluaciones', views.getAllEvaluaciones),
-    path('usuario/roles', views.getRolesUsuarios),
-    path('authUser', views.isRolUser),
+    path('update/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando. 
+    path('allInfoEvaluaciones/<int:idCoordinacion>', views.getAllEvaluaciones),
+    path('usuario/roles', views.getRolesUsuarios),                                      # Funcionando.
+    path('authUser', views.isRolUser),                                                  # Funcionando.
 ]
