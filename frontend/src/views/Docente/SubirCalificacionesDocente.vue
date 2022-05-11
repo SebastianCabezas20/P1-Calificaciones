@@ -196,13 +196,26 @@ export default {
             header: 1,
             range: 1,
           });
-          console.log(data);
+
+          // Carga de datos en la tabla.
+          for (var i = 0; i < that.calificacionesEstudiantes.length; i++) {
+            for (var j = 0; j < data.length; j++) {
+              if (
+                that.calificacionesEstudiantes[i].id_estudiante.rut ==
+                  data[j][0] &&
+                that.calificacionesEstudiantes[i].id_estudiante
+                  .dig_verificador == data[j][1]
+              ) {
+                that.calificacionesEstudiantes[i].nota = data[j][2];
+              }
+            }
+          }
         };
         reader.readAsArrayBuffer(this.file);
       }
     },
-    // Funcionando. Falta ver el tema de las observaciones,
-    // cambiar el estado de la evaluacion y bloquear la calificacion en aquel caso
+    // Funcionando. Falta ver el tema de las observaciones (Sprint 2 o 3),
+    // Falta bloquear la calificacion cuando se califica (Sprint 2 o 3)
     submitCalificaciones() {
       let fechaActual = new Date();
       fechaActual = fechaActual.toISOString().slice(0, 10);
