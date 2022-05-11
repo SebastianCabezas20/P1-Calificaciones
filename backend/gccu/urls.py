@@ -23,6 +23,7 @@ urlpatterns = [
     path('cursosEstudiante', views.getCursosByEstudiante),
     path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.
     path('estudiantes', views.getEstudiante),
+    path('api/docente/<int:idUsuario>', views.getDocente),                              # Funcionando.
     path('solicitudRespuesta', views.getDataSolicitudRespuesta), ## Ver los datos de la respuesta a la apelacion
     path('actualizar/solicitud', views.actualizacionSolicitudRespuesta), # Para poder actualizar respuesta y estado de una solicitud
     path('actualizar/calificacion', views.actualizacionCalificacionEstudiante), # Para poder actualizar calificaion de un estudiante 
@@ -32,7 +33,7 @@ urlpatterns = [
     path('asignaturascoordinador', views.getAsignaturastoCoordinador),
     path('evaluaciones/<int:idCoordinacion>', views.evaluacionesCoordinacion),          # Funcionando.
     path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando.
-    path('add/evaluacion', views.evaluacionesCoordinacion),
+    path('add/evaluacion', views.evaluacionesCoordinacion),                             # Funcionando.
     path('evaluacion/tipos', views.getTiposEvaluaciones),
     path('coordinador/coordinacion', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar
     path('coordinacion/solicitudes', views.getSolicitudesCurso), # Dada la coordinacion (seccion) mostrar sus solicitudes

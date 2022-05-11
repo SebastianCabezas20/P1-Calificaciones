@@ -60,7 +60,6 @@ class PostEvaluacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion
         fields = '__all__'
-        fields = ('id','nombre','ponderacion','estado', 'fechaEvActual', 'id_coordinacion', 'id_tipoEvaluacion') 
 
 class EstudianteSerializer(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
@@ -73,7 +72,7 @@ class DocenteSerializer(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
     class Meta:
         model = Docente  
-        fields = '__all__'
+        fields = ('id', 'rut', 'dig_verificador', 'id_usuario')
 
 class CalificacionSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()

@@ -34,7 +34,8 @@
               <td>{{ evaluacion.fechaEvActual }}</td>
               <td>
                 <div class="text-center">
-                  <button @click="showModalFecha = true, modalIndex = index"
+                  <button
+                    @click="(showModalFecha = true), (modalIndex = index)"
                     class="fa-solid fa-pencil"
                   ></button>
                 </div>
@@ -145,7 +146,11 @@
                     >
                       Cancelar
                     </button>
-                    <button @click="showModal = false" type="submit" class="btn btn-primary">
+                    <button
+                      @click="showModal = false"
+                      type="submit"
+                      class="btn btn-primary"
+                    >
                       Guardar Cambios
                     </button>
                   </div>
@@ -179,7 +184,9 @@
                   v-on:submit.prevent="modificarFecha($event, modalIndex)"
                 >
                   <div class="mb-3">
-                    <label class="form-label">Nueva Fecha de la Evaluación</label>
+                    <label class="form-label"
+                      >Nueva Fecha de la Evaluación</label
+                    >
                     <input
                       v-model="fechaEvaluacion"
                       class="form-control"
@@ -206,7 +213,6 @@
           </div>
         </div>
       </transition>
-
     </div>
   </div>
 </template>
@@ -221,7 +227,7 @@ export default {
     Sidebar,
     Navbar,
   },
-  props: ['idCurso'],
+  props: ["idCurso"],
   data() {
     return {
       evaluacionesCurso: [],
@@ -235,16 +241,24 @@ export default {
       fechaEvActual: null,
       fechaEvaluacion: "",
       modalIndex: "",
+      idDocente: 0,
     };
   },
 
   mounted() {
-    let identificacionCuro = this.idCurso;
+    let identificacionCurso = this.idCurso;
+    let identificacionUsuario = this.$store.getters.idUsuario;
     let that = this;
     axios
-      .get(`http://localhost:8000/evaluaciones/${identificacionCuro}`)
+      .get(`http://localhost:8000/evaluaciones/${identificacionCurso}`)
       .then(function (response) {
         that.evaluacionesCurso = response.data;
+      });
+
+    axios
+      .get(`http://localhost:8000/api/docente/${identificacionUsuario}`)
+      .then(function (response) {
+        that.idDocente = response.data.id;
       });
 
     axios
@@ -252,12 +266,11 @@ export default {
       .then(function (response) {
         that.tiposEvaluaciones = response.data;
       });
-      
-    axios
-      .get("http://localhost:8000/evaluaciones")
-      .then(function (response) {
-        that.evaluacionesFull = response.data;
-      });
+
+    // Comentario de Miguel: Para que sirve esto?
+    axios.get("http://localhost:8000/evaluaciones").then(function (response) {
+      that.evaluacionesFull = response.data;
+    });
   },
 
   methods: {
@@ -284,7 +297,6 @@ export default {
       // Se transforma el porcentaje 40% -> 0.4
       this.porcentajeEvaluacion = this.porcentajeEvaluacion / 100;
 
-      // Id del docente y id de coordinacion se deben capturar (Ahora son solo de prueba).
       axios
         .post("http://localhost:8000/add/evaluacion", {
           nombre: this.nombreEvaluacion,
@@ -293,32 +305,34 @@ export default {
           ponderacion: this.porcentajeEvaluacion,
           estado: "P",
           id_tipoEvaluacion: this.tipoEvaluacion,
-          id_docente: 1,
+          id_docente: this.idDocente,
           id_observacion: null,
-          id_coordinacion: 2,
+          id_coordinacion: this.idCurso,
         })
         .then(function (response) {
           location.reload();
         });
     },
-    modificarFecha: function (event, index){
+    modificarFecha: function (event, index) {
       console.log(this.evaluacionesFull[index]);
       let idFechaModificar = this.evaluacionesFull[index].id;
       let nuevaEvaluacion = {
-          nombre: this.evaluacionesFull[index].nombre,
-          fechaEvActual: this.fechaEvaluacion,
-          fechaEntrega: this.evaluacionesFull[index].fechaEntrega,
-          ponderacion: this.evaluacionesFull[index].ponderacion,
-          estado: this.evaluacionesFull[index].estado,
-          id_docente: this.evaluacionesFull[index].id_docente,
-          id_observacion: this.evaluacionesFull[index].id_observacion,
-          id_tipoEvaluacion: this.evaluacionesFull[index].id_tipoEvaluacion,
-          id_coordinacion: this.evaluacionesFull[index].id_coordinacion,
-          
-      }
+        nombre: this.evaluacionesFull[index].nombre,
+        fechaEvActual: this.fechaEvaluacion,
+        fechaEntrega: this.evaluacionesFull[index].fechaEntrega,
+        ponderacion: this.evaluacionesFull[index].ponderacion,
+        estado: this.evaluacionesFull[index].estado,
+        id_docente: this.evaluacionesFull[index].id_docente,
+        id_observacion: this.evaluacionesFull[index].id_observacion,
+        id_tipoEvaluacion: this.evaluacionesFull[index].id_tipoEvaluacion,
+        id_coordinacion: this.evaluacionesFull[index].id_coordinacion,
+      };
       console.log(nuevaEvaluacion);
       axios
-        .put(`http://localhost:8000/update/evaluacion/${idFechaModificar}`, nuevaEvaluacion)
+        .put(
+          `http://localhost:8000/update/evaluacion/${idFechaModificar}`,
+          nuevaEvaluacion
+        )
         .then(function (response) {
           location.reload();
         });

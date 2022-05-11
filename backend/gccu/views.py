@@ -7,6 +7,12 @@ from .serializers import *
 from django.contrib.auth.models import User, Group
 
 @api_view(['GET'])
+def getDocente(request, idUsuario = None):
+    infoDocente = Docente.objects.filter(id_usuario__id = idUsuario).first()
+    serializer = DocenteSerializer(infoDocente)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def getDataAsignatura(request):
     
     print(Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = '10110').all().query)
@@ -149,7 +155,6 @@ def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None
     if request.method == 'GET':
         evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all()
         serializer = EvaluacionSerializer(evaluacionCoordinacion, many = "true")
-        print('Funca')
         return Response(serializer.data)
     
     # Funcionando correctamente.

@@ -128,7 +128,7 @@ export default {
   },
   methods: {
     getAsignatura: function (event, idCoordinacion) {
-      // Como pasar ese valor a otra vista.
+      // Pasar una variable de una vista a otra.
       this.$router.push({ path: `/docente/curso/${idCoordinacion}` });
     },
   },
