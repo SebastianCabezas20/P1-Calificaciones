@@ -91,8 +91,9 @@ class SolicitudSerializer(serializers.ModelSerializer):
         model = Solicitud_Revision
         fields = '__all__'
 
+# Modificado: Se quito el comentario de id_estudiante.
 class CoordinacionEstudianteSerializer(serializers.ModelSerializer):
-    #id_estudiante = EstudianteSerializer()
+    id_estudiante = EstudianteSerializer()
     id_coordinacion = CoordinacionSeccionSerializer()
     class Meta:
         model = Coordinacion_Estudiante    
@@ -116,7 +117,6 @@ class SolicitudActualizacionSerializer(serializers.ModelSerializer):
 
 # Encontrar la calificacion sin ningun dato adicional
 class CalificacionEspecificaSerializer(serializers.ModelSerializer):
-    #id_evaluacion = EvaluacionSerializer()
     class Meta:
         model = Calificacion      
         fields = '__all__'

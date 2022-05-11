@@ -27,6 +27,7 @@
             <textarea
               class="form-control"
               aria-label="With textarea"
+              v-model="observacion"
             ></textarea>
           </div>
 
@@ -47,14 +48,19 @@
               <tr>
                 <th></th>
                 <th>Nombre</th>
+                <th>Apellido</th>
                 <th>Rut</th>
+                <th>D. Verificador</th>
                 <th>Calificación</th>
               </tr>
             </thead>
-            
+
             <!-- Docente sube una planilla de notas.  -->
-            <tbody v-if="plantillaCargada">
-              <tr>
+            <tbody>
+              <tr
+                v-for="(calificacion, index) in calificacionesEstudiantes"
+                :key="calificacion.id"
+              >
                 <td>
                   <input
                     class="form-check-input"
@@ -64,46 +70,39 @@
                   />
                 </td>
                 <td>
-                  {{
-                    calificacionEstudiante.id_estudiante.id_usuario.first_name
-                  }}
-                  {{
-                    calificacionEstudiante.id_estudiante.id_usuario.last_name
-                  }}
+                  {{ calificacion.id_estudiante.id_usuario.first_name }}
                 </td>
                 <td>
-                  {{ calificacionEstudiante.id_estudiante.rut }}-{{
-                    calificacionEstudiante.id_estudiante.dig_verificador
-                  }}
+                  {{ calificacion.id_estudiante.id_usuario.last_name }}
                 </td>
-                <td>{{ calificacionEstudiante.nota }}</td>
+                <td>
+                  {{ calificacion.id_estudiante.rut }}
+                </td>
+                <td>
+                  {{ calificacion.id_estudiante.dig_verificador }}
+                </td>
+                <td>{{ calificacion.nota }}</td>
 
                 <td>
                   <input
                     class="form-control"
                     type="text"
                     placeholder="Calificación"
+                    required
+                    v-model="calificacionesEstudiantes[index].nota"
                   />
                 </td>
-              </tr>
-            </tbody>
-            
-            <!-- Docente no sube una planilla de notas -->
-            <tbody v-else>
-              <tr
-                v-for="calificacion in calificacionesEstudiantes"
-                :key="calificacion.id"
-              >
-                <CalificacionEstudiante
-                  :calificacionEstudiante="calificacion"
-                />
               </tr>
             </tbody>
           </table>
         </div>
 
         <div class="w-25">
-          <button type="button" class="btn btn-primary">
+          <button
+            v-on:click="submitCalificaciones"
+            type="button"
+            class="btn btn-primary"
+          >
             Subir calificaciones
           </button>
         </div>
@@ -117,25 +116,29 @@ import Sidebar from "../../components/SidebarDocente.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import * as XLSX from "xlsx";
 import axios from "axios";
-import CalificacionEstudiante from "../../components/CalificacionesEstudiante.vue";
 
 export default {
+  props: ["idEvaluacion", "idCurso"],
   components: {
     Sidebar,
     Navbar,
-    CalificacionEstudiante,
   },
   data() {
     return {
       calificacionesEstudiantes: [],
       estudiantesPlanilla: [],
-      plantillaCargada: false,
+      calificaciones: [],
+      observacion: "",
     };
   },
   mounted() {
+    let identificacionEvaluacion = this.idEvaluacion;
+    let identificacionCurso = this.idCurso;
     let ins = this;
     axios
-      .get("http://localhost:8000/calificacionesEstudiantes")
+      .get(
+        `http://localhost:8000/calificacion/coordinacion/${identificacionCurso}`
+      )
       .then(function (response) {
         ins.calificacionesEstudiantes = response.data;
       });
@@ -146,23 +149,46 @@ export default {
 
       if (this.file) {
         const reader = new FileReader();
+        let that = this;
         reader.onload = function (e) {
           /* Analizar el excel */
           const bstr = e.target.result;
-          const wb = XLSX.read(bstr, { type: "binary" });
+          const wb = XLSX.read(bstr, { type: "array" });
 
           /* Obtener primera hoja. */
           const wsname = wb.SheetNames[0];
           const ws = wb.Sheets[wsname];
 
           /* Convertir los datos en un arreglo de arreglos. */
-          this.estudiantesPlanilla = XLSX.utils.sheet_to_json(ws, {
+          const data = XLSX.utils.sheet_to_json(ws, {
             header: 1,
             range: 1,
           });
+          console.log(data);
         };
-        this.plantillaCargada = true;
-        reader.readAsBinaryString(this.file);
+        reader.readAsArrayBuffer(this.file);
+      }
+    },
+    // Funcionando. Falta ver el tema de las observaciones, 
+    // cambiar el estado de la evaluacion y bloquear la calificacion en aquel caso
+    submitCalificaciones() {
+      let fechaActual = new Date();
+      fechaActual = fechaActual.toISOString().slice(0, 10);
+      let nuevaCalificacion;
+
+      for (var i = 0; i < this.calificacionesEstudiantes.length; i++) {
+        nuevaCalificacion = {
+          nombre: this.calificacionesEstudiantes[i].id_estudiante.rut,
+          nota: this.calificacionesEstudiantes[i].nota,
+          fecha_entrega: fechaActual,
+          id_estudiante: this.calificacionesEstudiantes[i].id_estudiante.id,
+          id_evaluacion: this.idEvaluacion,
+          id_observacion: null,
+        };
+        axios
+          .post("http://localhost:8000/add/calificacion", nuevaCalificacion)
+          .then(function (response) {
+          });
       }
     },
   },

@@ -103,9 +103,10 @@ const router = createRouter({
       props: true
     },
     {
-      path: "/docente/add/calificacion",
+      path: "/docente/curso/:idCurso/add/calificacion/:idEvaluacion",
       name: "cursosubircalificaciones",
       component: SubirCalificacionesDocente,
+      props: true
     },
     {
       path: "/docente/modify/calificacion",

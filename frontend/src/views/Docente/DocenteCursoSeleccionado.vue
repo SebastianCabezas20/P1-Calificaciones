@@ -20,9 +20,9 @@
               <th>Evaluación</th>
               <th>Tipo</th>
               <th>Fecha de Rendición</th>
-              <th>Modificar Fecha</th>
               <th>Estado</th>
               <th>Ponderación</th>
+              <th>Modificar Fecha</th>
               <th>Icono de Calificar</th>
               <th>Icono de Eliminar</th>
             </tr>
@@ -32,6 +32,8 @@
               <td>{{ evaluacion.nombre }}</td>
               <td>{{ evaluacion.id_tipoEvaluacion.nombre }}</td>
               <td>{{ evaluacion.fechaEvActual }}</td>
+              <td>{{ evaluacion.estado }}</td>
+              <td>{{ evaluacion.ponderacion }}</td>
               <td>
                 <div class="text-center">
                   <button
@@ -40,11 +42,12 @@
                   ></button>
                 </div>
               </td>
-              <td>{{ evaluacion.estado }}</td>
-              <td>{{ evaluacion.ponderacion }}</td>
               <td>
                 <div class="text-center">
-                  <i class="fa-solid fa-pencil"></i>
+                  <button
+                    class="fa-solid fa-pencil"
+                    v-on:click="calificarEvaluacion($event, evaluacion.id)"
+                  ></button>
                 </div>
               </td>
               <td>
@@ -268,9 +271,11 @@ export default {
       });
 
     // Comentario de Miguel: Para que sirve esto?
-    axios.get(`http://localhost:8000/allInfoEvaluaciones/${identificacionCurso}`).then(function (response) {
-      that.evaluacionesFull = response.data;
-    });
+    axios
+      .get(`http://localhost:8000/allInfoEvaluaciones/${identificacionCurso}`)
+      .then(function (response) {
+        that.evaluacionesFull = response.data;
+      });
   },
 
   methods: {
@@ -337,6 +342,9 @@ export default {
           location.reload();
         });
     },
+    calificarEvaluacion: function (event, idEvaluacion){
+      this.$router.push({ path: `/docente/curso/${this.idCurso}/add/calificacion/${idEvaluacion}` });
+    }
   },
 };
 </script>

@@ -142,15 +142,13 @@ def actualizacionCalificacionEstudiante(request, idCalificacion = None):
             return Response(calificacion_actualizada.data)
         return Response(calificacion_actualizada.errors)
     
-
-# Primera parte para la subida de planilla de calificaciones.
+# Obtiene los estudiantes que estan inscitos en una coordinacion. 
+# Se cargan en la vista de subir calificaciones.
 @api_view(['GET'])
-def getCalifiacionesEstudiantes(request):
-    
-    calificacionEstudiantes = Calificacion.objects.filter(id_evaluacion__id = 4).all()
-    
-    serializer = CalificacionSerializer(calificacionEstudiantes, many="true")
-    return Response(serializer.data)
+def getCalifiacionesEstudiantes(request, idCoordinacion = None):
+    calificacionEstudiantes = Coordinacion_Estudiante.objects.filter(id_coordinacion__id = idCoordinacion).all()
+    serializer = CoordinacionEstudianteSerializer(calificacionEstudiantes, many="true")
+    return Response(serializer.data)    
 
 @api_view(['GET', 'DELETE', 'POST', 'PUT'])
 def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None):
@@ -248,3 +246,11 @@ def isRolUser(request):
         serializer = UsuariosSerializers(usuarioExiste)
         return Response(serializer.data)
     return Response(error)
+
+@api_view(['POST'])
+def calificacionesEstudiantes(request):
+    calificacion = CalificacionEspecificaSerializer(data = request.data)
+    if calificacion.is_valid():
+        calificacion.save()
+        return Response(calificacion.data)
+    return Response(calificacion.errors)

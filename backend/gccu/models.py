@@ -202,7 +202,7 @@ class Solicitud_Revision(models.Model):
 
 class Calificacion(models.Model):
     nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = True, blank = True)
-    fecha_entrega = models.DateTimeField(null = True, blank = True)
+    fecha_entrega = models.DateField(null = True, blank = True)
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
     id_observacion = models.ForeignKey(Observacion, null = True, blank = True, on_delete = models.CASCADE)
