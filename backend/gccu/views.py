@@ -91,12 +91,13 @@ def getAsignaturastoCoordinador(request):
     return Response(serializer.data)
 
 ## Obtener informacion para realizar la respuesta a una apelacion
+## ID estudiante - ID evaluacion - 
 @api_view(['GET'])
-def getDataSolicitudRespuesta(request):
+def getDataSolicitudRespuesta(request,idEstudiante = None, idEvaluacion = None):
     print(Solicitud_Revision.objects.filter(id_estudiante__id = 2).all().query)
-    solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id = 2, id_evaluacion__id = 2).all()
+    solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id = idEstudiante, id_evaluacion__id = idEvaluacion).all()
     #Cambiar ids respecto a la solicitud realizada deberian ser las mismas
-    nota = Calificacion.objects.filter(id_estudiante = 2, id_evaluacion = 1).all()
+    nota = Calificacion.objects.filter(id_estudiante = idEstudiante, id_evaluacion = idEvaluacion).all()
     #idEvaluacion = Solicitud_Revision.objects.filter(id_estudiante__id = 2).values('id_evaluacion').first().get('id_evaluacion')
     #print(idEvaluacion)
     serializer = SolicitudRespuestaSerializer(solicitudes, many = "true")
@@ -114,6 +115,7 @@ def actualizacionSolicitudRespuesta(request):
         return Response(solicituds.data)
     elif request.method == 'PUT':
         print("---------------------------------------------------------")
+        #### ID de la solicitud 
         solicitud = Solicitud_Revision.objects.filter(id = 2).first()
         solicitud_actualizada = SolicitudActualizacionSerializer(solicitud, data = request.data)
         if solicitud_actualizada.is_valid():

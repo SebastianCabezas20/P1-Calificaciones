@@ -24,7 +24,7 @@ urlpatterns = [
     path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.
     path('estudiantes', views.getEstudiante),
     path('api/docente/<int:idUsuario>', views.getDocente),                              # Funcionando.
-    path('solicitudRespuesta', views.getDataSolicitudRespuesta), ## Ver los datos de la respuesta a la apelacion
+    path('solicitudRespuesta/<int:idEstudiante>/<int:idEvaluacion>', views.getDataSolicitudRespuesta), ## Ver los datos de la respuesta a la apelacion
     path('actualizar/solicitud', views.actualizacionSolicitudRespuesta), # Para poder actualizar respuesta y estado de una solicitud
     path('actualizar/calificacion', views.actualizacionCalificacionEstudiante), # Para poder actualizar calificaion de un estudiante 
     path('calificacionesEstudiantes', views.getCalifiacionesEstudiantes),

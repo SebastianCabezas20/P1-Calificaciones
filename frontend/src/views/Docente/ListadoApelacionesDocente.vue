@@ -26,7 +26,8 @@
           </thead>
           <tbody>
             <tr scope="row" v-for="solicitud in solicitudes" :key="solicitud.id">
-              <SolicitudesDocente :solicitud_revision="solicitud" />
+              <SolicitudesDocente :solicitud_revision="solicitud"
+               @EventIdEvaluacion="(idEstudiante,idEvaluacion) => ingresar(idEstudiante,idEvaluacion)" />
             </tr>
           </tbody>
         </table>
@@ -40,6 +41,7 @@ import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import SolicitudesDocente from "../../components/SolicitudesDocente.vue";
 import axios from "axios";
+import router from '../../router';
 
 export default {
   components: {
@@ -59,6 +61,15 @@ export default {
       ins.solicitudes = response.data;
     });
   },
+  methods:{/// Para conectar se necesita idEstudiante y idEvaluacion de esa apelacion
+    ingresar(idEst,idEval){
+      console.log(idEst)
+      console.log(idEval)
+      router.push(`/docente/apelacion/answer/${idEst}/${idEval}`)
+    }
+
+    
+  }
 };
 </script>
 

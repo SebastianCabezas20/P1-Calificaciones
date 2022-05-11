@@ -98,6 +98,7 @@ export default {
     Sidebar,
     Navbar,
   },
+  props:['idEstudiante','idEvaluacion'],
   data(){
     return{
       apelacion:[],
@@ -161,7 +162,9 @@ export default {
   },
   created() {
     let ins = this;
-    axios.get("http://localhost:8000/solicitudRespuesta").then(function (response) {
+    let idEstudianteURL = this.idEstudiante
+    let idEvaluacionURL = this.idEvaluacion
+    axios.get(`http://localhost:8000/solicitudRespuesta/${idEstudianteURL}/${idEvaluacionURL}`).then(function (response) {
       console.log(response.data);
       ins.apelacion = response.data[0];
       ins.notaJson = response.data[1];

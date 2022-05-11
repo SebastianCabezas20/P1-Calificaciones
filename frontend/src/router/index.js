@@ -96,10 +96,11 @@ const router = createRouter({
       component: DocenteCursoSeleccionado,
       props: true
     },
-    {
-      path: "/docente/apelacion/answer",
+    { // Formulario para contestar solicitudes
+      path: "/docente/apelacion/answer/:idEstudiante/:idEvaluacion",
       name: "responderApelacionDocente",
       component: RespuestaApelacionView,
+      props: true
     },
     {
       path: "/docente/add/calificacion",
@@ -111,7 +112,7 @@ const router = createRouter({
       name: "cursomodificarcalificaciones",
       component: ModificacionCalificacionesDocente,
     },
-    {
+    { /// Solicitudes de un docente
       path: "/docente/solicitudes",
       name: "Apelacionesdocente",
       component: ListadoApelacionesDocente,

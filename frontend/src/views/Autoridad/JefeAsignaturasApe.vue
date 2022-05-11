@@ -76,7 +76,6 @@ export default {
   },
   methods:{
     Ingresar(key){
-      console.log("holas")
       router.push(`/jefe/asignaturas/apelaciones/${key}`)
     }
   }
