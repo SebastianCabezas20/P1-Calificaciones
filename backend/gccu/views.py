@@ -92,8 +92,8 @@ def getEstudiante(request):
 @api_view(['GET'])
 def getDataSolicitudesDocente(request):
 
-    print(Solicitud_Revision.objects.filter(id_docente__rut = 20900900).query)
-    solicitudes = Solicitud_Revision.objects.filter(id_docente__rut = 20900900)
+    print(Solicitud_Revision.objects.all())
+    solicitudes = Solicitud_Revision.objects.all()
 
     serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
@@ -291,3 +291,12 @@ def crudOneEvaluacion(request, idEvaluacion = None):
         test = Evaluacion.objects.filter(id = idEvaluacion).first()
         serializer = PostEvaluacionSerializer(test)
         return Response(serializer.data)
+
+@api_view(['GET'])
+def getSolicitudesByIdDocente(request, idDocente):
+
+    print(Solicitud_Revision.objects.filter(id_docente__id = idDocente).query)
+    solicitudes = Solicitud_Revision.objects.filter(id_docente__id = idDocente)
+
+    serializer = SolicitudSerializer(solicitudes, many="true")
+    return Response(serializer.data)

@@ -51,5 +51,6 @@ urlpatterns = [
     path('update/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando. 
     path('allInfoEvaluaciones/<int:idCoordinacion>', views.getAllEvaluaciones),
     path('usuario/roles', views.getRolesUsuarios),                                      # Funcionando.
-    path('authUser', views.isRolUser),                                                  # Funcionando.
+    path('authUser', views.isRolUser),                                               # Funcionando.
+    path('solicitudesDocente/<int:idDocente>', views.getSolicitudesByIdDocente),
 ]

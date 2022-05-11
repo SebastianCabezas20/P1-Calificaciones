@@ -25,10 +25,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr scope="row" v-for="solicitud in solicitudes" :key="solicitud.id">
-              <SolicitudesDocente :solicitud_revision="solicitud"
-               @EventIdEvaluacion="(idEstudiante,idEvaluacion) => ingresar(idEstudiante,idEvaluacion)" />
-            </tr>
+            <template v-for="solicitud in solicitudes" :key="solicitud.id">
+              <tr scope="row" v-if="solicitud.id_docente.id === idDocente">
+                <SolicitudesDocente :solicitud_revision="solicitud"
+                @EventIdEvaluacion="(idEstudiante,idEvaluacion) => ingresar(idEstudiante,idEvaluacion)" />
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>
@@ -52,13 +54,23 @@ export default {
   data() {
     return {
       solicitudes: [],
+      idDocente: 0,
     };
   },
   mounted() {
+    let identificacionUsuario = this.$store.getters.idUsuario;
     let ins = this;
-    axios.get("http://localhost:8000/solicitudesDocente").then(function (response) {
-      console.log(response.data);
-      ins.solicitudes = response.data;
+    axios
+      .get(`http://localhost:8000/api/docente/${identificacionUsuario}`)
+      .then(function (response) {
+        ins.idDocente = response.data.id;
+        console.log(ins.idDocente);
+      });
+    axios
+      .get(`http://localhost:8000/solicitudesDocente`)
+      .then(function (response) {
+        console.log(response.data);
+        ins.solicitudes = response.data;
     });
   },
   methods:{/// Para conectar se necesita idEstudiante y idEvaluacion de esa apelacion
