@@ -51,11 +51,30 @@
 <script>
 import Sidebar from "../../components/SidebarAutoridad.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
+import axios from "axios";
 
 export default {
   components: {
     Sidebar,
     Navbar,
+  },
+
+  data() {
+    return {
+      // Aqui se almacena el id del jefe de carrera.
+      idJefeCarrera: 0,
+    };
+  },
+
+  mounted() {
+    // Forma de capturar el id del Jefe de Carrera, dado el id del usuario que inició sesión.
+    const that = this;
+    let identificacionUsuario = this.$store.getters.idUsuario;
+    axios
+      .get(`http://localhost:8000/api/jefeCarrera/${identificacionUsuario}`)
+      .then(function (response) {
+        that.idJefeCarrera = response.data.id;
+      });
   },
 };
 </script>

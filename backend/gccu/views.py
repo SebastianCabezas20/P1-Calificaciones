@@ -12,6 +12,13 @@ def getDocente(request, idUsuario = None):
     serializer = DocenteSerializer(infoDocente)
     return Response(serializer.data)
 
+# Vista que retorna el docente, dado su id de usuario.
+@api_view(['GET'])
+def getJefeCarrera(request, idUsuario = None):
+    infoJefe = Jefe_Carrera.objects.filter(id_usuario__id = idUsuario).first()
+    serializer = JefeCarreraSerializer(infoJefe)
+    return Response(serializer.data)
+
 @api_view(['GET'])
 def getDataAsignatura(request, codigo = None):
     

@@ -75,6 +75,13 @@ class DocenteSerializer(serializers.ModelSerializer):
         model = Docente  
         fields = ('id', 'rut', 'dig_verificador', 'id_usuario')
 
+# Serializer que ayuda a obtener el id del jefe de carrera, dado su id de usuario.
+class JefeCarreraSerializer(serializers.ModelSerializer):
+    id_usuario = UsuariosSerializers()
+    class Meta:
+        model = Docente  
+        fields = ('id', 'rut', 'dig_verificador', 'id_usuario')
+
 class CalificacionSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
     id_estudiante = EstudianteSerializer()

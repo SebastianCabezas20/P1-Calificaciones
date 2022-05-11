@@ -17,6 +17,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # URLs para obtener IDs de tipos de Usuarios.
+    path('api/docente/<int:idUsuario>', views.getDocente),                              # Funcionando.
+    path('api/jefeCarrera/<int:idUsuario>', views.getJefeCarrera),                      # Funcionando.
+
+    # Demás URLs
     path('calificacionesTeoria/<int:codigo>',views.getDataAsignatura),
     path('calificacionesLaboratorio/<int:codigo>',views.getDataAsignaturaLab),
     path('InformacionTeoria/<int:codigo>',views.getInformacionCursoTeoria),
@@ -25,7 +30,6 @@ urlpatterns = [
     path('cursosEstudiante', views.getCursosByEstudiante),
     path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.
     path('estudiantes', views.getEstudiante),
-    path('api/docente/<int:idUsuario>', views.getDocente),                              # Funcionando.
     path('solicitudRespuesta/<int:idEstudiante>/<int:idEvaluacion>', views.getDataSolicitudRespuesta), ## Ver los datos de la respuesta a la apelacion
     path('actualizar/solicitud/<int:idSolicitud>', views.actualizacionSolicitudRespuesta), # Para poder actualizar respuesta y estado de una solicitud
     path('actualizar/calificacion/<int:idCalificacion>', views.actualizacionCalificacionEstudiante), # Para poder actualizar calificaion de un estudiante 

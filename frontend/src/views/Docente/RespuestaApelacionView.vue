@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSection">
-        <h4 class="textTitle">Responder Apelacion</h4>
+        <h4 class="textTitle">Responder Apelación</h4>
       </div>
 
       <div class="formApelacion">
