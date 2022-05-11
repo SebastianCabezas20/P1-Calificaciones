@@ -28,7 +28,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr scope="row" v-for="calificacion in calificaciones" :key="calificacion.id">
+            <tr
+              scope="row"
+              v-for="calificacion in calificaciones"
+              :key="calificacion.id"
+            >
               <CalificacionModify :calificacion="calificacion" />
             </tr>
           </tbody>
@@ -50,6 +54,8 @@ export default {
     Navbar,
     CalificacionModify,
   },
+  // Aqui estan las variables capturadas del url.
+  props: ["idCurso", "idEvaluacion"],
   data() {
     return {
       calificaciones: [],
@@ -57,10 +63,13 @@ export default {
   },
   mounted() {
     let ins = this;
-    axios.get("http://localhost:8000/getCalificacionesPerAsignaturaEvaluacion").then(function (response) {
-      console.log(response.data);
-      ins.calificaciones = response.data;
-    });
+    axios
+      .get("http://localhost:8000/getCalificacionesPerAsignaturaEvaluacion")
+      .then(function (response) {
+        console.log(response.data);
+        ins.calificaciones = response.data;
+        
+      });
   },
 };
 </script>

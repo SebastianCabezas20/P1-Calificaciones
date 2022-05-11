@@ -24,6 +24,7 @@
               <th>Ponderación</th>
               <th>Modificar Fecha</th>
               <th>Icono de Calificar</th>
+              <th>Icono de Modificar Calificacion</th>
               <th>Icono de Eliminar</th>
             </tr>
           </thead>
@@ -47,6 +48,14 @@
                   <button
                     class="fa-solid fa-pencil"
                     v-on:click="calificarEvaluacion($event, evaluacion.id)"
+                  ></button>
+                </div>
+              </td>
+              <td>
+                <div class="text-center">
+                  <button
+                    class="fa-solid fa-pencil"
+                    v-on:click="modificarCalificacion($event, evaluacion.id)"
                   ></button>
                 </div>
               </td>
@@ -342,8 +351,14 @@ export default {
           location.reload();
         });
     },
-    calificarEvaluacion: function (event, idEvaluacion){
-      this.$router.push({ path: `/docente/curso/${this.idCurso}/add/calificacion/${idEvaluacion}` });
+    calificarEvaluacion: function (event, idEvaluacion) {
+      this.$router.push({
+        path: `/docente/curso/${this.idCurso}/add/calificacion/${idEvaluacion}`,
+      });
+    },
+    modificarCalificacion: function (event, idEvaluacion) {
+      this.$router.push({ path: `/docente/curso/${this.idCurso}/evaluacion/${idEvaluacion}`,
+      });
     }
   },
 };

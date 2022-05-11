@@ -30,6 +30,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-left: 260px;
 }
 
 .textNavbar {
@@ -37,5 +38,6 @@ export default {
   color: #fff;
   font-weight: 600;
   font-size: 22px;
+  padding-top: 15px;
 }
 </style>

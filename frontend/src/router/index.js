@@ -111,7 +111,7 @@ const router = createRouter({
     },
     {
       path: "/docente/curso/:idCurso/evaluacion/:idEvaluacion",
-      name: "cursoSeleccionadoDocente",
+      name: "cursoSeleccionadoDocente2",
       component: ModificacionCalificacionesDocente,
       props: true
     },
