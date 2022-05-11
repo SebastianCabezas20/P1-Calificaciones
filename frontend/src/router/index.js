@@ -110,9 +110,10 @@ const router = createRouter({
       props: true
     },
     {
-      path: "/docente/modify/calificacion",
-      name: "cursomodificarcalificaciones",
+      path: "/docente/curso/:idCurso/evaluacion/:idEvaluacion",
+      name: "cursoSeleccionadoDocente",
       component: ModificacionCalificacionesDocente,
+      props: true
     },
     { /// Solicitudes de un docente
       path: "/docente/solicitudes",

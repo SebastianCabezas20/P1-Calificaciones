@@ -10,6 +10,7 @@
 
         <div class="input-group mb-3">
   <input type="text" class="form-control" placeholder="Nueva Nota" aria-label="Nueva Nota" aria-describedby="button-addon2">
+  <input type="text" class="form-control" placeholder="ObsOpcional" aria-label="ObsOpcional" aria-describedby="button-addon2">
   <button class="btn btn-outline-secondary" type="button" id="button-addon2">Calificar</button>
 </div>
 </template>

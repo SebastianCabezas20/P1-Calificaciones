@@ -92,11 +92,11 @@ def getDataSolicitudesDocente(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getCalificacionesPerCursoDocente(request):
+def getCalificacionesPerAsignaturaEvaluacion(request, idAsignatura, idEvaluacion):
 
-    print(Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = "10110", id_evaluacion__id_coordinacion__id_asignatura__componente = "T").all().query)
+    print(Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).all().query)
     
-    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = "10110", id_evaluacion__id_coordinacion__id_asignatura__componente = "T").all()
+    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).all()
 
     serializer = CalificacionSerializer(calificaciones, many='true')
     return Response(serializer.data)

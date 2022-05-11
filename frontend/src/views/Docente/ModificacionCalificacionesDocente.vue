@@ -24,6 +24,7 @@
               <th>Nota Actual</th>
               <th>Fecha</th>
               <th>Nueva Calificación</th>
+              <th>Observacion</th>
             </tr>
           </thead>
           <tbody>
@@ -56,7 +57,7 @@ export default {
   },
   mounted() {
     let ins = this;
-    axios.get("http://localhost:8000/calificacionespercursodocente").then(function (response) {
+    axios.get("http://localhost:8000/getCalificacionesPerAsignaturaEvaluacion").then(function (response) {
       console.log(response.data);
       ins.calificaciones = response.data;
     });

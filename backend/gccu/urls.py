@@ -35,7 +35,7 @@ urlpatterns = [
     path('actualizar/calificacion/<int:idCalificacion>', views.actualizacionCalificacionEstudiante), # Para poder actualizar calificaion de un estudiante 
     path('calificacion/coordinacion/<int:idCoordinacion>', views.getCalifiacionesEstudiantes),
     path('solicitudesDocente', views.getDataSolicitudesDocente),
-    path('calificacionespercursodocente', views.getCalificacionesPerCursoDocente),
+    path('getCalificacionesPerAsignaturaEvaluacion/<int:idAsignatura>/<int:idEvaluacion>', views.getCalificacionesPerAsignaturaEvaluacion),
     path('asignaturascoordinador', views.getAsignaturastoCoordinador),
     path('evaluaciones/<int:idCoordinacion>', views.evaluacionesCoordinacion),          # Funcionando.
     path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando.
