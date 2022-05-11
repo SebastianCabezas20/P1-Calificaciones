@@ -20,7 +20,8 @@ urlpatterns = [
     # URLs para obtener IDs de tipos de Usuarios.
     path('api/docente/<int:idUsuario>', views.getDocente),                              # Funcionando.
     path('api/jefeCarrera/<int:idUsuario>', views.getJefeCarrera),                      # Funcionando.
-    path('api/coordinador/<int:idUsuario>', views.getCoordinador),                      # Funcionando.
+    path('api/coordinador/<int:idUsuario>', views.getCoordinador),
+    path('api/estudiante/<int:idUsuario>', views.getIdEstudiante),                      # Funcionando.
 
     # Demás URLs
     path('calificacionesTeoria/<int:codigo>',views.getDataAsignatura),
@@ -30,7 +31,7 @@ urlpatterns = [
     path('solicitudes/<int:idUsuario>', views.getDataSolicitud),                        # Funcionando.
     path('cursosEstudiante', views.getCursosByEstudiante),
     path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.
-    path('estudiantes', views.getEstudiante),
+    path('estudiantes', views.getEstudiante), ### SIRVE?
     path('solicitudRespuesta/<int:idEstudiante>/<int:idEvaluacion>', views.getDataSolicitudRespuesta), ## Ver los datos de la respuesta a la apelacion
     path('actualizar/solicitud/<int:idSolicitud>', views.actualizacionSolicitudRespuesta), # Para poder actualizar respuesta y estado de una solicitud
     path('actualizar/calificacion/<int:idCalificacion>', views.actualizacionCalificacionEstudiante), # Para poder actualizar calificaion de un estudiante 
@@ -52,5 +53,6 @@ urlpatterns = [
     path('allInfoEvaluaciones/<int:idCoordinacion>', views.getAllEvaluaciones),
     path('usuario/roles', views.getRolesUsuarios),                                      # Funcionando.
     path('authUser', views.isRolUser),                                               # Funcionando.
-    path('solicitudesDocente/<int:idDocente>', views.getSolicitudesByIdDocente),
+    path('solicitudesDocente/<int:idDocente>', views.getSolicitudesByIdDocente),                                     # Funcionando.
+    path('informacion/solicitud/estudiante/<int:idCalificacion>', views.getDataSolicitudApelacion),                
 ]

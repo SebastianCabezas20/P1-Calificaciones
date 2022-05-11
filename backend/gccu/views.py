@@ -26,6 +26,13 @@ def getCoordinador(request, idUsuario = None):
     serializer = CoordinadorSerializer(infoCoordinador)
     return Response(serializer.data)
 
+# Vista que retorna el estudiante, dado su id de usuario.
+@api_view(['GET'])
+def getIdEstudiante(request, idUsuario = None):
+    infoCoordinador = Estudiante.objects.filter(id_usuario__id = idUsuario).first()
+    serializer = EstudianteSerializer(infoCoordinador)
+    return Response(serializer.data)
+
 @api_view(['GET'])
 def getDataAsignatura(request, codigo = None):
     
@@ -56,6 +63,14 @@ def getInformacionCursoTeoria(request, codigo = None):
     ## codigo 10110 
     informacion = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "T" ).all()
     serializer = DocenteCursoSerializer(informacion, many="true")
+    return Response(serializer.data)
+
+## Informacion para la apelacion de un estudiante
+@api_view(['GET'])
+def getDataSolicitudApelacion(request, idCalificacion = None):
+    
+    calificaciones = Calificacion.objects.filter(id = idCalificacion).all()
+    serializer = CalificacionSerializer(calificaciones, many="true")
     return Response(serializer.data)
 
 # Solicitudes de revisión realizadas por un estudiante.

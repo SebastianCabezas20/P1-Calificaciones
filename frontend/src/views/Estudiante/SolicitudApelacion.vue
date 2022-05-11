@@ -14,10 +14,10 @@
       </div>
 
       <div class="formApelacion">
-        <h5 class="textoFormulario">Titulo de la Evaluación</h5>
-        <h5 class="textoFormulario">Nombre de la asignatura</h5>
-        <h5 class="textoFormulario">Nota</h5>
-        <h5 class="textoFormulario">Profesor</h5>
+        <h5 class="textoFormulario">Nombre Evaluacion: {{dataSolicitud[0].id_evaluacion.nombre}}</h5>
+        <h5 class="textoFormulario">Nombre Asignatura: {{dataSolicitud[0].id_evaluacion.id_coordinacion.id_asignatura.nombre}}</h5>
+        <h5 class="textoFormulario">Nota:  {{dataSolicitud[0].nota}}</h5>
+        
 
         <div id="divMotivo">
           <h5 class="textoFormulario">Motivo de la solicitud</h5>
@@ -38,6 +38,8 @@ import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import InformacionCurso from "../../components/InformacionCurso.vue";
 import CalificacionInfo from "../../components/Calificacion.vue";
+import axios from 'axios';
+
 
 export default {
   components: {
@@ -46,6 +48,27 @@ export default {
     InformacionCurso,
     CalificacionInfo,
   },
+  data(){
+    return{
+      dataSolicitud:[],
+      idEstudiante:0,
+    }
+  },
+  props:['idCalificacion'],
+  created(){
+    const that = this 
+    let identificacionUsuario = this.$store.getters.idUsuario;
+    axios
+      .get(`http://localhost:8000/api/estudiante/${identificacionUsuario}`)
+      .then(function (response) {
+        that.idEstudiante = response.data.id;
+      });
+    let IDcalificacion = this.idCalificacion 
+    axios.get(`http://localhost:8000/informacion/solicitud/estudiante/${IDcalificacion}`).then(function (response) {
+
+      that.dataSolicitud = response.data;
+    });
+  }
 };
 </script>
 

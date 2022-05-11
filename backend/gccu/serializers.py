@@ -61,7 +61,7 @@ class PostEvaluacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion
         fields = '__all__'
-
+#Serializer que ayuda a obtener el id del estudiante, dado su id de usuario.
 class EstudianteSerializer(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
     class Meta: 

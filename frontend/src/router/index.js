@@ -70,9 +70,10 @@ const router = createRouter({
       component: ListadoApelacionesEstudiante,
     },
     {
-      path: "/estudiante/add/solicitud",
+      path: "/estudiante/add/solicitud/:idCalificacion",
       name: "apelacion",
       component: SolicitudApelacion,
+      props: true
     },
     {
       path: "/estudiante/curso",
