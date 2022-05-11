@@ -173,7 +173,7 @@ def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None
             return Response(evaluacionAgregada.data)
         return Response(evaluacionAgregada.errors)
     
-    # Funcionando correctamente. Modificar fecha de una evaluación.
+    # Funcionando correctamente. Modificar una evaluacion.
     if request.method == 'PUT':
         evaluacion = Evaluacion.objects.get(id = idEvaluacion)
         evaluacion_actualizada = EvaluacionEspecificaSerializer(evaluacion, data = request.data)
@@ -254,3 +254,12 @@ def calificacionesEstudiantes(request):
         calificacion.save()
         return Response(calificacion.data)
     return Response(calificacion.errors)
+
+# Obtener los datos de una evaluación en particular. Cambiar el estado de una evaluacion.
+@api_view(['GET', 'PUT'])
+def crudOneEvaluacion(request, idEvaluacion = None):
+    
+    if request.method == 'GET':
+        test = Evaluacion.objects.filter(id = idEvaluacion).first()
+        serializer = PostEvaluacionSerializer(test)
+        return Response(serializer.data)

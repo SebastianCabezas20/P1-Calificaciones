@@ -52,7 +52,7 @@ class EvaluacionSerializer(serializers.ModelSerializer):
     id_tipoEvaluacion = TipoEvaluacionSerializer()
     
     class Meta:
-        model = Evaluacion   
+        model = Evaluacion
         fields = ('id', 'nombre', 'fechaEvActual', 'fechaEntrega', 'ponderacion', 'estado', 'id_tipoEvaluacion', 'id_docente', 'id_observacion', 'id_coordinacion')
 
 # Serializer exclusivo para agregar evaluaciones.

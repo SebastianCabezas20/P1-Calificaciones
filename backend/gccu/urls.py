@@ -34,6 +34,7 @@ urlpatterns = [
     path('evaluaciones/<int:idCoordinacion>', views.evaluacionesCoordinacion),          # Funcionando.
     path('delete/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando.
     path('add/evaluacion', views.evaluacionesCoordinacion),                             # Funcionando.
+    path('evaluacion/<int:idEvaluacion>', views.crudOneEvaluacion),
     path('add/calificacion', views.calificacionesEstudiantes),                          
     path('evaluacion/tipos', views.getTiposEvaluaciones),
     path('coordinador/coordinacion/<int:idCoordinador>', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar segun coordinador

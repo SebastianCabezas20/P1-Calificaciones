@@ -16,10 +16,26 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm">
-            <p class="informationCalification">Nombre de la Asignatura</p>
-            <p class="informationCalification">Coordinación - Sección</p>
-            <p class="informationCalification">Nombre de la Evaluacion</p>
-            <p class="informationCalification">Fecha de la Evaluacion</p>
+            <p class="informationCalification">
+              Nombre: {{ this.informacionEvaluacion.nombre }}
+            </p>
+
+            <p
+              v-if="this.informacionEvaluacion.estado == 'P'"
+              class="informationCalification"
+            >
+              Estado: Pendiente
+            </p>
+            <p v-else class="informationCalification">Estado: Evaluada</p>
+
+            <p class="informationCalification">
+              Fecha de realización:
+              {{ this.informacionEvaluacion.fechaEvActual }}
+            </p>
+            <p class="informationCalification">
+              Fecha tentativa de entrega de notas:
+              {{ this.informacionEvaluacion.fechaEntrega }}
+            </p>
           </div>
 
           <div class="col-sm">
@@ -129,6 +145,7 @@ export default {
       estudiantesPlanilla: [],
       calificaciones: [],
       observacion: "",
+      informacionEvaluacion: [],
     };
   },
   mounted() {
@@ -141,6 +158,21 @@ export default {
       )
       .then(function (response) {
         ins.calificacionesEstudiantes = response.data;
+      });
+    axios
+      .get(`http://localhost:8000/evaluacion/${identificacionEvaluacion}`)
+      .then(function (response) {
+        ins.informacionEvaluacion = response.data;
+      });
+  },
+
+  updated() {
+    let ins = this;
+    let identificacionEvaluacion = this.idEvaluacion;
+    axios
+      .get(`http://localhost:8000/evaluacion/${identificacionEvaluacion}`)
+      .then(function (response) {
+        ins.informacionEvaluacion = response.data;
       });
   },
   methods: {
@@ -169,7 +201,7 @@ export default {
         reader.readAsArrayBuffer(this.file);
       }
     },
-    // Funcionando. Falta ver el tema de las observaciones, 
+    // Funcionando. Falta ver el tema de las observaciones,
     // cambiar el estado de la evaluacion y bloquear la calificacion en aquel caso
     submitCalificaciones() {
       let fechaActual = new Date();
@@ -187,9 +219,26 @@ export default {
         };
         axios
           .post("http://localhost:8000/add/calificacion", nuevaCalificacion)
-          .then(function (response) {
-          });
+          .then(function (response) {});
       }
+
+      let nuevaEvaluacion = {
+        nombre: this.informacionEvaluacion.nombre,
+        fechaEvActual: this.informacionEvaluacion.fechaEvActual,
+        fechaEntrega: this.informacionEvaluacion.fechaEntrega,
+        ponderacion: this.informacionEvaluacion.ponderacion,
+        estado: "E",
+        id_tipoEvaluacion: this.informacionEvaluacion.id_tipoEvaluacion,
+        id_docente: this.informacionEvaluacion.id_docente,
+        id_observacion: this.informacionEvaluacion.id_observacion,
+        id_coordinacion: this.informacionEvaluacion.id_coordinacion,
+      };
+      axios
+        .put(
+          `http://localhost:8000/update/evaluacion/${this.idEvaluacion}`,
+          nuevaEvaluacion
+        )
+        .then(function (response) {});
     },
   },
 };
