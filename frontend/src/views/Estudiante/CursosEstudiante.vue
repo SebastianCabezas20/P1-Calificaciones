@@ -27,7 +27,12 @@
           </thead>
           <tbody>
             <tr scope="row" v-for="asignatura in asignaturas" :key="asignatura.id">
-              <Asignatura :asignatura="asignatura" />
+              <td>{{ asignatura.id_coordinacion.id_asignatura.codigo }}</td>
+              <td>{{ asignatura.id_coordinacion.id_asignatura.nombre }}</td>
+              <td>{{ asignatura.id_coordinacion.bloques_horario }}</td>
+              <td>{{ asignatura.id_coordinacion.id_asignatura.componente }}</td>
+              <td>{{ asignatura.id_coordinacion.id_asignatura.nivel }}</td>
+              <td><button type="button" class="btn btn-light" @click.prevent="ingresar(asignatura.id_coordinacion.id_asignatura.codigo)">Más Información</button></td>
             </tr>
           </tbody>
         </table>
@@ -41,6 +46,7 @@ import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import Asignatura from "../../components/Asignatura.vue";
 import axios from "axios";
+import router from '../../router';
 
 export default {
   components: {
@@ -60,6 +66,12 @@ export default {
       ins.asignaturas = response.data;
     });
   },
+  methods:{
+    ingresar(codigo){
+      // falta ingresar id estudiante
+      router.push(`/estudiante/calificaciones/${codigo}`);
+    }
+  }
 };
 </script>
 

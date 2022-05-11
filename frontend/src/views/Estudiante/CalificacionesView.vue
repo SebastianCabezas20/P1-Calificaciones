@@ -10,9 +10,12 @@
   <div class="contentViews">
     <div class="centralContent">
       
-      <div>
-        <InformacionCurso />
-      </div>
+       <div id="filaInformacion" class="row row-cols-3">
+            <div class="col" >{{informacionTeoria[0].id_coordinacion.id_asignatura.nombre}}</div>
+            <div class="col">nivel:   {{informacionTeoria[0].id_coordinacion.id_asignatura.nivel}}</div>
+            <div class="col">{{informacionTeoria[0].id_docente.id_usuario.username}}</div>
+        </div> 
+  
 
       <div class="componentCourse">
         <div class="titleSection">
@@ -45,6 +48,11 @@
         </div>
       </div>
 
+      <div id="filaInformacion" class="row row-cols-3">
+            <div class="col" >{{informacionLaboratorio[0].id_coordinacion.id_asignatura.nombre}}</div>
+            <div class="col">nivel:   {{informacionLaboratorio[0].id_coordinacion.id_asignatura.nivel}}</div>
+            <div class="col">{{informacionLaboratorio[0].id_docente.id_usuario.username}}</div>
+        </div> 
       <div class="componentCourse">
         <div class="titleSection">
           <h3 class="textTitle">Calificaciones laboratorio</h3>
@@ -91,24 +99,37 @@ export default {
     return {
       calificacionesTeoria: [],
       calificacionesLaboratorio: [],
+      informacionTeoria:[],
+      informacionLaboratorio:[],
     };
   },
+  props:['codigoAsignatura'],
   components: {
     Sidebar,
     Navbar,
     InformacionCurso,
     CalificacionInfo,
   },
-  mounted() {
+  created() {
     let ins = this;
-    axios.get("http://localhost:8000/calificacionesTeoria").then(function (response) {
-      console.log(response.data);
+    let codigoAsig = this.codigoAsignatura;
+    axios.get(`http://localhost:8000/calificacionesTeoria/${codigoAsig}`).then(function (response) {
+
       ins.calificacionesTeoria = response.data;
     });
-    axios.get("http://localhost:8000/calificacionesLaboratorio").then(function (response) {
-      console.log(response.data);
+    axios.get(`http://localhost:8000/calificacionesLaboratorio/${codigoAsig}`).then(function (response) {
+
       ins.calificacionesLaboratorio = response.data;
     });
+    axios.get(`http://localhost:8000/InformacionTeoria/${codigoAsig}`).then(function (response) {
+      console.log(response.data);
+      ins.informacionTeoria = response.data;
+    });
+    axios.get(`http://localhost:8000/InformacionLaboratorio/${codigoAsig}`).then(function (response) {
+
+      ins.informacionLaboratorio = response.data;
+    });
+    
   },
 };
 </script>

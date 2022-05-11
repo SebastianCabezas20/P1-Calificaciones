@@ -79,9 +79,13 @@
               Rechazar
             </label>
           </div>
-            <input type="number" v-model="notaActual" class="form-control relative" style="width:120px" v-if="isAceptar"/>
+            <input type="number" 
+            v-model="notaActual" 
+            class="form-control relative" 
+            style="width:120px" 
+            v-if="isAceptar"
+            min="1" max="7"/>
           <button class="buttonForm" @click.prevent="send">Enviar Respuesta</button>
-          <h2>{{notaActual}}</h2>
         </form>
       </div>
     </div>
@@ -104,7 +108,7 @@ export default {
     return{
       apelacion:[],
       notaJson:[],
-      isAceptar: false,
+      isAceptar: null,
       respuestaActual: "",
       notaActual: null,
       EstadoActual:"",
@@ -120,18 +124,25 @@ export default {
       this.isAceptar = true
     },
     send(){
-      if(this.respuesta == ""){
-        alert("NO")
+      if(this.respuestaActual == "" || this.isAceptar == null){
+        alert("Se necesita añadir una respuesta")
+      }
+      else if(this.notaActual <= 0 || this.notaActual > 7){
+        alert("Nota debe ser de 1 a 7");
       }
       else{
+          let idEstudianteSolicitud = this.idEstudiante
+          let idEvaluacionSolicitud = this.idEvaluacion
           let solicitud ={
+          id_estudiante:idEstudianteSolicitud,
+          id_evaluacion: idEvaluacionSolicitud,
           motivo: this.apelacion[0].motivo,
-          fecha_creacion: "2022-05-07T00:08:23-04:00",
+          fecha_creacion: this.apelacion[0].fecha_creacion,
           respuesta: this.respuestaActual,
+          fecha_respuesta: new Date(),
           estado: this.EstadoActual,
-          id_estudiante:2,
-          id_docente: 1,
-          id_evaluacion: 2,
+          id_docente: this.apelacion[0].id_docente,
+          
 
         } 
         let idSolicitud = this.apelacion[0].id

@@ -4,15 +4,21 @@
     </head>
     <body>
         <div id="filaInformacion" class="row row-cols-4">
-            <div class="col">Nombre curso</div>
-            <div class="col">Nivel</div>
-            <div class="col">Profesor</div>
+            <div class="col">{{informacion.id}}</div>
+            <div class="col">{{}}</div>
+            <div class="col">{{}}</div>
         </div> 
     </body>
     
 </template>
 
-
+<script>
+export default {
+    props:{
+        informacion:Array,
+    }
+}
+</script>
 <style>
 div.col{
     font-family: 'Inter';

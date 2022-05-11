@@ -17,8 +17,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('calificacionesTeoria',views.getDataAsignatura),
-    path('calificacionesLaboratorio',views.getDataAsignaturaLab),
+    path('calificacionesTeoria/<int:codigo>',views.getDataAsignatura),
+    path('calificacionesLaboratorio/<int:codigo>',views.getDataAsignaturaLab),
+    path('InformacionTeoria/<int:codigo>',views.getInformacionCursoTeoria),
+    path('InformacionLaboratorio/<int:codigo>',views.getInformacionCursoLab),
     path('solicitudes/<int:idUsuario>', views.getDataSolicitud),                        # Funcionando.
     path('cursosEstudiante', views.getCursosByEstudiante),
     path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.

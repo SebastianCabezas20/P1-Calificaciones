@@ -1,5 +1,6 @@
 from dataclasses import field
 from pyexpat import model
+from psycopg2 import Date
 from rest_framework import serializers
 from .models import *
 from django.conf import settings
@@ -77,10 +78,10 @@ class DocenteSerializer(serializers.ModelSerializer):
 class CalificacionSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
     id_estudiante = EstudianteSerializer()
-
+    fecha_entrega = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", required=False, read_only=True)
     class Meta:
         model = Calificacion      
-        fields = ('nota','fecha_entrega','id_evaluacion','id_estudiante','id_observacion')  
+        fields = '__all__'  
 
 ## Usado para ver la solicitudes de una asignatura
 class SolicitudSerializer(serializers.ModelSerializer):
@@ -107,7 +108,7 @@ class SolicitudRespuestaSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
     class Meta:
         model = Solicitud_Revision
-        fields = ('id','motivo', 'id_evaluacion','id_estudiante')
+        fields = '__all__'
 
 #Serializer para actualizar datos en respuesta de solicitud
 class SolicitudActualizacionSerializer(serializers.ModelSerializer):

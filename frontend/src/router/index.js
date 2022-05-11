@@ -59,9 +59,10 @@ const router = createRouter({
       component: CursosEstudiante,
     },
     {
-      path: "/estudiante/calificaciones",
+      path: "/estudiante/calificaciones/:codigoAsignatura",
       name: "calificaciones",
       component: CalificacionesView,
+      props: true,
     },
     {
       path: "/estudiante/apelaciones",

@@ -13,22 +13,35 @@ def getDocente(request, idUsuario = None):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getDataAsignatura(request):
+def getDataAsignatura(request, codigo = None):
     
-    print(Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = '10110').all().query)
-    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = "10110", id_evaluacion__id_coordinacion__id_asignatura__componente = "T", id_estudiante__id = "1").all()
+    #Prueba codigo 10110 id estudiante 1    
+    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigo, id_evaluacion__id_coordinacion__id_asignatura__componente = "T", id_estudiante__id = "1").all()
     serializer = CalificacionSerializer(calificaciones, many="true")
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getDataAsignaturaLab(request):
+def getDataAsignaturaLab(request, codigo = None):
     
-    print(Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = '10110').all().query)
-    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = "10110", id_evaluacion__id_coordinacion__id_asignatura__componente = "L", id_estudiante__id = "1").all()
+    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigo, id_evaluacion__id_coordinacion__id_asignatura__componente = "L", id_estudiante__id = "1").all()
     serializer = CalificacionSerializer(calificaciones, many="true")
-    print(Calificacion.objects.select_related('id_evaluacion').filter(id_evaluacion__nombre = "PEP2").all().query)
-     
-    serializer = CalificacionSerializer(calificaciones, many="true")
+    return Response(serializer.data)
+
+##Obtener la informacion del curso - asignatura lab
+@api_view(['GET'])
+def getInformacionCursoLab(request, codigo = None):
+    
+    informacion = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "L").all()
+    serializer = DocenteCursoSerializer(informacion, many="true")
+    return Response(serializer.data)
+
+##Obtener la informacion del curso - asignatura Teoria
+@api_view(['GET'])
+def getInformacionCursoTeoria(request, codigo = None):
+    
+    ## codigo 10110 
+    informacion = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "T" ).all()
+    serializer = DocenteCursoSerializer(informacion, many="true")
     return Response(serializer.data)
 
 # Solicitudes de revisión realizadas por un estudiante.
@@ -42,7 +55,7 @@ def getDataSolicitud(request, idUsuario = None):
 def getCursosByEstudiante(request):
     
     print(Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3).query)
-    ces = Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3)
+    ces = Coordinacion_Estudiante.objects.filter(id_estudiante__id = 1)
 
     serializer = CoordinacionEstudianteSerializer(ces, many="true")
     return Response(serializer.data)
