@@ -115,7 +115,7 @@ def getDataSolicitudesDocente(request):
 @api_view(['GET'])
 def getCalificacionesPerAsignaturaEvaluacion(request, idAsignatura, idEvaluacion):
 
-    print(Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).all().query)
+    print(Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).query)
     
     calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).all()
 
@@ -314,3 +314,19 @@ def getSolicitudesByIdDocente(request, idDocente):
 
     serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getCalificaionesByDocente(request,  idUsuario):
+    calificaciones = Calificacion.objects.filter(id_evaluacion__id_docente__id_usuario__id = idUsuario)
+    serializer = CalificacionSerializerNoDate(calificaciones, many="true")
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+def updateCalificacion(request, idCalificacion):
+    calificacion = Calificacion.objects.get(id = idCalificacion)
+    calificacion_actualizada = CalificacionEspecificaSerializer(calificacion, data = request.data)
+    if calificacion_actualizada.is_valid():
+        calificacion_actualizada.save()
+        return Response(calificacion_actualizada.data)
+    print(calificacion_actualizada.errors)
+    return Response(calificacion_actualizada.errors)

@@ -17,6 +17,12 @@ class RolesSerializers(serializers.ModelSerializer):
         model = Group
         fields = '__all__'
 
+class DocenteSerializer(serializers.ModelSerializer):
+    id_usuario = UsuariosSerializers()
+    class Meta:
+        model = Docente  
+        fields = ('id', 'rut', 'dig_verificador', 'id_usuario')
+
 class CoordinadorSerializers(serializers.ModelSerializer):
     id_usuario = UsuariosSerializers()
     class Meta:
@@ -51,6 +57,7 @@ class CoordinacionDocenteSerializer(serializers.ModelSerializer):
 class EvaluacionSerializer(serializers.ModelSerializer):
     id_coordinacion = CoordinacionSeccionSerializer()
     id_tipoEvaluacion = TipoEvaluacionSerializer()
+    id_docente = DocenteSerializer()
     
     class Meta:
         model = Evaluacion
@@ -67,13 +74,6 @@ class EstudianteSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Estudiante   
         fields = ('id','rut','dig_verificador','id_usuario')  
-
-
-class DocenteSerializer(serializers.ModelSerializer):
-    id_usuario = UsuariosSerializers()
-    class Meta:
-        model = Docente  
-        fields = ('id', 'rut', 'dig_verificador', 'id_usuario')
 
 # Serializer que ayuda a obtener el id del jefe de carrera, dado su id de usuario.
 class JefeCarreraSerializer(serializers.ModelSerializer):
@@ -207,3 +207,14 @@ class EvaluacionEspecificaSerializer(serializers.ModelSerializer):
         model = Evaluacion      
         fields = '__all__'
 
+class CalificacionSerializerNoDate(serializers.ModelSerializer):
+    id_evaluacion = EvaluacionSerializer()
+    id_estudiante = EstudianteSerializer()
+    class Meta:
+        model = Calificacion      
+        fields = '__all__' 
+
+class CalificacionEspecificaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Calificacion      
+        fields = '__all__'

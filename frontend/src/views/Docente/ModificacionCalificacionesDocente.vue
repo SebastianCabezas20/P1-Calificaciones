@@ -10,66 +10,144 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSection">
-        <h3 class="textTitle">
-          Modificacion de Calificaciones: -nombre Curso-
-        </h3>
+        <h3 class="textTitle">Evaluaciones</h3>
       </div>
+
       <div class="tableContent">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Rut</th>
-              <th>Nombre</th>
-              <th>Evaluación</th>
-              <th>Nota Actual</th>
-              <th>Fecha</th>
-              <th>Nueva Calificación</th>
-              <th>Observacion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              scope="row"
-              v-for="calificacion in calificaciones"
-              :key="calificacion.id"
-            >
-              <CalificacionModify :calificacion="calificacion" />
-            </tr>
-          </tbody>
-        </table>
+            <table class="table">
+              <thead class="text-center">
+                <tr>
+                  <th>Rut</th>
+                  <th>Dígito Verificador</th>
+                  <th>Nota</th>
+                  <th>Modificar Calificación</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                <tr v-for="(calificacion, index) in calificaciones" :key="index">
+                  <td>{{ calificacion.id_estudiante.rut }}</td>
+                  <td>{{ calificacion.id_estudiante.dig_verificador }}</td>
+                  <td>{{ calificacion.nota }}</td>
+                  <td>
+                    <div class="text-center">
+                      <button
+                        @click="(showModal = true), (modalIndex = index)"
+                        class="fa-solid fa-pencil botonTabla"
+                        title="Modificar calificación"
+                      ></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Modal Modificar Fecha-->
+          <transition name="fase" appear>
+            <div class="modal-overlay" v-if="showModal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Modificar Calificación
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      @click="showModalFecha = false"
+                    ></button>
+                  </div>
+
+                  <div class="modal-body">
+                    <form
+                      action="#"
+                      method="PUT"
+                      v-on:submit.prevent="modificarCalificacion($event, modalIndex)"
+                    >
+                      <div class="mb-3">
+                        <label class="form-label"
+                          >Nueva Calificacion</label
+                        >
+                        <input
+                          v-model="nuevaCalificacion"
+                          class="form-control"
+                          placeholder="1.0"
+                          required
+                        />
+                      </div>
+
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          v-on:click="showModalFecha = false"
+                        >
+                          Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                          Guardar Cambios
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </transition>
+        </div>
       </div>
-    </div>
-  </div>
 </template>
 
 <script>
 import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
-import CalificacionModify from "../../components/CalificacionModify.vue";
 import axios from "axios";
 
 export default {
   components: {
     Sidebar,
     Navbar,
-    CalificacionModify,
   },
   // Aqui estan las variables capturadas del url.
-  props: ["idCurso", "idEvaluacion"],
   data() {
     return {
       calificaciones: [],
+      showModal: false,
+      indexModal: "",
+      nuevaCalificacion: "",
     };
   },
   mounted() {
     let ins = this;
     axios
-      .get("http://localhost:8000/getCalificacionesPerAsignaturaEvaluacion")
+      .get(`http://localhost:8000/calificacionesDocente/${this.$store.getters.idUsuario}`)
       .then(function (response) {
         console.log(response.data);
         ins.calificaciones = response.data;
         
       });
+  },
+  methods: {
+    modificarCalificacion: function (event, index) {
+      console.log(this.calificaciones[index]);
+      let idCalificacionModificar = this.calificaciones[index].id;
+      let nuevaCalificacion = {
+        nota: this.nuevaCalificacion,
+        fecha_entrega: this.calificaciones[index].fecha_entrega,
+        id_estudiante: this.calificaciones[index].id_estudiante.id,
+        id_evaluacion: this.calificaciones[index].id_evaluacion.id,
+        id_observacion: this.calificaciones[index].id_observacion,
+      };
+      console.log(nuevaCalificacion);
+      axios
+        .put(
+          `http://localhost:8000/updateCalificacion/${idCalificacionModificar}`,
+          nuevaCalificacion
+        )
+        .then(function (response) {
+          location.reload();
+        });
+    },
   },
 };
 </script>
