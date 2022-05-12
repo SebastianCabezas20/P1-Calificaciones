@@ -13,7 +13,7 @@
        <div id="filaInformacion" class="row row-cols-3">
             <div class="col" >{{informacionTeoria[0].id_coordinacion.id_asignatura.nombre}}</div>
             <div class="col">nivel:   {{informacionTeoria[0].id_coordinacion.id_asignatura.nivel}}</div>
-            <div class="col">{{informacionTeoria[0].id_docente.id_usuario.username}}</div>
+            <div class="col"> Docente:  {{informacionTeoria[0].id_docente.id_usuario.username}}</div>
         </div> 
   
 
@@ -30,6 +30,7 @@
                 <th>Observacion</th>
                 <th>Calificacion</th>
                 <th>Ponderacion</th>
+                <th>Estado</th>
                 <th>Fecha</th>
                 <th>Apelar</th>
                 <!--Saque estado de la evaluacion-->
@@ -49,12 +50,12 @@
         </div>
       </div>
 
-      <div id="filaInformacion" class="row row-cols-3">
+      <div v-if="this.mostrar" id="filaInformacion" class="row row-cols-3">
             <div class="col" >{{informacionLaboratorio[0].id_coordinacion.id_asignatura.nombre}}</div>
             <div class="col">nivel:   {{informacionLaboratorio[0].id_coordinacion.id_asignatura.nivel}}</div>
-            <div class="col">{{informacionLaboratorio[0].id_docente.id_usuario.username}}</div>
+            <div class="col"> Docente:  {{informacionLaboratorio[0].id_docente.id_usuario.username}}</div>
         </div> 
-      <div class="componentCourse">
+      <div v-if="this.mostrar" class="componentCourse">
         <div class="titleSection">
           <h3 class="textTitle">Calificaciones laboratorio</h3>
         </div>
@@ -67,6 +68,7 @@
                 <th>Observacion</th>
                 <th>Calificacion</th>
                 <th>Ponderacion</th>
+                <th>Estado</th>
                 <th>Fecha</th>
                 <th>Apelar</th>
               </tr>
@@ -102,6 +104,7 @@ export default {
       calificacionesLaboratorio: [],
       informacionTeoria:[],
       informacionLaboratorio:[],
+      mostrar: false,
     };
   },
   props:['codigoAsignatura'],
@@ -119,16 +122,21 @@ export default {
       ins.calificacionesTeoria = response.data;
     });
     axios.get(`http://localhost:8000/calificacionesLaboratorio/${codigoAsig}`).then(function (response) {
-
-      ins.calificacionesLaboratorio = response.data;
+      if(response.data.length != 0){
+        ins.calificacionesLaboratorio = response.data;
+        ins.mostrar = true
+      }
+      
     });
     axios.get(`http://localhost:8000/InformacionTeoria/${codigoAsig}`).then(function (response) {
       console.log(response.data);
       ins.informacionTeoria = response.data;
     });
     axios.get(`http://localhost:8000/InformacionLaboratorio/${codigoAsig}`).then(function (response) {
-
-      ins.informacionLaboratorio = response.data;
+      if(response.data.length != 0){
+        ins.informacionLaboratorio = response.data;
+        ins.mostrar = true
+      }
     });
     
   },
