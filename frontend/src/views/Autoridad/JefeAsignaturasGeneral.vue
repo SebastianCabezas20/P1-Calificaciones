@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSection">
-        <h4 class="textTitle">Apelaciones</h4>
+        <h4 class="textTitle">Asignaturas</h4>
       </div>
       <div class="tableContent">
         <table class="table">
@@ -38,7 +38,7 @@
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-success" @click="Ingresar(asignatura.id_asignatura.id)">
+                <button type="button" class="btn btn-success">
                   Seleccionar
                 </button>
               </td>
@@ -81,12 +81,12 @@ export default {
       ins.asignaturas = response.data;
       });
     });
+  },
+  mounted(){
     
   },
   methods:{
-    Ingresar(key){
-      router.push(`/jefe/asignaturas/apelaciones/${key}`)
-    }
+   
   }
 };
 </script>

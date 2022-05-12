@@ -53,15 +53,22 @@ export default {
   },
   data(){
       return{
-          secciones: []
+          secciones: [],
+          idCoordinador:0,
       }
   },
   created() {
     let ins = this;
-    /// ID DEL COORDINADOR 
-    axios.get("http://localhost:8000/coordinador/coordinacion/1").then(function (response) {
-      console.log(response.data);
-      ins.secciones = response.data;
+    let identificacionUsuario = this.$store.getters.idUsuario;
+    axios
+    .get(`http://localhost:8000/api/coordinador/${identificacionUsuario}`)
+    .then(function (response) {
+      ins.idCoordinador = response.data.id;
+      console.log(ins.idCoordinador)
+      axios.get(`http://localhost:8000/coordinador/coordinacion/${ins.idCoordinador}`).then(function (response) {
+        console.log(response.data);
+        ins.secciones = response.data;
+      });
     });
   },
   methods:{

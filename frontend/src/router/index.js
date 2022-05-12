@@ -26,6 +26,7 @@ import CoordinadorSecciones from "../views/Autoridad/CoordinadorSecciones.vue";
 import CoordinadorSolicitudesCurso from "../views/Autoridad/CoordinadorSolicitudesCurso.vue";
 import JefeAsignaturasApe from "../views/Autoridad/JefeAsignaturasApe.vue";
 import JefeApelacionesAsig from "../views/Autoridad/JefeApelacionesAsig.vue";
+import JefeAsignaturasGeneralVue from "../views/Autoridad/JefeAsignaturasGeneral.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -135,7 +136,12 @@ const router = createRouter({
       name: "apelacionesAutoAutoridad",
       component: ApelacionesAutoView,
     },
-    {
+    {/// Secciones de un coordinador para uso general
+      path: "/coordinador/asignaturas/general",
+      name: "asignaturasCoordinador",
+      component: AsignaturasCoordinador,
+    },  
+    { // Secciones de un coordinador para solicitudes
       path: "/coordinador/seccion",
       name: "seccionesCoordinador",
       component: CoordinadorSecciones,
@@ -147,14 +153,17 @@ const router = createRouter({
       component: CoordinadorSolicitudesCurso,
       props: true,
     },
-    {
-      //Asignaturas de un jefe de carrera
+    { //Asignaturas de un jefe de carrera solicitudes
       path: "/jefe/asignaturas",
-      name: "asignaturasJefeDeCarrera",
+      name: "asignaturasJefeDeCarreraGeneral",
       component: JefeAsignaturasApe,
     },
-    {
-      //Apelaciones para un jefe de carrera segun asignatura
+    { //Asignaturas de un jefe de carrera general
+      path: "/jefe/asignaturas/general",
+      name: "asignaturasJefeDeCarrera",
+      component: JefeAsignaturasGeneralVue,
+    },
+    { //Apelaciones para un jefe de carrera segun asignatura
       path: "/jefe/asignaturas/apelaciones/:idAsignatura",
       name: "apelacionesAsignaturasJefeDeCarrera",
       component: JefeApelacionesAsig,
@@ -180,11 +189,7 @@ const router = createRouter({
       name: "cursoSeleccionadoCoordinador",
       component: CoordinadorCursoSeleccionado,
     },
-    {
-      path: "/autoridad/coordinador/asignaturas",
-      name: "asignaturasCoordinador",
-      component: AsignaturasCoordinador,
-    },
+    
   ],
 });
 
