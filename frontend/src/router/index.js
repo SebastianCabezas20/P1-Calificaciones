@@ -27,6 +27,8 @@ import CoordinadorSolicitudesCurso from "../views/Autoridad/CoordinadorSolicitud
 import JefeAsignaturasApe from "../views/Autoridad/JefeAsignaturasApe.vue";
 import JefeApelacionesAsig from "../views/Autoridad/JefeApelacionesAsig.vue";
 import JefeAsignaturasGeneralVue from "../views/Autoridad/JefeAsignaturasGeneral.vue";
+import DashboardCoordinador from "../views/Autoridad/DashboardCoordinador.vue"
+import DashboardJefeCarrera from "../views/Autoridad/DashboardJefeCarrera.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -130,6 +132,16 @@ const router = createRouter({
       path: "/autoridad/home",
       name: "homeAutoridad",
       component: DashboardAutoridad,
+    },
+    {
+      path: "/coordinador/home",
+      name: "homeCoordinador",
+      component: DashboardCoordinador,
+    },
+    {
+      path: "/jefeCarrera/home",
+      name: "homeJefeCarrera",
+      component: DashboardJefeCarrera,
     },
     {
       path: "/autoridad/solicitudes",

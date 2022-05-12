@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Sidebar from "../../components/SidebarAutoridad.vue";
+import Sidebar from "../../components/SidebarCoordinador.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from 'axios';
 import ApelacionesCoordinador from "../../components/ApelacionesCoordinador.vue";
