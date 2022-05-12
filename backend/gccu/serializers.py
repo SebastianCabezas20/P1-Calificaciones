@@ -7,6 +7,11 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User, Group
 
+class OnlySolicitudSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Solicitud_Revision
+        fields = '__all__'
+
 class UsuariosSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -92,10 +97,9 @@ class CoordinadorSerializer(serializers.ModelSerializer):
 class CalificacionSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
     id_estudiante = EstudianteSerializer()
-    fecha_entrega = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", required=False, read_only=True)
     class Meta:
         model = Calificacion      
-        fields = '__all__'  
+        fields = ('id', 'nota', 'fecha_entrega', 'id_evaluacion', 'id_estudiante')  
 
 ## Usado para ver la solicitudes de una asignatura
 class SolicitudSerializer(serializers.ModelSerializer):
@@ -112,9 +116,7 @@ class CoordinacionEstudianteSerializer(serializers.ModelSerializer):
     id_coordinacion = CoordinacionSeccionSerializer()
     class Meta:
         model = Coordinacion_Estudiante    
-        fields = ('promedioEstudiante','id_estudiante','id_coordinacion')
-
-
+        fields = ('promedioEstudiante', 'id_estudiante', 'id_coordinacion')
 
 #Serializer para mostrar datos en respuesta de solicitud
 class SolicitudRespuestaSerializer(serializers.ModelSerializer):

@@ -57,7 +57,6 @@ export default {
     axios
       .get(`http://localhost:8000/solicitudes/${idUsuarioLogeado}`)
       .then(function (response) {
-        console.log(response.data);
         ins.solicitudes = response.data;
       });
   },

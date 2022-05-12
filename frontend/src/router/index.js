@@ -70,9 +70,10 @@ const router = createRouter({
       component: ListadoApelacionesEstudiante,
     },
     {
-      path: "/estudiante/add/solicitud",
+      path: "/estudiante/add/solicitud/:idCalificacion",
       name: "apelacion",
       component: SolicitudApelacion,
+      props: true,
     },
     {
       path: "/estudiante/curso",
@@ -95,27 +96,29 @@ const router = createRouter({
       path: "/docente/curso/:idCurso",
       name: "cursoSeleccionadoDocente",
       component: DocenteCursoSeleccionado,
-      props: true
+      props: true,
     },
-    { // Formulario para contestar solicitudes
+    {
+      // Formulario para contestar solicitudes
       path: "/docente/apelacion/answer/:idEstudiante/:idEvaluacion",
       name: "responderApelacionDocente",
       component: RespuestaApelacionView,
-      props: true
+      props: true,
     },
     {
       path: "/docente/curso/:idCurso/add/calificacion/:idEvaluacion",
       name: "cursosubircalificaciones",
       component: SubirCalificacionesDocente,
-      props: true
+      props: true,
     },
     {
       path: "/docente/curso/:idCurso/evaluacion/:idEvaluacion",
       name: "cursoSeleccionadoDocente2",
       component: ModificacionCalificacionesDocente,
-      props: true
+      props: true,
     },
-    { /// Solicitudes de un docente
+    {
+      /// Solicitudes de un docente
       path: "/docente/solicitudes",
       name: "Apelacionesdocente",
       component: ListadoApelacionesDocente,
@@ -126,33 +129,36 @@ const router = createRouter({
       path: "/autoridad/home",
       name: "homeAutoridad",
       component: DashboardAutoridad,
-    },    
+    },
     {
       path: "/autoridad/solicitudes",
       name: "apelacionesAutoAutoridad",
       component: ApelacionesAutoView,
-    }, 
+    },
     {
       path: "/coordinador/seccion",
       name: "seccionesCoordinador",
       component: CoordinadorSecciones,
-    }, 
-    { //Solicitudes segun coordinacion-curso de un coordinador
+    },
+    {
+      //Solicitudes segun coordinacion-curso de un coordinador
       path: "/coordinador/seccion/solicitudes/:idCurso",
       name: "solicitudesSeccionCoordinador",
       component: CoordinadorSolicitudesCurso,
-      props: true
+      props: true,
     },
-    { //Asignaturas de un jefe de carrera
+    {
+      //Asignaturas de un jefe de carrera
       path: "/jefe/asignaturas",
       name: "asignaturasJefeDeCarrera",
       component: JefeAsignaturasApe,
     },
-    { //Apelaciones para un jefe de carrera segun asignatura
+    {
+      //Apelaciones para un jefe de carrera segun asignatura
       path: "/jefe/asignaturas/apelaciones/:idAsignatura",
       name: "apelacionesAsignaturasJefeDeCarrera",
       component: JefeApelacionesAsig,
-      props: true
+      props: true,
     },
     {
       path: "/autoridad/asignaturas",

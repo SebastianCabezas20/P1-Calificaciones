@@ -24,12 +24,13 @@ urlpatterns = [
     path('api/estudiante/<int:idUsuario>', views.getIdEstudiante),                      # Funcionando.
 
     # Demás URLs
-    path('calificacionesTeoria/<int:codigo>',views.getDataAsignatura),
-    path('calificacionesLaboratorio/<int:codigo>',views.getDataAsignaturaLab),
+    path('add/solicitud', views.getDataSolicitud),
+    path('calificacionesTeoria/<int:codigo>/<int:idUsuario>',views.getDataAsignatura),
+    path('calificacionesLaboratorio/<int:codigo>/<int:idUsuario>',views.getDataAsignaturaLab),
     path('InformacionTeoria/<int:codigo>',views.getInformacionCursoTeoria),
     path('InformacionLaboratorio/<int:codigo>',views.getInformacionCursoLab),
     path('solicitudes/<int:idUsuario>', views.getDataSolicitud),                        # Funcionando.
-    path('cursosEstudiante', views.getCursosByEstudiante),
+    path('cursosEstudiante/<int:idUsuario>', views.getCursosByEstudiante),              # Funcionando.
     path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.
     path('estudiantes', views.getEstudiante), ### SIRVE?
     path('solicitudRespuesta/<int:idEstudiante>/<int:idEvaluacion>', views.getDataSolicitudRespuesta), ## Ver los datos de la respuesta a la apelacion

@@ -27,13 +27,25 @@
           </thead>
           <tbody>
             <template v-for="asignatura in asignaturas" :key="asignatura.id">
-              <tr scope="row" v-if="asignatura.id_estudiante.id === idEstudiante">
+              <tr scope="row">
                 <td>{{ asignatura.id_coordinacion.id_asignatura.codigo }}</td>
                 <td>{{ asignatura.id_coordinacion.id_asignatura.nombre }}</td>
                 <td>{{ asignatura.id_coordinacion.bloques_horario }}</td>
-                <td>{{ asignatura.id_coordinacion.id_asignatura.componente }}</td>
+                <td>
+                  {{ asignatura.id_coordinacion.id_asignatura.componente }}
+                </td>
                 <td>{{ asignatura.id_coordinacion.id_asignatura.nivel }}</td>
-                <td><button type="button" class="btn btn-light" @click.prevent="ingresar(asignatura.id_coordinacion.id_asignatura.codigo)">Más Información</button></td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-light"
+                    v-on:click="
+                      ingresar(asignatura.id_coordinacion.id_asignatura.codigo)
+                    "
+                  >
+                    Más Información
+                  </button>
+                </td>
               </tr>
             </template>
           </tbody>
@@ -48,7 +60,7 @@ import Sidebar from "../../components/SidebarEstudiante.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import Asignatura from "../../components/Asignatura.vue";
 import axios from "axios";
-import router from '../../router';
+import router from "../../router";
 
 export default {
   components: {
@@ -59,29 +71,22 @@ export default {
   data() {
     return {
       asignaturas: [],
-      idEstudiante: 0,
     };
   },
   mounted() {
     let identificacionUsuario = this.$store.getters.idUsuario;
     let ins = this;
     axios
-      .get(`http://localhost:8000/api/estudiante/${identificacionUsuario}`)
+      .get(`http://localhost:8000/cursosEstudiante/${identificacionUsuario}`)
       .then(function (response) {
-        ins.idEstudiante = response.data.id;
-        console.log(ins.idEstudiante);
-    });
-    axios.get(`http://localhost:8000/cursosEstudiante`).then(function (response) {
-      console.log(response.data);
-      ins.asignaturas = response.data;
-    });
+        ins.asignaturas = response.data;
+      });
   },
-  methods:{
-    ingresar(codigo){
-      // falta ingresar id estudiante
+  methods: {
+    ingresar(codigo) {
       router.push(`/estudiante/calificaciones/${codigo}`);
-    }
-  }
+    },
+  },
 };
 </script>
 

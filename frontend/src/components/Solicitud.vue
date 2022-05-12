@@ -9,7 +9,7 @@
 <script>
 export default {
   props: {
-    solicitud: Array,
+    solicitud: Object,
   },
 };
 </script>
