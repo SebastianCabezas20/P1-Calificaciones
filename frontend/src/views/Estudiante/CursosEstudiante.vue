@@ -26,14 +26,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr scope="row" v-for="asignatura in asignaturas" :key="asignatura.id">
-              <td>{{ asignatura.id_coordinacion.id_asignatura.codigo }}</td>
-              <td>{{ asignatura.id_coordinacion.id_asignatura.nombre }}</td>
-              <td>{{ asignatura.id_coordinacion.bloques_horario }}</td>
-              <td>{{ asignatura.id_coordinacion.id_asignatura.componente }}</td>
-              <td>{{ asignatura.id_coordinacion.id_asignatura.nivel }}</td>
-              <td><button type="button" class="btn btn-light" @click.prevent="ingresar(asignatura.id_coordinacion.id_asignatura.codigo)">Más Información</button></td>
-            </tr>
+            <template v-for="asignatura in asignaturas" :key="asignatura.id">
+              <tr scope="row" v-if="asignatura.id_estudiante.id === idEstudiante">
+                <td>{{ asignatura.id_coordinacion.id_asignatura.codigo }}</td>
+                <td>{{ asignatura.id_coordinacion.id_asignatura.nombre }}</td>
+                <td>{{ asignatura.id_coordinacion.bloques_horario }}</td>
+                <td>{{ asignatura.id_coordinacion.id_asignatura.componente }}</td>
+                <td>{{ asignatura.id_coordinacion.id_asignatura.nivel }}</td>
+                <td><button type="button" class="btn btn-light" @click.prevent="ingresar(asignatura.id_coordinacion.id_asignatura.codigo)">Más Información</button></td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>
@@ -57,11 +59,19 @@ export default {
   data() {
     return {
       asignaturas: [],
+      idEstudiante: 0,
     };
   },
   mounted() {
+    let identificacionUsuario = this.$store.getters.idUsuario;
     let ins = this;
-    axios.get("http://localhost:8000/cursosEstudiante").then(function (response) {
+    axios
+      .get(`http://localhost:8000/api/estudiante/${identificacionUsuario}`)
+      .then(function (response) {
+        ins.idEstudiante = response.data.id;
+        console.log(ins.idEstudiante);
+    });
+    axios.get(`http://localhost:8000/cursosEstudiante`).then(function (response) {
       console.log(response.data);
       ins.asignaturas = response.data;
     });

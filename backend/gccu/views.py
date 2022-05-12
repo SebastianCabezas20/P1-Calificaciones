@@ -83,9 +83,8 @@ def getDataSolicitud(request, idUsuario = None):
 @api_view(['GET'])
 def getCursosByEstudiante(request):
     
-    print(Coordinacion_Estudiante.objects.filter(id_estudiante__id = 3).query)
-    ces = Coordinacion_Estudiante.objects.filter(id_estudiante__id = 1)
-
+    print(Coordinacion_Estudiante.objects.all().query)
+    ces = Coordinacion_Estudiante.objects.all()
     serializer = CoordinacionEstudianteSerializer(ces, many="true")
     return Response(serializer.data)
 
