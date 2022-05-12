@@ -45,7 +45,7 @@ import SolicitudesDocente from "../../components/SolicitudesDocente.vue";
 import axios from "axios";
 import router from '../../router';
 
-export default {
+export default{
   components: {
     Sidebar,
     Navbar,

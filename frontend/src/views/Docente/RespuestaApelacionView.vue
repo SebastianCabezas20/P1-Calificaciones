@@ -167,14 +167,14 @@ export default {
             axios.put(`http://localhost:8000/actualizar/calificacion/${idCalificacion}`, notaNueva).then(function (response){
             console.log(response.data);
           });
-          router.push(`/docente/solicitudes/${this.idDocente}`)
+          router.push(`/docente/solicitudes/`)
           }
           else{
             alert("ingrese una nota")
           }
           
         }else{
-          router.push(`/docente/solicitudes/${this.idDocente}`)
+          router.push(`/docente/solicitudes/`)
         }
       }
       
