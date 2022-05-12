@@ -132,6 +132,7 @@ class SolicitudActualizacionSerializer(serializers.ModelSerializer):
 
 # Encontrar la calificacion sin ningun dato adicional
 class CalificacionEspecificaSerializer(serializers.ModelSerializer):
+    fecha_entrega = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", required=False, read_only=True)
     class Meta:
         model = Calificacion      
         fields = '__all__'

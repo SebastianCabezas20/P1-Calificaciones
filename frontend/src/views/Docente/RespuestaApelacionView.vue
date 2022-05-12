@@ -128,7 +128,7 @@ export default {
       if(this.respuestaActual == "" || this.isAceptar == null){
         alert("Se necesita añadir una respuesta")
       }
-      else if(this.notaActual <= 0 || this.notaActual > 7){
+      else if(this.isAceptar == true && this.notaActual <= 0 || this.notaActual > 7){
         alert("Nota debe ser de 1 a 7");
       }
       else{
@@ -167,14 +167,14 @@ export default {
             axios.put(`http://localhost:8000/actualizar/calificacion/${idCalificacion}`, notaNueva).then(function (response){
             console.log(response.data);
           });
-          router.push(`/docente/solicitudes`)
+          router.push(`/docente/solicitudes/${this.idDocente}`)
           }
           else{
             alert("ingrese una nota")
           }
           
         }else{
-          router.push(`/docente/solicitudes`)
+          router.push(`/docente/solicitudes/${this.idDocente}`)
         }
       }
       
