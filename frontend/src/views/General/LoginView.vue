@@ -104,12 +104,15 @@ export default {
         .then(() => {
           if (this.$store.getters.idRolUsuario == 1)
             this.$router.push({ name: "homeEstudiante" });
-          else if (
-            this.$store.getters.idRolUsuario == 2 ||
-            this.$store.getters.idRolUsuario == 3
-          )
+          else if (this.$store.getters.idRolUsuario == 2)
             this.$router.push({ name: "homeDocente" });
-          else this.$router.push({ name: "homeAutoridad" });
+          else if(this.$store.getters.idRolUsuario == 3)
+            this.$router.push({ name: "homeCoordinador" });
+          else if(this.$store.getters.idRolUsuario == 4)
+            this.$router.push({ name: "homeJefeCarrera" });
+          else
+            this.$router.push({ name: "homeAutoridad" });
+           
         })
         .catch((err) => {
           this.incorrectAuth = true;
