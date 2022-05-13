@@ -13,12 +13,12 @@
         <h3 class="textTitle">Docencia: Mis Coordinaciones (Teoría)</h3>
       </div>
       <div class="tableContent">
-        <table class="table">
+        <table class="table text-center">
           <thead>
             <tr>
               <th>Código</th>
               <th>Nombre</th>
-              <th>Nivel</th>
+              <th>Horario</th>
               <th>Componente</th>
               <th>Calificaciones</th>
             </tr>
@@ -60,12 +60,12 @@
         <h3 class="textTitle">Docencia: Mis Coordinaciones (Laboratorio)</h3>
       </div>
       <div class="tableContent">
-        <table class="table">
+        <table class="table text-center">
           <thead>
             <tr>
               <th>Código</th>
               <th>Nombre</th>
-              <th>Nivel</th>
+              <th>Horario</th>
               <th>Componente</th>
               <th>Calificaciones</th>
             </tr>
