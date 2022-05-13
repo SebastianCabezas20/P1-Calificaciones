@@ -83,6 +83,7 @@ export default {
   },
   methods: {
     submitApelacion() {
+      const that = this;
       let fechaActual = new Date();
       fechaActual = fechaActual.toISOString().slice(0, 10);
 
@@ -100,7 +101,9 @@ export default {
 
       axios
         .post("http://localhost:8000/add/solicitud", solicitudFinal)
-        .then(function (response) {});
+        .then(function (response) {
+          router.push(`/estudiante/calificaciones/${that.dataSolicitud[0].id_evaluacion.id_coordinacion.id_asignatura.codigo}`);
+        });
     },
   },
 };

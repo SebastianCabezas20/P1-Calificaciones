@@ -14,7 +14,7 @@
       </div>
 
       <div class="tableContent">
-        <table class="table">
+        <table class="table text-center">
           <thead>
             <tr>
               <th scope="col">Código</th>

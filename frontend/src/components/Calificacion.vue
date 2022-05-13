@@ -3,7 +3,6 @@
   <td>{{ calificacion.id_observacion }}</td>
   <td>{{ calificacion.nota }}</td>
   <td>{{ calificacion.id_evaluacion.ponderacion }}</td>
-  <td>{{ calificacion.id_evaluacion.estado }}</td>
   <td>{{ calificacion.fecha_entrega }}</td>
 
   <td>

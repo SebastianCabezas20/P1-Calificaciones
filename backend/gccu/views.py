@@ -95,10 +95,7 @@ def getCursosByDocente(request, idUsuario = None):
 
 @api_view(['GET'])
 def getEstudiante(request):
-    
-    print(Estudiante.objects.filter(id = 3).query)
     estudiantes = Estudiante.objects.filter(id=3)
-
     serializer = EstudianteSerializer(estudiantes, many="true")
     return Response(serializer.data)
 
@@ -111,21 +108,13 @@ def getDataSolicitudesDocente(request):
 
 @api_view(['GET'])
 def getCalificacionesPerAsignaturaEvaluacion(request, idAsignatura, idEvaluacion):
-
-    print(Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).query)
-    
     calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).all()
-
     serializer = CalificacionSerializer(calificaciones, many='true')
     return Response(serializer.data)
 
 @api_view(['GET'])
 def getAsignaturastoCoordinador(request, idCoordinador = None):
-
-    # 1
-    print(Asignatura.objects.filter(id_coordinador = idCoordinador).query)
     coordinador = Asignatura.objects.filter(id_coordinador = 1)
-
     serializer = AsignaturaSerializer(coordinador, many = 'true')
     return Response(serializer.data)
 
@@ -134,12 +123,10 @@ def getAsignaturastoCoordinador(request, idCoordinador = None):
 @api_view(['GET'])
 def getDataSolicitudRespuesta(request,idEstudiante = None, idEvaluacion = None):
     ## Prueba idEstudiante 2 IdEval 2
-    print(Solicitud_Revision.objects.filter(id_estudiante__id = 2).all().query)
     solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id = idEstudiante, id_evaluacion__id = idEvaluacion).all()
     #Cambiar ids respecto a la solicitud realizada deberian ser las mismas
     nota = Calificacion.objects.filter(id_estudiante = idEstudiante, id_evaluacion = idEvaluacion).all()
     #idEvaluacion = Solicitud_Revision.objects.filter(id_estudiante__id = 2).values('id_evaluacion').first().get('id_evaluacion')
-    #print(idEvaluacion)
     serializer = SolicitudRespuestaSerializer(solicitudes, many = "true")
     serializerNota = CalificacionEspecificaSerializer(nota, many = "true")
     return Response([serializer.data,serializerNota.data])
@@ -153,8 +140,8 @@ def actualizacionSolicitudRespuesta(request, idSolicitud = None):
         solicitud = Solicitud_Revision.objects.all()
         solicituds = SolicitudActualizacionSerializer(solicitud, many = "true")
         return Response(solicituds.data)
-    elif request.method == 'PUT':
-        print("---------------------------------------------------------")
+    
+    if request.method == 'PUT':
         #### ID de la solicitud  ## Prueba 2
         solicitud = Solicitud_Revision.objects.filter(id = idSolicitud).first()
         solicitud_actualizada = SolicitudActualizacionSerializer(solicitud, data = request.data)
@@ -171,8 +158,8 @@ def actualizacionCalificacionEstudiante(request, idCalificacion = None):
         calificacion = Calificacion.objects.all()
         calificacions = CalificacionEspecificaSerializer(calificacion, many = "true")
         return Response(calificacions.data)
-    elif request.method == 'PUT':
-        print("---------------------------------------------------------")
+    
+    if request.method == 'PUT':
         ### ID de calificacion a modificar Prueba 2
         calificacion = Calificacion.objects.filter(id = idCalificacion).first()
         calificacion_actualizada = CalificacionEspecificaSerializer(calificacion, data = request.data)
@@ -218,7 +205,6 @@ def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None
         evaluacion_actualizada = EvaluacionEspecificaSerializer(evaluacion, data = request.data)
         if evaluacion_actualizada.is_valid():
             evaluacion_actualizada.save()
-            print(evaluacion_actualizada.data)
             return Response(evaluacion_actualizada.data)
         return Response(evaluacion_actualizada.errors)
 
@@ -305,10 +291,7 @@ def crudOneEvaluacion(request, idEvaluacion = None):
 
 @api_view(['GET'])
 def getSolicitudesByIdDocente(request, idDocente):
-
-    print(Solicitud_Revision.objects.filter(id_docente__id = idDocente).query)
     solicitudes = Solicitud_Revision.objects.filter(id_docente__id = idDocente)
-
     serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
 
@@ -325,5 +308,4 @@ def updateCalificacion(request, idCalificacion):
     if calificacion_actualizada.is_valid():
         calificacion_actualizada.save()
         return Response(calificacion_actualizada.data)
-    print(calificacion_actualizada.errors)
     return Response(calificacion_actualizada.errors)

@@ -13,7 +13,7 @@
         <h3 class="textTitle">Mis Apelaciones</h3>
       </div>
       <div class="tableContent">
-        <table class="table">
+        <table class="table text-center">
           <thead>
             <tr>
               <th>Curso</th>

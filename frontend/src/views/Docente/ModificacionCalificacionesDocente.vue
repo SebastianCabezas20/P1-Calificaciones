@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import Sidebar from "../../components/SidebarEstudiante.vue";
+import Sidebar from "../../components/SidebarDocente.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from "axios";
 

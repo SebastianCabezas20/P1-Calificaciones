@@ -31,14 +31,13 @@
         </div>
 
         <div class="tableContent">
-          <table class="table">
+          <table class="table text-center">
             <thead>
               <tr>
                 <th>Evaluacion</th>
                 <th>Observacion</th>
                 <th>Calificacion</th>
                 <th>Ponderacion</th>
-                <th>Estado</th>
                 <th>Fecha</th>
                 <th>Apelar</th>
                 <!--Saque estado de la evaluacion-->
@@ -85,14 +84,13 @@
         </div>
 
         <div class="tableContent">
-          <table class="table">
+          <table class="table text-center">
             <thead>
               <tr>
                 <th>Evaluacion</th>
                 <th>Observacion</th>
                 <th>Calificacion</th>
                 <th>Ponderacion</th>
-                <th>Estado</th>
                 <th>Fecha</th>
                 <th>Apelar</th>
               </tr>
