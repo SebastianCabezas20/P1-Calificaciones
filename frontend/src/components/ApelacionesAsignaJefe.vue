@@ -1,7 +1,9 @@
 <template>
     <tr >
         <td>{{solicitud.id_evaluacion.nombre}}</td>
-        <td>{{solicitud.estado}} </td>
+        <td v-if="solicitud.estado == 'A'">Aprobada</td>
+        <td v-else-if="solicitud.estado == 'R'" >Rechazado</td>
+        <td v-else >Pendiente</td>
         <td>{{solicitud.fecha_creacion}}</td>
         <td>{{solicitud.id_estudiante.id_usuario.username}}</td>
         <td>{{solicitud.id_evaluacion.id_coordinacion.coordinacion}}-{{solicitud.id_evaluacion.id_coordinacion.seccion}}</td>

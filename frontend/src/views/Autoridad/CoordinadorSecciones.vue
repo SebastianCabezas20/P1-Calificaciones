@@ -19,6 +19,7 @@
               <th>Seccion</th>
               <th>Profesor</th>
               <th>Horario</th>
+              <th>Asignatura</th>
               <th>Seleccionar</th>
             </tr>
           </thead>
@@ -27,6 +28,7 @@
               <td>{{seccion.id_coordinacion.coordinacion}}-{{seccion.id_coordinacion.seccion}}</td>
               <td>{{seccion.id_docente.rut}}-{{seccion.id_docente.dig_verificador}}</td>
               <td>{{seccion.id_coordinacion.bloques_horario}}</td>
+              <td>{{seccion.id_coordinacion.id_asignatura.nombre}}</td>
               <td>
                 <button type="button" class="btn btn-success" @click.prevent="Ingresar(seccion.id_coordinacion.id)">
                   Seleccionar

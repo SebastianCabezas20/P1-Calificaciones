@@ -18,6 +18,7 @@
             <tr>
               <th>Seccion</th>
               <th>Profesor</th>
+              <th>Asignatura</th>
               <th>Horario</th>
               <th>Seleccionar</th>
             </tr>
@@ -26,6 +27,7 @@
             <tr v-for="seccion in secciones" :key="seccion.id">
               <td>{{seccion.id_coordinacion.coordinacion}}-{{seccion.id_coordinacion.seccion}}</td>
               <td>{{seccion.id_docente.rut}}-{{seccion.id_docente.dig_verificador}}</td>
+              <td>{{seccion.id_coordinacion.id_asignatura.nombre}}</td>
               <td>{{seccion.id_coordinacion.bloques_horario}}</td>
               <td>
                 <button type="button" class="btn btn-success">
