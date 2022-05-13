@@ -63,7 +63,7 @@
                     class="fa-solid fa-calendar botonTabla"
                     :disabled="
                       (evaluacion.id_coordinacion.id_asignatura
-                        .isAutogestionada == 'False') || (evaluacion.estado == 'E')
+                        .isAutogestionada == false) || (evaluacion.estado == 'E')
                     "
                     title="Modificar fecha de evaluación"
                   ></button>
@@ -76,7 +76,7 @@
                     v-on:click="deleteEvaluacion($event, index)"
                     :disabled="
                       (evaluacion.id_coordinacion.id_asignatura
-                        .isAutogestionada == 'False') || (evaluacion.estado == 'E')
+                        .isAutogestionada == false) || (evaluacion.estado == 'E')
                     "
                     title="Eliminar evaluación"
                   ></button>
