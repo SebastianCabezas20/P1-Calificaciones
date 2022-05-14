@@ -66,6 +66,7 @@
             <button
               type="submit"
               class="btn btn-primary relative justify-center py-2 px-4"
+              @click.prevent="login()"
             >
               Enviar
             </button>
