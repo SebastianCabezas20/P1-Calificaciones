@@ -64,7 +64,7 @@
 
           <div class="px-5 pt-3 d-flex justify-content-center">
             <button
-              type="submit"
+              type=""
               class="btn btn-primary relative justify-center py-2 px-4"
               @click.prevent="login()"
             >
