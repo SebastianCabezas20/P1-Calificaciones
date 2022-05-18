@@ -9,95 +9,101 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h3 class="textTitle">Docencia: Mis Coordinaciones (Teoría)</h3>
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Mis coordinaciones (Teoría)</h3>
       </div>
-      <div class="tableContent">
-        <table class="table text-center">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Nombre</th>
-              <th>Horario</th>
-              <th>Componente</th>
-              <th>Calificaciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <template v-for="coordinacion in coordinaciones" :key="coordinacion.id">
-              <tr
-                v-if="
-                  coordinacion.id_coordinacion.id_asignatura.componente === 'T'
-                "
-              >
-                <td>{{ coordinacion.id_coordinacion.id_asignatura.codigo }}</td>
-                <td>{{ coordinacion.id_coordinacion.id_asignatura.nombre }}</td>
-                <td>{{ coordinacion.id_coordinacion.bloques_horario }}</td>
-                <td>
-                  {{ coordinacion.id_coordinacion.id_asignatura.componente }}
-                </td>
-                <td>{{ coordinacion.id_coordinacion.id_asignatura.nivel }}</td>
-                <td>
-                  <button
-                    @click="getAsignatura($event, coordinacion.id_coordinacion.id)"
-                    type="button"
-                    class="btn btn-light"
-                  >
-                    Más Información
-                  </button>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 
-  <div class="contentViews">
-    <div class="centralContent">
-      <div class="titleSection">
-        <h3 class="textTitle">Docencia: Mis Coordinaciones (Laboratorio)</h3>
-      </div>
-      <div class="tableContent">
-        <table class="table text-center">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Nombre</th>
-              <th>Horario</th>
-              <th>Componente</th>
-              <th>Calificaciones</th>
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th class="row-Codigo">Código</th>
+            <th class="row-Nombre">Nombre</th>
+            <th class="row-Horario">Horario</th>
+            <th class="row-Nivel">Nivel</th>
+            <th class="row-ButtonText"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <template
+            v-for="coordinacion in coordinaciones"
+            :key="coordinacion.id"
+          >
+            <tr
+              v-if="
+                coordinacion.id_coordinacion.id_asignatura.componente === 'T'
+              "
+            >
+              <td>
+                {{ coordinacion.id_coordinacion.id_asignatura.codigo }}-{{
+                  coordinacion.id_coordinacion.coordinacion
+                }}-{{ coordinacion.id_coordinacion.seccion }}
+              </td>
+              <td>{{ coordinacion.id_coordinacion.id_asignatura.nombre }}</td>
+              <td>{{ coordinacion.id_coordinacion.bloques_horario }}</td>
+              <td>{{ coordinacion.id_coordinacion.id_asignatura.nivel }}</td>
+              <td>
+                <button
+                  @click="
+                    getAsignatura($event, coordinacion.id_coordinacion.id)
+                  "
+                  type="button"
+                  class="botonTabla"
+                >
+                  Más Información
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <template v-for="coordinacion in coordinaciones" :key="coordinacion.id">
-              <tr
-                v-if="
-                  coordinacion.id_coordinacion.id_asignatura.componente === 'L'
-                "
-              >
-                <td>{{ coordinacion.id_coordinacion.id_asignatura.codigo }}</td>
-                <td>{{ coordinacion.id_coordinacion.id_asignatura.nombre }}</td>
-                <td>{{ coordinacion.id_coordinacion.bloques_horario }}</td>
-                <td>
-                  {{ coordinacion.id_coordinacion.id_asignatura.componente }}
-                </td>
-                <td>{{ coordinacion.id_coordinacion.id_asignatura.nivel }}</td>
-                <td>
-                  <button
-                    v-on:click="getAsignatura($event, coordinacion.id_coordinacion.id)"
-                    type="button"
-                    class="btn btn-light"
-                  >
-                    Más Información
-                  </button>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
+          </template>
+        </tbody>
+      </table>
+
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Mis coordinaciones (Laboratorio)</h3>
       </div>
+
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th class="row-Codigo">Código</th>
+            <th class="row-Nombre">Nombre</th>
+            <th class="row-Horario">Horario</th>
+            <th class="row-Nivel">Nivel</th>
+            <th class="row-ButtonText"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <template
+            v-for="coordinacion in coordinaciones"
+            :key="coordinacion.id"
+          >
+            <tr
+              v-if="
+                coordinacion.id_coordinacion.id_asignatura.componente === 'L'
+              "
+            >
+              <td>
+                {{ coordinacion.id_coordinacion.id_asignatura.codigo }}-{{
+                  coordinacion.id_coordinacion.coordinacion
+                }}-{{ coordinacion.id_coordinacion.seccion }}
+              </td>
+              <td>{{ coordinacion.id_coordinacion.id_asignatura.nombre }}</td>
+              <td>{{ coordinacion.id_coordinacion.bloques_horario }}</td>
+              <td>{{ coordinacion.id_coordinacion.id_asignatura.nivel }}</td>
+              <td>
+                <button
+                  v-on:click="
+                    getAsignatura($event, coordinacion.id_coordinacion.id)
+                  "
+                  type="button"
+                  class="btn btn-light"
+                >
+                  Más Información
+                </button>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>

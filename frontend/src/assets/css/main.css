@@ -1,0 +1,111 @@
+/* Estilos */
+
+.contentViews {
+  position: relative;
+  width: calc(100% - 260px);
+  height: 100%;
+  margin-left: 260px;
+}
+
+.textTitleV2 {
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: -1px;
+}
+
+.tableV2 {
+  border-collapse: collapse;
+  font-size: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  table-layout: fixed;
+  margin: 15px 0px 30px 0px;
+}
+
+.tableV2 thead tr {
+  background-color: #004883;
+  color: #ffffff;
+  text-align: left;
+  font-size: 16px;
+}
+
+.tableV2 th,
+.tableV2 td {
+  padding: 12px 15px;
+}
+
+.tableV2 tbody tr {
+  border-bottom: 2px solid #dddddd;
+}
+
+.tableV2 tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.tableV2 tbody tr:last-of-type {
+  border-bottom: 3px solid #004883;
+}
+
+.row-Codigo,
+.row-Horario,
+.row-Nivel,
+.row-Ponderacion {
+  width: 10%;
+}
+
+.row-ButtonIcon {
+  width: 5%;
+}
+
+.row-ButtonText {
+  width: 10%;
+}
+
+.row-Nombre {
+  width: 40%;
+}
+
+.botonTabla {
+  background: #004883;
+  border-radius: 999px;
+  box-shadow: #004883 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}
+
+.botonTabla:hover {
+  transform: scale(1.05);
+}
+
+.botonTabla:disabled {
+  opacity: 0.5;
+}
+
+.submitButton {
+  background: #004883;
+  border-radius: 10px;
+  color: #ffffff;
+  border: solid 1px transparent;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  font-size: 16px;
+  font-weight: 400;
+  width: 200px;
+  height: 40px;
+}
+
+.submitButton:hover {
+    transition: all .1s ease-in-out;
+    opacity: 0.9;
+}

@@ -9,86 +9,84 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h3 class="textTitle">Evaluaciones</h3>
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Evaluaciones</h3>
       </div>
 
-      <div class="tableContent">
-        <table class="table">
-          <thead class="text-center">
-            <tr>
-              <th>Evaluación</th>
-              <th>Tipo</th>
-              <th>Fecha de Rendición</th>
-              <th>Estado</th>
-              <th>Ponderación</th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-            <tr v-for="(evaluacion, index) in evaluacionesCurso" :key="index">
-              <td>{{ evaluacion.nombre }}</td>
-              <td>{{ evaluacion.id_tipoEvaluacion.nombre }}</td>
-              <td>{{ evaluacion.fechaEvActual }}</td>
-              <td v-if="evaluacion.estado == 'E'">Evaluada</td>
-              <td v-else>Pendiente</td>
-              <td>{{ evaluacion.ponderacion }}</td>
-              <td>
-                <div class="text-center">
-                  <button
-                    class="fa-solid fa-pencil botonTabla"
-                    v-on:click="calificarEvaluacion($event, evaluacion.id)"
-                    :disabled="evaluacion.estado == 'E'"
-                    title="Ingresar calificaciones"
-                  ></button>
-                </div>
-              </td>
-              <td>
-                <div class="text-center">
-                  <button
-                    class="fa-solid fa-gear botonTabla"
-                    v-on:click="modificarCalificacion($event, evaluacion.id)"
-                    :disabled="evaluacion.estado == 'P'"
-                    title="Modificar calificaciones"
-                  ></button>
-                </div>
-              </td>
-              <td>
-                <div class="text-center">
-                  <button
-                    @click="(showModalFecha = true), (modalIndex = index)"
-                    class="fa-solid fa-calendar botonTabla"
-                    :disabled="
-                      (evaluacion.id_coordinacion.id_asignatura
-                        .isAutogestionada == false) || (evaluacion.estado == 'E')
-                    "
-                    title="Modificar fecha de evaluación"
-                  ></button>
-                </div>
-              </td>
-              <td>
-                <div class="text-center">
-                  <button
-                    class="fa-solid fa-trash-can botonTabla"
-                    v-on:click="deleteEvaluacion($event, index)"
-                    :disabled="
-                      (evaluacion.id_coordinacion.id_asignatura
-                        .isAutogestionada == false) || (evaluacion.estado == 'E')
-                    "
-                    title="Eliminar evaluación"
-                  ></button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th>Evaluación</th>
+            <th>Tipo</th>
+            <th>Fecha de Rendición</th>
+            <th>Estado</th>
+            <th class="row-Ponderacion">Pondera</th>
+            <th class="row-ButtonIcon"></th>
+            <th class="row-ButtonIcon"></th>
+            <th class="row-ButtonIcon"></th>
+            <th class="row-ButtonIcon"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(evaluacion, index) in evaluacionesCurso" :key="index">
+            <td>{{ evaluacion.nombre }}</td>
+            <td>{{ evaluacion.id_tipoEvaluacion.nombre }}</td>
+            <td>{{ evaluacion.fechaEvActual }}</td>
+            <td v-if="evaluacion.estado == 'E'">Evaluada</td>
+            <td v-else>Pendiente</td>
+            <td>{{ evaluacion.ponderacion * 100 }}%</td>
+            <td>
+              <div class="text-center">
+                <button
+                  class="fa-solid fa-pencil botonTabla"
+                  v-on:click="calificarEvaluacion($event, evaluacion.id)"
+                  :disabled="evaluacion.estado == 'E'"
+                  title="Ingresar calificaciones"
+                ></button>
+              </div>
+            </td>
+            <td>
+              <div class="text-center">
+                <button
+                  class="fa-solid fa-gear botonTabla"
+                  v-on:click="modificarCalificacion($event, evaluacion.id)"
+                  :disabled="evaluacion.estado == 'P'"
+                  title="Modificar calificaciones"
+                ></button>
+              </div>
+            </td>
+            <td>
+              <div class="text-center">
+                <button
+                  @click="(showModalFecha = true), (modalIndex = index)"
+                  class="fa-solid fa-calendar botonTabla"
+                  :disabled="
+                    evaluacion.id_coordinacion.id_asignatura.isAutogestionada ==
+                      false || evaluacion.estado == 'E'
+                  "
+                  title="Modificar fecha de evaluación"
+                ></button>
+              </div>
+            </td>
+            <td>
+              <div class="text-center">
+                <button
+                  class="fa-solid fa-trash-can botonTabla"
+                  v-on:click="deleteEvaluacion($event, index)"
+                  :disabled="
+                    evaluacion.id_coordinacion.id_asignatura.isAutogestionada ==
+                      false || evaluacion.estado == 'E'
+                  "
+                  title="Eliminar evaluación"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <!-- Botón que abre el modal para agregar una evaluación. -->
-      <button @click="showModal = true" type="button" class="btn btn-primary">
+      <button @click="showModal = true" type="button" class="submitButton">
         Agregar Evaluación
       </button>
 
@@ -380,28 +378,4 @@ export default {
 };
 </script>
 
-<style>
-.botonTabla {
-  background: #004883;
-  border-radius: 999px;
-  box-shadow: #004883 0 10px 20px -10px;
-  box-sizing: border-box;
-  color: #ffffff;
-  opacity: 1;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 24px;
-  outline: 0 solid transparent;
-  padding: 8px 18px;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
-  width: fit-content;
-  word-break: break-word;
-  border: 0;
-}
-
-.botonTabla:disabled {
-  opacity: 0.5;
-}
-</style>
+<style></style>

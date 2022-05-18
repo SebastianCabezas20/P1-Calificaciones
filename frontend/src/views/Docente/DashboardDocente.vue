@@ -26,11 +26,4 @@ export default {
 };
 </script>
 
-<style>
-.contentViews {
-  position: relative;
-  width: calc(100% - 260px);
-  height: 100%;
-  margin-left: 260px;
-}
-</style>
+<style></style>
