@@ -87,7 +87,7 @@
 
       <!-- Botón que abre el modal para agregar una evaluación. -->
       <button @click="showModal = true" type="button" class="submitButton">
-        Agregar Evaluación
+        Agregar evaluación
       </button>
 
       <!-- Modal -->
@@ -97,7 +97,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Crear Evaluación
+                  Crear evaluación
                 </h5>
                 <button
                   type="button"
@@ -123,7 +123,7 @@
                   </div>
 
                   <div class="mb-3">
-                    <label class="form-label">Tipo de Evaluación</label>
+                    <label class="form-label">Tipo de evaluación</label>
                     <select
                       class="form-select"
                       v-model="tipoEvaluacion"
@@ -176,7 +176,7 @@
                       type="submit"
                       class="btn btn-primary"
                     >
-                      Guardar Cambios
+                      Guardar cambios
                     </button>
                   </div>
                 </form>
@@ -193,7 +193,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Modificar Fecha Evaluación
+                  Modificar fecha de evaluación
                 </h5>
                 <button
                   type="button"
@@ -210,7 +210,7 @@
                 >
                   <div class="mb-3">
                     <label class="form-label"
-                      >Nueva Fecha de la Evaluación</label
+                      >Nueva fecha de evaluación</label
                     >
                     <input
                       v-model="fechaEvaluacion"
@@ -229,7 +229,7 @@
                       Cancelar
                     </button>
                     <button type="submit" class="btn btn-primary">
-                      Guardar Cambios
+                      Guardar cambios
                     </button>
                   </div>
                 </form>
