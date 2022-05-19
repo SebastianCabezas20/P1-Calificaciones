@@ -33,7 +33,7 @@
             {{ this.informacionEvaluacion.fechaEvActual }}
           </p>
           <p class="informationCalification">
-            Fecha tentativa de entrega de notas:
+            Fecha límite de entrega de notas:
             {{ this.informacionEvaluacion.fechaEntrega }}
           </p>
         </div>
@@ -49,67 +49,70 @@
         </div>
       </div>
 
-      <table class="tableV2">
-        <thead>
-          <tr>
-            <th style="width: 4%;"></th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Rut</th>
-            <th>D. Verificador</th>
-            <th>Calificación</th>
-            <th></th>
-          </tr>
-        </thead>
+      <form @submit.prevent="submitCalificaciones" action="POST">
+        <table class="tableV2">
+          <thead>
+            <tr>
+              <th style="width: 4%"></th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Rut</th>
+              <th>D. Verificador</th>
+              <th>Calificación</th>
+              <th></th>
+            </tr>
+          </thead>
 
-        <!-- Docente sube una planilla de notas.  -->
-        <tbody>
-          <tr
-            v-for="(calificacion, index) in calificacionesEstudiantes"
-            :key="calificacion.id"
-          >
-            <td>
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="defaultCheck1"
-              />
-            </td>
-            <td>
-              {{ calificacion.id_estudiante.id_usuario.first_name }}
-            </td>
-            <td>
-              {{ calificacion.id_estudiante.id_usuario.last_name }}
-            </td>
-            <td>
-              {{ calificacion.id_estudiante.rut }}
-            </td>
-            <td>
-              {{ calificacion.id_estudiante.dig_verificador }}
-            </td>
-            <td>{{ calificacion.nota }}</td>
+          <!-- Docente sube una planilla de notas.  -->
+          <tbody>
+            <tr
+              v-for="(calificacion, index) in calificacionesEstudiantes"
+              :key="calificacion.id"
+            >
+              <td>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="defaultCheck1"
+                />
+              </td>
+              <td>
+                {{ calificacion.id_estudiante.id_usuario.first_name }}
+              </td>
+              <td>
+                {{ calificacion.id_estudiante.id_usuario.last_name }}
+              </td>
+              <td>
+                {{ calificacion.id_estudiante.rut }}
+              </td>
+              <td>
+                {{ calificacion.id_estudiante.dig_verificador }}
+              </td>
+              <td>{{ calificacion.nota }}</td>
 
-            <td>
-              <input
-                class="form-control"
-                type="text"
-                placeholder="Calificación"
-                required
-                v-model="calificacionesEstudiantes[index].nota"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <button
-        v-on:click="submitCalificaciones"
-        type="button"
-        class="submitButton"
-      >
-        Subir calificaciones
-      </button>
+              <td>
+                <input
+                  class="form-control"
+                  type="number"
+                  min="1"
+                  max="7"
+                  step="0.1"
+                  placeholder="Calificación"
+                  required
+                  v-model="calificacionesEstudiantes[index].nota"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button
+          type="submit"
+          class="submitButton"
+        >
+          Subir calificaciones
+        </button>
+      </form>
     </div>
   </div>
 </template>
