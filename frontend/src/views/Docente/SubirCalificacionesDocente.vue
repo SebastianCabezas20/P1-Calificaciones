@@ -106,12 +106,7 @@
             </tr>
           </tbody>
         </table>
-        <button
-          type="submit"
-          class="submitButton"
-        >
-          Subir calificaciones
-        </button>
+        <button type="submit" class="submitButton">Subir calificaciones</button>
       </form>
     </div>
   </div>
@@ -201,6 +196,7 @@ export default {
       let fechaActual = new Date();
       fechaActual = fechaActual.toISOString().slice(0, 10);
       let nuevaCalificacion;
+      let that = this;
 
       for (var i = 0; i < this.calificacionesEstudiantes.length; i++) {
         nuevaCalificacion = {
@@ -233,7 +229,15 @@ export default {
           nuevaEvaluacion
         )
         .then(function (response) {
-          location.reload();
+          that.$swal
+            .fire({
+              icon: "success",
+              title: "Calificación exitosa",
+              text: "Los estudiantes fueron calificados satisfactoriamente",
+            })
+            .then((result) => {
+              that.$router.push({ path: `/docente/curso/${that.idCurso}` });
+            });
         });
     },
   },
