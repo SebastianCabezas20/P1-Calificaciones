@@ -7,44 +7,42 @@
         </div>
       </div>
 
-      <div class="linkSidebar">
-        <ul>
-          <li>
-            <a href="/docente/home">
-              <span class="icon"><i class="fa-solid fa-house"></i></span>
-              <span>Inicio</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <span class="icon"><i class="fa-solid fa-user"></i></span>
-              <span>Mi Cuenta</span>
-            </a>
-          </li>
-          <li>
-            <a href="/docente/cursos">
-              <span class="icon"><i class="fa-solid fa-book"></i></span>
-              <span>Mis Cursos</span>
-            </a>
-          </li>
-          <li>
-            <a href="/docente/solicitudes">
-              <span class="icon"
-                ><i class="fa-solid fa-file-circle-question"></i
-              ></span>
-              <span>Solicitudes</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <span class="icon"
-                ><i class="fa-solid fa-arrow-right-from-bracket"></i
-              ></span>
-              <span>Cerrar Sesión</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+      <ul>
+        <li>
+          <a href="/docente/home">
+            <span class="icon"><i class="fa-solid fa-house"></i></span>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="icon"><i class="fa-solid fa-user"></i></span>
+            <span>Mi Cuenta</span>
+          </a>
+        </li>
+        <li>
+          <a href="/docente/cursos">
+            <span class="icon"><i class="fa-solid fa-book"></i></span>
+            <span>Mis Cursos</span>
+          </a>
+        </li>
+        <li>
+          <a href="/docente/solicitudes">
+            <span class="icon"
+              ><i class="fa-solid fa-file-circle-question"></i
+            ></span>
+            <span>Solicitudes</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="icon"
+              ><i class="fa-solid fa-arrow-right-from-bracket"></i
+            ></span>
+            <span>Cerrar Sesión</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
