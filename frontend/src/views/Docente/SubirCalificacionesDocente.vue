@@ -9,120 +9,107 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h3 class="textTitle">Calificación de Estudiantes</h3>
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Calificación de Estudiantes</h3>
       </div>
 
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-sm">
-            <p class="informationCalification">
-              Nombre: {{ this.informacionEvaluacion.nombre }}
-            </p>
+      <!-- Modificar el diseño con el que se muestra la información, por algo mas moderno. -->
+      <div class="row" style="background-color: #ffffff">
+        <div class="col-sm-8 p-0">
+          <p class="informationCalification">
+            Nombre: {{ this.informacionEvaluacion.nombre }}
+          </p>
 
-            <p
-              v-if="this.informacionEvaluacion.estado == 'P'"
-              class="informationCalification"
-            >
-              Estado: Pendiente
-            </p>
-            <p v-else class="informationCalification">Estado: Evaluada</p>
-
-            <p class="informationCalification">
-              Fecha de realización:
-              {{ this.informacionEvaluacion.fechaEvActual }}
-            </p>
-            <p class="informationCalification">
-              Fecha tentativa de entrega de notas:
-              {{ this.informacionEvaluacion.fechaEntrega }}
-            </p>
-          </div>
-
-          <div class="col-sm">
-            <span class="input-group-text">Observación General</span>
-            <textarea
-              class="form-control"
-              aria-label="With textarea"
-              v-model="observacion"
-            ></textarea>
-          </div>
-
-          <div class="col-sm">
-            <label for="formFile" class="form-label">Adjuntar planilla</label>
-            <input
-              class="form-control"
-              type="file"
-              id="formFile"
-              @change="onChange"
-            />
-          </div>
-        </div>
-
-        <div class="tableContent">
-          <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Rut</th>
-                <th>D. Verificador</th>
-                <th>Calificación</th>
-              </tr>
-            </thead>
-
-            <!-- Docente sube una planilla de notas.  -->
-            <tbody>
-              <tr
-                v-for="(calificacion, index) in calificacionesEstudiantes"
-                :key="calificacion.id"
-              >
-                <td>
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="defaultCheck1"
-                  />
-                </td>
-                <td>
-                  {{ calificacion.id_estudiante.id_usuario.first_name }}
-                </td>
-                <td>
-                  {{ calificacion.id_estudiante.id_usuario.last_name }}
-                </td>
-                <td>
-                  {{ calificacion.id_estudiante.rut }}
-                </td>
-                <td>
-                  {{ calificacion.id_estudiante.dig_verificador }}
-                </td>
-                <td>{{ calificacion.nota }}</td>
-
-                <td>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="Calificación"
-                    required
-                    v-model="calificacionesEstudiantes[index].nota"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="w-25">
-          <button
-            v-on:click="submitCalificaciones"
-            type="button"
-            class="btn btn-primary"
+          <p
+            v-if="this.informacionEvaluacion.estado == 'P'"
+            class="informationCalification"
           >
-            Subir calificaciones
-          </button>
+            Estado: Pendiente
+          </p>
+          <p v-else class="informationCalification">Estado: Evaluada</p>
+
+          <p class="informationCalification">
+            Fecha de realización:
+            {{ this.informacionEvaluacion.fechaEvActual }}
+          </p>
+          <p class="informationCalification">
+            Fecha tentativa de entrega de notas:
+            {{ this.informacionEvaluacion.fechaEntrega }}
+          </p>
+        </div>
+
+        <div class="col-sm-4">
+          <label for="formFile" class="form-label">Adjuntar planilla</label>
+          <input
+            class="form-control"
+            type="file"
+            id="formFile"
+            @change="onChange"
+          />
         </div>
       </div>
+
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th style="width: 4%;"></th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Rut</th>
+            <th>D. Verificador</th>
+            <th>Calificación</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <!-- Docente sube una planilla de notas.  -->
+        <tbody>
+          <tr
+            v-for="(calificacion, index) in calificacionesEstudiantes"
+            :key="calificacion.id"
+          >
+            <td>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="defaultCheck1"
+              />
+            </td>
+            <td>
+              {{ calificacion.id_estudiante.id_usuario.first_name }}
+            </td>
+            <td>
+              {{ calificacion.id_estudiante.id_usuario.last_name }}
+            </td>
+            <td>
+              {{ calificacion.id_estudiante.rut }}
+            </td>
+            <td>
+              {{ calificacion.id_estudiante.dig_verificador }}
+            </td>
+            <td>{{ calificacion.nota }}</td>
+
+            <td>
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Calificación"
+                required
+                v-model="calificacionesEstudiantes[index].nota"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button
+        v-on:click="submitCalificaciones"
+        type="button"
+        class="submitButton"
+      >
+        Subir calificaciones
+      </button>
     </div>
   </div>
 </template>
@@ -250,16 +237,4 @@ export default {
 };
 </script>
 
-<style>
-.algo {
-  border: 2px solid blue;
-}
-
-.informationCalification {
-  color: #000;
-  font-size: 17px;
-  font-weight: bold;
-  margin: 0;
-  padding: 4px;
-}
-</style>
+<style></style>

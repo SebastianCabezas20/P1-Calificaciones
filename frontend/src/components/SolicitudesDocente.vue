@@ -6,7 +6,11 @@
     <td v-else-if="solicitud_revision.estado == 'A'"> Aprobada</td>
     <td v-else>Rechazada</td>
     <!-- Mantener id Estudiante - id Evaluacion -->
-    <td><button type="button" class="btn btn-light" @click="Ingresar(solicitud_revision.id_estudiante.id,solicitud_revision.id_evaluacion.id)">Responder</button></td>
+    <td>
+        <button type="button" class="botonTabla" @click="Ingresar(solicitud_revision.id_estudiante.id,solicitud_revision.id_evaluacion.id)">
+        Responder
+        </button>
+    </td>
 </template>
 
 <script>

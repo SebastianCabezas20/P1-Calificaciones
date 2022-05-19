@@ -9,35 +9,34 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h3 class="textTitle">Solicitudes de Apelación</h3>
+      
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Solicitudes de Apelación</h3>
       </div>
-      <div class="tableContent">
-        <table class="table text-center">
-          <thead>
-            <tr>
-              <th>Asignatura</th>
-              <th>Estudiante</th>
-              <th>Evaluacion</th>
-              <th>Estado</th>
-              <th>Accion</th>
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th>Nombre asignatura</th>
+            <th>Estudiante</th>
+            <th>Evaluacion</th>
+            <th>Estado</th>
+            <th class="row-ButtonText"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="solicitud in solicitudes" :key="solicitud.id">
+            <tr scope="row" v-if="solicitud.id_docente.id === idDocente">
+              <SolicitudesDocente
+                :solicitud_revision="solicitud"
+                @EventIdEvaluacion="
+                  (idEstudiante, idEvaluacion) =>
+                    ingresar(idEstudiante, idEvaluacion)
+                "
+              />
             </tr>
-          </thead>
-          <tbody>
-            <template v-for="solicitud in solicitudes" :key="solicitud.id">
-              <tr scope="row" v-if="solicitud.id_docente.id === idDocente">
-                <SolicitudesDocente
-                  :solicitud_revision="solicitud"
-                  @EventIdEvaluacion="
-                    (idEstudiante, idEvaluacion) =>
-                      ingresar(idEstudiante, idEvaluacion)
-                  "
-                />
-              </tr>
-            </template>
-          </tbody>
-        </table>
-      </div>
+          </template>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -84,50 +83,4 @@ export default {
 };
 </script>
 
-<style>
-.centralContent {
-  margin: auto;
-  width: 98%;
-  margin-top: 10px;
-  font-family: "Inter", sans-serif;
-}
-
-.titleSection {
-  display: block;
-  background: #c4c4c4;
-  border: 2px solid #004883;
-  border-radius: 20px;
-  padding: 3px;
-  margin-bottom: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.textTitle {
-  text-align: center;
-  font-size: 30px;
-  color: #000;
-  font-weight: 600;
-}
-
-.tableContent {
-  background: #c4c4c4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  border: 2px solid #004883;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-bottom: 20px;
-}
-
-.tableContent .table {
-  border-collapse: collapse;
-}
-
-.tableContent .table thead tr {
-  text-align: center;
-}
-
-.tableContent .table thead tr th {
-  padding: 8px;
-}
-</style>
+<style></style>
