@@ -12,16 +12,18 @@
       <div
         id="filaInformacion"
         class="row row-cols-3"
-        v-for="informacionT in informacionTeoria"
       >
         <div class="col">
-          {{ informacionT.id_coordinacion.id_asignatura.nombre }}
+          {{ informacionTeoria[0].id_coordinacion.id_asignatura.nombre }}
         </div>
         <div class="col">
-          Nivel: {{ informacionT.id_coordinacion.id_asignatura.nivel }}
+          Nivel: {{ informacionTeoria[0].id_coordinacion.id_asignatura.nivel }}
         </div>
         <div class="col">
-          Docente: {{ informacionT.id_docente.id_usuario.username }}
+          <div class="col" v-for="(info,id) in informacionTeoria" :key="info.id">
+          <label v-if="id == 0">Docente: {{info.id_docente.id_usuario.username}}</label>
+          <label v-else style="margin-left:72px">{{info.id_docente.id_usuario.username}}</label>
+          </div>
         </div>
       </div>
 
@@ -38,7 +40,7 @@
                 <th>Observacion</th>
                 <th>Calificacion</th>
                 <th>Ponderacion</th>
-                <th>Fecha</th>
+                <th>Fecha entrega</th>
                 <th>Apelar</th>
                 <!--Saque estado de la evaluacion-->
               </tr>
@@ -57,27 +59,56 @@
           </table>
         </div>
 
+        <div class="row">
+          <div class="col-md-3">
+            Evaluaciones pendientes
+          </div>
+        </div>
+        <div class="tableContent">
+          <table class="table text-center">
+            <thead>
+              <tr>
+                <th>Evaluacion</th>
+                <th>Ponderacion</th>
+                <th>Fecha de evaluación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="evaluacion in evaluacionesSinNotaTeoria" :key="evaluacion.id">
+                <td>{{evaluacion.nombre}}</td>
+                <td>{{evaluacion.ponderacion}}</td>
+                <td>{{evaluacion.fechaEvActual}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <div class="stateStudent">
           <h4>Estado del estudiante</h4>
         </div>
       </div>
+      <br><br><br>
 
-      <div
+       <div
         v-if="this.mostrar"
         id="filaInformacion"
         class="row row-cols-3"
-        v-for="informacionL in informacionLaboratorio"
       >
         <div class="col">
-          {{ informacionL.id_coordinacion.id_asignatura.nombre }}
+          {{ informacionLaboratorio[0].id_coordinacion.id_asignatura.nombre }}
         </div>
         <div class="col">
-          Nivel: {{ informacionL.id_coordinacion.id_asignatura.nivel }}
+          Nivel: {{ informacionLaboratorio[0].id_coordinacion.id_asignatura.nivel }}
         </div>
         <div class="col">
-          Docente: {{ informacionL.id_docente.id_usuario.username }}
+          <div class="col" v-for="(info,id) in informacionLaboratorio" :key="info.id">
+          <label v-if="id == 0">Docente: {{info.id_docente.id_usuario.username}}</label>
+          <label v-else style="margin-left:72px">{{info.id_docente.id_usuario.username}}</label>
+          </div>
         </div>
       </div>
+      
+      
       <div v-if="this.mostrar" class="componentCourse">
         <div class="titleSection">
           <h3 class="textTitle">Calificaciones laboratorio</h3>
@@ -91,7 +122,7 @@
                 <th>Observacion</th>
                 <th>Calificacion</th>
                 <th>Ponderacion</th>
-                <th>Fecha</th>
+                <th>Fecha entrega</th>
                 <th>Apelar</th>
               </tr>
             </thead>
@@ -105,7 +136,30 @@
             </tbody>
           </table>
         </div>
-
+        <div class="row">
+          <div class="col-md-3">
+            Evaluaciones pendientes
+          </div>
+        </div>
+        <div class="tableContent">
+          <table class="table text-center">
+            <thead>
+              <tr>
+                <th>Evaluacion</th>
+                <th>Ponderacion</th>
+                <th>Fecha de evaluación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="evaluacion in evaluacionesSinNotaLaboratorio" :key="evaluacion.id">
+                <td>{{evaluacion.nombre}}</td>
+                <td>{{evaluacion.ponderacion}}</td>
+                <td>{{evaluacion.fechaEvActual}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
         <div class="stateStudent">
           <h4>Estado del estudiante</h4>
         </div>
@@ -126,8 +180,10 @@ export default {
   data() {
     return {
       calificacionesTeoria: [],
-      calificacionesLaboratorio: [],
+      evaluacionesSinNotaTeoria:[],
       informacionTeoria: [],
+      calificacionesLaboratorio: [],
+      evaluacionesSinNotaLaboratorio:[],
       informacionLaboratorio: [],
       mostrar: false,
     };
@@ -143,13 +199,15 @@ export default {
     let ins = this;
     let codigoAsig = this.codigoAsignatura;
     const idUsuario = this.$store.getters.idUsuario;
+    console.log("ID del usuario:"+ idUsuario + "ID de la asignatura:" + codigoAsig )
 
     axios
       .get(
         `http://localhost:8000/calificacionesTeoria/${codigoAsig}/${idUsuario}`
       )
       .then(function (response) {
-        ins.calificacionesTeoria = response.data;
+        ins.calificacionesTeoria = response.data[0];
+        ins.evaluacionesSinNotaTeoria = response.data[1]
       });
     axios
       .get(
@@ -157,7 +215,8 @@ export default {
       )
       .then(function (response) {
         if (response.data.length != 0) {
-          ins.calificacionesLaboratorio = response.data;
+          ins.calificacionesLaboratorio = response.data[0];
+          ins.evaluacionesSinNotaLaboratorio = response.data[1];
           ins.mostrar = true;
         }
       });

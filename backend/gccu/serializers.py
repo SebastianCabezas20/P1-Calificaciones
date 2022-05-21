@@ -220,3 +220,4 @@ class CalificacionEspecificaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Calificacion      
         fields = '__all__'
+
