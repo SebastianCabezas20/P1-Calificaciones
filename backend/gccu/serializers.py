@@ -101,11 +101,20 @@ class CalificacionSerializer(serializers.ModelSerializer):
         model = Calificacion      
         fields = ('id', 'nota', 'fecha_entrega', 'id_evaluacion', 'id_estudiante')  
 
-## Usado para ver la solicitudes de una asignatura
+# Encontrar la calificacion sin ningun dato adicional
+class CalificacionEspecificaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Calificacion      
+        fields = '__all__'
+
+
+
 class SolicitudSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
     id_estudiante = EstudianteSerializer()
     id_docente = DocenteSerializer()
+    id_calificacion = CalificacionEspecificaSerializer()
     class Meta:
         model = Solicitud_Revision
         fields = '__all__'
@@ -119,12 +128,6 @@ class CoordinacionEstudianteSerializer(serializers.ModelSerializer):
         fields = ('promedioEstudiante', 'id_estudiante', 'id_coordinacion')
 
 
-# Encontrar la calificacion sin ningun dato adicional
-class CalificacionEspecificaSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Calificacion      
-        fields = '__all__'
 
 #Serializer para mostrar datos en respuesta de solicitud
 class SolicitudRespuestaSerializer(serializers.ModelSerializer):
@@ -162,10 +165,12 @@ class SolicitudesEvaluacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion  
         fields = ('id','id_coordinacion','nombre')  
-# Para obtener las solicitudes respecto a un curso - 1
+# Para obtener las solicitudes respecto a un curso - 1 ------- ## Usado para ver la solicitudes de una asignatura de un jefe
 class SolicitudesDocenteCursoSerializer(serializers.ModelSerializer):
     id_evaluacion = SolicitudesEvaluacionSerializer()
     id_estudiante = EstudianteSerializer()
+    id_calificacion = CalificacionEspecificaSerializer()
+    id_docente = DocenteSerializer()
     class Meta:
         model = Solicitud_Revision     
         fields ='__all__'  

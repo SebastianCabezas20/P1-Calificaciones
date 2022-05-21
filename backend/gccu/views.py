@@ -250,15 +250,7 @@ def getAsignaturasJefeCarrera(request, idJefe = None):
 @api_view(['GET'])
 def getSolicitudesAsignaturaJefeCarrera(request, idAsignatura = None):
     ## ID asignatura seleccionado jefe de carrera
-    solicitudes = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).all()
-    if(solicitudes.count() != 0):
-        ids_evaluacion = solicitudes.values_list('id_evaluacion')
-        for id in ids_evaluacion:
-            print(id[0])
-        print(ids_evaluacion)
-        serializer = SolicitudSerializer(solicitudes, many="true")
-        return Response(serializer.data)
-    
+    solicitudes = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).all()    
     serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
     

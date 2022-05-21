@@ -31,17 +31,53 @@
 
                     <div class="modal-body">
                     <div class="container">
+                         <div class="row">
+                            <div class="col-5">Estudiante solicitante</div>
+                            <div class="col-5">{{solicitud.id_estudiante.id_usuario.username}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5">Profesor responsable</div>
+                            <div class="col-5">{{solicitud.id_docente.id_usuario.username}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5">Estado</div>
+                            <div class="col-5" v-if="solicitud.estado == 'A'" >Aprobada</div>
+                            <div class="col-5" v-else-if="solicitud.estado == 'R'" >Rechazado</div>
+                            <div class="col-5" v-else>Pendiente</div>
+                        </div>
                         <div class="row">
                             <div class="col-5">Motivo</div>
                             <div class="col-5">{{solicitud.motivo}}</div>
                         </div>
                         <div class="row">
+                            <div class="col-5">Fecha creacion</div>
+                            <div class="col-5">{{solicitud.fecha_creacion}}</div>
+                        </div>
+                        <div class="row" v-if="solicitud.estado != 'P'">
                             <div class="col-5">Respuesta</div>
                             <div class="col-5">{{solicitud.respuesta}}</div>
                         </div>
-                        <div class="row">
+                        <div class="row" v-if="solicitud.estado != 'P'">
                             <div class="col-5">Fecha Respuesta</div>
                             <div class="col-5">{{solicitud.fecha_respuesta}}</div>
+                        </div>
+                        <div class="row" v-if="solicitud.estado == 'P' || solicitud.estado == 'R'">
+                            <div class="col-3">Nota actual</div>
+                            <div class="col-3">{{solicitud.actual_nota}}</div>
+                            <div class="col-3">Fecha Publicacion</div>
+                            <div class="col-3">{{solicitud.id_calificacion.fecha_entrega}}</div>
+                        </div>
+                        <div class="row" v-if="solicitud.estado == 'A'">
+                            <div class="col-3">Nota modificada</div>
+                            <div class="col-3">{{solicitud.actual_nota}}</div>
+                            <div class="col-3">Fecha publicacion</div>
+                            <div class="col-3">{{solicitud.fecha_respuesta}}</div>
+                        </div>
+                        <div class="row" v-if="solicitud.estado == 'A'">
+                            <div class="col-3">Nota anterior</div>
+                            <div class="col-3">{{solicitud.anterior_nota}}</div>
+                            <div class="col-3">Fecha publicacion</div>
+                            <div class="col-3">{{solicitud.id_calificacion.fecha_entrega}}</div>
                         </div>
                     </div>
                     </div>

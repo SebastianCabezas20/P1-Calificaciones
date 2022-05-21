@@ -17,6 +17,7 @@
           <thead>
             <tr>
               <th>Nombre Evaluacion</th>
+              <th>Profesor</th>
               <th>Estado</th>
               <th>Fecha Creacion</th>
               <th>Estudiante</th>
