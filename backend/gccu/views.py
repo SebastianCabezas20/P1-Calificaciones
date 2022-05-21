@@ -130,14 +130,10 @@ def getAsignaturastoCoordinador(request, idCoordinador = None):
 ## ID estudiante - ID evaluacion - 
 @api_view(['GET'])
 def getDataSolicitudRespuesta(request,idEstudiante = None, idEvaluacion = None):
-    ## Prueba idEstudiante 2 IdEval 2
+    ## Solicitud segun ID estudiante y ID evaluacion
     solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id = idEstudiante, id_evaluacion__id = idEvaluacion).all()
-    #Cambiar ids respecto a la solicitud realizada deberian ser las mismas
-    nota = Calificacion.objects.filter(id_estudiante = idEstudiante, id_evaluacion = idEvaluacion).all()
-    #idEvaluacion = Solicitud_Revision.objects.filter(id_estudiante__id = 2).values('id_evaluacion').first().get('id_evaluacion')
     serializer = SolicitudRespuestaSerializer(solicitudes, many = "true")
-    serializerNota = CalificacionEspecificaSerializer(nota, many = "true")
-    return Response([serializer.data,serializerNota.data])
+    return Response(serializer.data)
 
 #####################POSIBLE COMBINACION DE SERIALIZERS getDataSolicitudRespuesta
 ## Actualizacion de Solicitud respuesta id_motivo y id_calificacion para cambiar nota

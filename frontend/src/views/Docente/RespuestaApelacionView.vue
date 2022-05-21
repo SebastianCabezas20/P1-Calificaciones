@@ -24,7 +24,7 @@
           <h6 class="textoFormulario">
             Evaluación: {{ apelacion[0].id_evaluacion.nombre }}
           </h6>
-          <h6 class="textoFormulario">Calificación: {{ notaJson[0].nota }}</h6>
+          <h6 class="textoFormulario">Calificación: {{ apelacion[0].id_calificacion.nota }}</h6>
 
           <form class="mt-2">
             <div class="itemFormulario">
@@ -129,7 +129,6 @@ export default {
   data() {
     return {
       apelacion: [],
-      notaJson: [],
       isAceptar: null,
       respuestaActual: "",
       notaActual: null,
@@ -152,13 +151,100 @@ export default {
         this.notaActual > 7
       ) {
         alert("Nota debe ser de 1 a 7");
-      } else {
+      } 
+      else {
         let idEstudianteSolicitud = this.idEstudiante;
         let idEvaluacionSolicitud = this.idEvaluacion;
+        // Caso aceptar solicitud y cambiar nota
+        if(this.isAceptar == true){
+          if(this.notaActual != null){
+              // Se crea la solicitud a cambiar
+              let solicitud = {
+              motivo: this.apelacion[0].motivo,
+              anterior_nota: this.apelacion[0].id_calificacion.nota, //Nota anterior
+              actual_nota:this.notaActual, // Nueva nota
+              fecha_creacion: this.apelacion[0].fecha_creacion,
+              respuesta: this.respuestaActual,
+              fecha_respuesta: new Date(),
+              estado: this.EstadoActual,
+              id_estudiante: idEstudianteSolicitud,
+              id_docente: this.apelacion[0].id_docente,
+              id_evaluacion: idEvaluacionSolicitud,
+              id_calificacion: this.apelacion[0].id_calificacion.id
+            }
+            // ID de la solictud para actulizar
+            let idSolicitud = this.apelacion[0].id;
+            axios
+              .put(
+                `http://localhost:8000/actualizar/solicitud/${idSolicitud}`,
+                solicitud
+              )
+              .then(function (response) {});
+            // Nueva tupla de calificacion
+            let notaNueva = {
+              nota: this.notaActual,
+              fecha_entrega: this.apelacion[0].id_calificacion.fecha_entrega,
+              id_estudiante: this.apelacion[0].id_calificacion.id_estudiante,
+              id_evaluacion: this.apelacion[0].id_calificacion.id_evaluacion,
+              id_observacion: this.apelacion[0].id_calificacion.id_observacion,
+            };
+            let idCalificacion = this.apelacion[0].id_calificacion.id;
+            axios
+              .put(
+                `http://localhost:8000/actualizar/calificacion/${idCalificacion}`,
+                notaNueva
+              )
+              .then(function (response) {});
+            router.push(`/docente/solicitudes/`);
+          }
+          else{// Nota no ingresada
+            alert("ingrese una nota");
+          }
+        }
+        else{// Rechazar una solicitud, solo actualizar solicitud
+          // Se crea la solicitud a cambiar
+          let solicitud = {
+          motivo: this.apelacion[0].motivo,
+          anterior_nota: null, //Null debido a que no hubo cambio de nota
+          actual_nota: this.apelacion[0].id_calificacion.nota, // Se mantiene la nota actual
+          fecha_creacion: this.apelacion[0].fecha_creacion,
+          respuesta: this.respuestaActual,
+          fecha_respuesta: new Date(),
+          estado: this.EstadoActual,
+          id_estudiante: idEstudianteSolicitud,
+          id_docente: this.apelacion[0].id_docente,
+          id_evaluacion: idEvaluacionSolicitud,
+          id_calificacion: this.apelacion[0].id_calificacion.id
+        }
+        // ID de la solictud para actulizar
+        let idSolicitud = this.apelacion[0].id;
+        axios
+          .put(
+            `http://localhost:8000/actualizar/solicitud/${idSolicitud}`,
+            solicitud
+          )
+          .then(function (response) {
+            router.push(`/docente/solicitudes/`);
+          });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         let solicitud = {
           id_estudiante: idEstudianteSolicitud,
           id_evaluacion: idEvaluacionSolicitud,
           motivo: this.apelacion[0].motivo,
+          
           fecha_creacion: this.apelacion[0].fecha_creacion,
           respuesta: this.respuestaActual,
           fecha_respuesta: new Date(),
@@ -205,13 +291,13 @@ export default {
     const that = this;
     let idEstudianteURL = this.idEstudiante;
     let idEvaluacionURL = this.idEvaluacion;
+    console.log("id Estudiante:" + idEstudianteURL + "id evaluacion:" + idEvaluacionURL)
     axios
       .get(
         `http://localhost:8000/solicitudRespuesta/${idEstudianteURL}/${idEvaluacionURL}`
       )
       .then(function (response) {
-        that.apelacion = response.data[0];
-        that.notaJson = response.data[1];
+        that.apelacion = response.data;
       });
 
     let identificacionUsuario = this.$store.getters.idUsuario;

@@ -118,10 +118,19 @@ class CoordinacionEstudianteSerializer(serializers.ModelSerializer):
         model = Coordinacion_Estudiante    
         fields = ('promedioEstudiante', 'id_estudiante', 'id_coordinacion')
 
+
+# Encontrar la calificacion sin ningun dato adicional
+class CalificacionEspecificaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Calificacion      
+        fields = '__all__'
+
 #Serializer para mostrar datos en respuesta de solicitud
 class SolicitudRespuestaSerializer(serializers.ModelSerializer):
     id_estudiante = EstudianteSerializer()
     id_evaluacion = EvaluacionSerializer()
+    id_calificacion = CalificacionEspecificaSerializer()
     class Meta:
         model = Solicitud_Revision
         fields = '__all__'
@@ -131,14 +140,6 @@ class SolicitudActualizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Solicitud_Revision
         fields = '__all__'
-
-# Encontrar la calificacion sin ningun dato adicional
-class CalificacionEspecificaSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Calificacion      
-        fields = '__all__'
-
 
 ######################################################################################33
 ## Saber las secciones de un coordinador con su asignatura - 2

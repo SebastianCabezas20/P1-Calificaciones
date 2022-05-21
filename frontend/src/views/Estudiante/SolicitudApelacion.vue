@@ -13,7 +13,7 @@
         <h3 class="textTitle">Solicitud de Apelación</h3>
       </div>
 
-      <div class="formApelacion" v-for="data in dataSolicitud">
+      <div class="formApelacion" v-for="data in dataSolicitud" :key="data.id">
         <h5 class="textoFormulario">
           Nombre Evaluacion: {{ data.id_evaluacion.nombre }}
         </h5>
@@ -26,6 +26,7 @@
         <div id="divMotivo">
           <h5 class="textoFormulario">Motivo de la solicitud</h5>
           <textarea
+            rows="7"
             placeholder="Escriba acá su solicitud"
             id="motivoSolicitud"
             v-model="motivoSolicitud"
@@ -72,7 +73,7 @@ export default {
       .then(function (response) {
         that.idEstudiante = response.data.id;
       });
-
+    // Extraccion de informacion para la solicitud
     axios
       .get(
         `http://localhost:8000/informacion/solicitud/estudiante/${IdentificacionCalificacion}`
@@ -89,6 +90,8 @@ export default {
 
       let solicitudFinal = {
         motivo: this.motivoSolicitud,
+        anterior_nota:null,
+        actual_nota:this.dataSolicitud[0].nota,
         fecha_creacion: fechaActual,
         archivoAdjunto: null,
         respuesta: "",
@@ -97,6 +100,7 @@ export default {
         id_estudiante: this.idEstudiante,
         id_docente: this.dataSolicitud[0].id_evaluacion.id_docente.id,
         id_evaluacion: this.dataSolicitud[0].id_evaluacion.id,
+        id_calificacion:this.dataSolicitud[0].id
       };
 
       axios
