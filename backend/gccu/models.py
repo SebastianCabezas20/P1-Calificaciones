@@ -2,7 +2,7 @@ from asyncio.windows_events import NULL
 from django.conf import settings
 from django.db import models
 from django.core.validators import MinLengthValidator
-from .choices import COMPONENTES_CHOICES, ESTADOS_EVALUACION_CHOICES, ESTADOS_SOLICITUD_CHOICES, SEMESTRES_CHOICES, TIPO_OBS_CHOICES
+from .choices import COMPONENTES_CHOICES, ESTADOS_EVALUACION_CHOICES, ESTADOS_SOLICITUD_CHOICES, SEMESTRES_CHOICES
 
 # Create your models here.
 class Tipos(models.Model):
@@ -158,20 +158,16 @@ class Tipo_Evaluacion(Tipos):
     def __str__(self):
         return self.nombre
 
-class Observacion(models.Model):
-    contenido = models.TextField(blank = True)
-    archivoAdjunto = models.FileField(null = True)
-    tipo = models.CharField(max_length = 1, choices = TIPO_OBS_CHOICES, blank = False)
-
 class Evaluacion(models.Model):
     nombre = models.CharField(max_length = 40, blank = False)
     fechaEvActual = models.DateField(null = False)
     fechaEntrega = models.DateField(null = True, blank = True)
     ponderacion = models.DecimalField(max_digits = 2, decimal_places = 1, null = False)
     estado = models.CharField(max_length = 1, choices = ESTADOS_EVALUACION_CHOICES, blank = False)
+    obs_general = models.TextField(blank = True, default = '')
+    adjunto = models.FileField(blank = True, null = True)
     id_tipoEvaluacion = models.ForeignKey(Tipo_Evaluacion, null = True, on_delete = models.CASCADE)
     id_docente = models.ForeignKey(Docente, null = False, on_delete = models.CASCADE)
-    id_observacion = models.ForeignKey(Observacion, null = True, blank = True, on_delete = models.CASCADE)
     id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = True, on_delete = models.CASCADE)
 
     def __str__(self):
@@ -193,9 +189,9 @@ class Cambio_Fecha(models.Model):
 class Calificacion(models.Model):
     nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = True, blank = True)
     fecha_entrega = models.DateField(null = True, blank = True)
+    obs_privada = models.TextField(blank = True, default = '')
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
-    id_observacion = models.ForeignKey(Observacion, null = True, blank = True, on_delete = models.CASCADE)
 
     def __str__(self):
         return 'Nota %s de %s de la ev %s' % (self.nota, self.id_estudiante, self.id_evaluacion)

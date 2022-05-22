@@ -184,9 +184,9 @@ export default {
             let notaNueva = {
               nota: this.notaActual,
               fecha_entrega: this.apelacion[0].id_calificacion.fecha_entrega,
+              obs_privada: this.apelacion[0].id_calificacion.obs_privada,
               id_estudiante: this.apelacion[0].id_calificacion.id_estudiante,
               id_evaluacion: this.apelacion[0].id_calificacion.id_evaluacion,
-              id_observacion: this.apelacion[0].id_calificacion.id_observacion,
             };
             let idCalificacion = this.apelacion[0].id_calificacion.id;
             axios
@@ -277,9 +277,9 @@ export default {
             let notaNueva = {
               nota: this.notaActual,
               fecha_entrega: this.notaJson[0].fecha_entrega,
+              obs_privada: this.notaJson[0].obs_privada,
               id_estudiante: this.notaJson[0].id_estudiante,
               id_evaluacion: this.notaJson[0].id_evaluacion,
-              id_observacion: this.notaJson[0].id_observacion,
             };
             let idCalificacion = this.notaJson[0].id;
             axios

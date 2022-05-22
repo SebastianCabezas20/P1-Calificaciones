@@ -66,7 +66,7 @@ class EvaluacionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Evaluacion
-        fields = ('id', 'nombre', 'fechaEvActual', 'fechaEntrega', 'ponderacion', 'estado', 'id_tipoEvaluacion', 'id_docente', 'id_observacion', 'id_coordinacion')
+        fields = ('id', 'nombre', 'fechaEvActual', 'fechaEntrega', 'ponderacion', 'estado', 'obs_general', 'adjunto', 'id_tipoEvaluacion', 'id_docente', 'id_coordinacion')
 
 # Serializer exclusivo para agregar evaluaciones.
 class PostEvaluacionSerializer(serializers.ModelSerializer):
@@ -99,7 +99,7 @@ class CalificacionSerializer(serializers.ModelSerializer):
     id_estudiante = EstudianteSerializer()
     class Meta:
         model = Calificacion      
-        fields = ('id', 'nota', 'fecha_entrega', 'id_evaluacion', 'id_estudiante')  
+        fields = ('id', 'nota', 'fecha_entrega', 'obs_privada', 'id_evaluacion', 'id_estudiante')  
 
 # Encontrar la calificacion sin ningun dato adicional
 class CalificacionEspecificaSerializer(serializers.ModelSerializer):

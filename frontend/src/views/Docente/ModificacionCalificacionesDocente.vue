@@ -148,9 +148,9 @@ export default {
       let nuevaCalificacion = {
         nota: this.nuevaCalificacion,
         fecha_entrega: this.calificaciones[index].fecha_entrega,
+        obs_privada: this.calificaciones[index].obs_privada,
         id_estudiante: this.calificaciones[index].id_estudiante.id,
         id_evaluacion: this.calificaciones[index].id_evaluacion.id,
-        id_observacion: this.calificaciones[index].id_observacion,
       };
       console.log(nuevaCalificacion);
       axios

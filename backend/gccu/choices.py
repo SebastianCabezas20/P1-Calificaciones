@@ -18,8 +18,3 @@ COMPONENTES_CHOICES = [
     ('L', 'Laboratorio'),
     ('T', 'Teoría'),
 ]
-
-TIPO_OBS_CHOICES = [
-    ('P', 'Privada'),
-    ('G', 'General'),
-]

@@ -203,9 +203,9 @@ export default {
           nombre: this.calificacionesEstudiantes[i].id_estudiante.rut,
           nota: this.calificacionesEstudiantes[i].nota,
           fecha_entrega: fechaActual,
+          obs_privada: '',
           id_estudiante: this.calificacionesEstudiantes[i].id_estudiante.id,
           id_evaluacion: this.idEvaluacion,
-          id_observacion: null,
         };
         axios
           .post("http://localhost:8000/add/calificacion", nuevaCalificacion)
@@ -218,9 +218,10 @@ export default {
         fechaEntrega: this.informacionEvaluacion.fechaEntrega,
         ponderacion: this.informacionEvaluacion.ponderacion,
         estado: "E",
+        obs_general: this.informacionEvaluacion.obs_general,
+        adjunto: this.informacionEvaluacion.adjunto,
         id_tipoEvaluacion: this.informacionEvaluacion.id_tipoEvaluacion,
         id_docente: this.informacionEvaluacion.id_docente,
-        id_observacion: this.informacionEvaluacion.id_observacion,
         id_coordinacion: this.informacionEvaluacion.id_coordinacion,
       };
       axios

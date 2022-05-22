@@ -331,9 +331,10 @@ export default {
           fechaEntrega: fechaEntrega,
           ponderacion: this.porcentajeEvaluacion,
           estado: "P",
+          obs_general: '',
+          adjunto: null,
           id_tipoEvaluacion: this.tipoEvaluacion,
           id_docente: this.idDocente,
-          id_observacion: null,
           id_coordinacion: this.idCurso,
         })
         .then(function (response) {
@@ -349,8 +350,9 @@ export default {
         fechaEntrega: this.evaluacionesFull[index].fechaEntrega,
         ponderacion: this.evaluacionesFull[index].ponderacion,
         estado: this.evaluacionesFull[index].estado,
+        obs_general: this.evaluacionesFull[index].obs_general,
+        adjunto: this.evaluacionesFull[index].adjunto,
         id_docente: this.evaluacionesFull[index].id_docente,
-        id_observacion: this.evaluacionesFull[index].id_observacion,
         id_tipoEvaluacion: this.evaluacionesFull[index].id_tipoEvaluacion,
         id_coordinacion: this.evaluacionesFull[index].id_coordinacion,
       };
