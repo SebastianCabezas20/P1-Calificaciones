@@ -195,7 +195,18 @@ export default {
                 notaNueva
               )
               .then(function (response) {});
-            router.push(`/docente/solicitudes/`);
+              // Se crea la tupla para el cambio de nota
+            let cambioNota ={
+              anterior_nota: this.apelacion[0].id_calificacion.nota,
+              actual_nota: this.notaActual,
+              fecha_cambio: new Date(),
+              motivo: this.respuestaActual, 
+              id_calificacion: this.apelacion[0].id_calificacion.id,
+            }
+            axios
+              .post(
+                `http://localhost:8000/add/cambio/calificacion`,cambioNota)
+              .then(function (response) {router.push(`/docente/solicitudes/`)});
           }
           else{// Nota no ingresada
             alert("ingrese una nota");

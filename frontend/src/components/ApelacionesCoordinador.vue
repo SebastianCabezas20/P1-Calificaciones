@@ -1,5 +1,5 @@
 <template>
-    <tr >
+    <tr  :style="[solicitud.estado == 'A' ? {'background-color':'#90EE90'} : solicitud.estado == 'R' ? {'background-color': '#ffbfaa'} : {'background-color':'null'}]">
         <td>{{solicitud.id_evaluacion.nombre}}</td>
         <td>{{solicitud.id_docente.id_usuario.username}}</td>
         <td v-if="solicitud.estado == 'A'">Aprobada</td>
@@ -91,6 +91,7 @@ export default {
     data(){
         return{
             showModal: false,
+            color: null
         }
     },
     props:{

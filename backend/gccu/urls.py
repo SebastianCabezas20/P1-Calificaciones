@@ -58,4 +58,5 @@ urlpatterns = [
     path('informacion/solicitud/estudiante/<int:idCalificacion>', views.getDataSolicitudApelacion),  
     path('calificacionesDocente/<int:idUsuario>', views.getCalificaionesByDocente),
     path('updateCalificacion/<int:idCalificacion>', views.updateCalificacion),
+    path('add/cambio/calificacion',views.addCambioNota)
 ]

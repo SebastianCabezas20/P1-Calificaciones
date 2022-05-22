@@ -312,3 +312,19 @@ def updateCalificacion(request, idCalificacion):
         calificacion_actualizada.save()
         return Response(calificacion_actualizada.data)
     return Response(calificacion_actualizada.errors)
+
+
+@api_view(['GET','POST'])
+def addCambioNota(request):
+    
+    if request.method == 'GET':
+        cambios = Cambio_nota.objects.all()
+        serializer = CambioNotaSerializer(cambios, many = "true")
+        return Response(serializer.data)
+    ## Agregar motivo de cambio de nota
+    if request.method == 'POST':
+        CambioAgregado = CambioNotaSerializer(data = request.data)
+        if CambioAgregado.is_valid():
+            CambioAgregado.save()
+            return Response(CambioAgregado.data)
+        return Response(CambioAgregado.errors)

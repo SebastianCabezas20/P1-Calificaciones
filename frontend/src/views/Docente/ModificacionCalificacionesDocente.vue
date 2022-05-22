@@ -54,7 +54,7 @@
                     <button
                       type="button"
                       class="btn-close"
-                      @click="showModalFecha = false"
+                      @click="showModal = false"
                     ></button>
                   </div>
 
@@ -76,11 +76,24 @@
                         />
                       </div>
 
+                      <div class="mb-3">
+                        <label class="form-label"
+                          >Motivo de cambio</label
+                        >
+                        <textarea
+                          v-model="motivoCambio"
+                          class="form-control"
+                          rows = 7
+                          placeholder="Ingrese el motivo del cambio"
+                          required
+                        />
+                      </div>
+
                       <div class="modal-footer">
                         <button
                           type="button"
                           class="btn btn-secondary"
-                          v-on:click="showModalFecha = false"
+                          v-on:click="showModal = false"
                         >
                           Cancelar
                         </button>
@@ -115,6 +128,7 @@ export default {
       showModal: false,
       indexModal: "",
       nuevaCalificacion: "",
+      motivoCambio: "",
     };
   },
   mounted() {
@@ -144,6 +158,19 @@ export default {
           `http://localhost:8000/updateCalificacion/${idCalificacionModificar}`,
           nuevaCalificacion
         )
+        .then(function (response) {
+          //location.reload(); para seguir con el registro del cambio
+        });
+      let cambioNota ={
+        anterior_nota: this.calificaciones[index].nota,
+        actual_nota: this.nuevaCalificacion,
+        fecha_cambio: new Date(),
+        motivo: this.motivoCambio, 
+        id_calificacion: idCalificacionModificar,
+      }
+      axios
+        .post(
+          `http://localhost:8000/add/cambio/calificacion`,cambioNota)
         .then(function (response) {
           location.reload();
         });
