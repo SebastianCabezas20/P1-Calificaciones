@@ -53,30 +53,20 @@
         <table class="tableV2">
           <thead>
             <tr>
-              <th style="width: 4%"></th>
               <th>Nombre</th>
               <th>Apellido</th>
-              <th>Rut</th>
+              <th>RUT</th>
               <th>D. Verificador</th>
               <th>Calificación</th>
-              <th></th>
+              <th style="width: 10%;"></th>
             </tr>
           </thead>
 
-          <!-- Docente sube una planilla de notas.  -->
           <tbody>
             <tr
               v-for="(calificacion, index) in calificacionesEstudiantes"
               :key="calificacion.id"
             >
-              <td>
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="defaultCheck1"
-                />
-              </td>
               <td>
                 {{ calificacion.id_estudiante.id_usuario.first_name }}
               </td>
@@ -89,11 +79,12 @@
               <td>
                 {{ calificacion.id_estudiante.dig_verificador }}
               </td>
-              <td>{{ calificacion.nota }}</td>
+              <td v-if="(calificacion.nota == null) || (calificacion.nota == '')">-</td>
+              <td v-else>{{ calificacion.nota }}</td>
 
               <td>
                 <input
-                  class="form-control"
+                  class="form-control text-center"
                   type="number"
                   min="1"
                   max="7"
@@ -106,8 +97,77 @@
             </tr>
           </tbody>
         </table>
-        <button type="submit" class="submitButton">Subir calificaciones</button>
+
+        <!-- Botón para agregar una observación general (Opcional). -->
+        <div class="pb-3">
+          <button
+            @click="showModalObservacion = true"
+            type="button"
+            class="buttonSecondary"
+          >
+            Agregar observación
+          </button>
+        </div>
+
+        <!-- Botón para subir las calificaciones 
+          (Se debe tener calificación para cada estudiante) -->
+        <div>
+          <button type="submit" class="submitButton">
+            Subir calificaciones
+          </button>
+        </div>
       </form>
+
+      <!-- Modal que permite la subida de observaciones generales a una evaluación. -->
+      <transition name="fase" appear>
+        <div class="modal-overlay" v-if="showModalObservacion">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Observación general</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  @click="showModalObservacion = false"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="contenidoObservacion"
+                    >Indique una observación general</label
+                  >
+                  <textarea
+                    name="contenidoObservacion"
+                    id="contenidoObservacion"
+                    rows="5"
+                    type="text"
+                    v-model="contenidoObservacion"
+                    class="form-control"
+                    placeholder="Contenido de la observación"
+                  ></textarea>
+                </div>
+
+                <!-- Subir un archivo adjunto a una evaluación (Sprint 3). -->
+                <div class="mb-3">
+                  <label for="formFile" class="form-label"
+                    >Adjuntar archivo</label
+                  >
+                  <input class="form-control" type="file" id="formFile" />
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    v-on:click="showModalObservacion = false"
+                  >
+                    Finalizar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -129,8 +189,9 @@ export default {
       calificacionesEstudiantes: [],
       estudiantesPlanilla: [],
       calificaciones: [],
-      observacion: "",
+      contenidoObservacion: '',
       informacionEvaluacion: [],
+      showModalObservacion: false,
     };
   },
   mounted() {
@@ -190,8 +251,7 @@ export default {
         reader.readAsArrayBuffer(this.file);
       }
     },
-    // Funcionando. Falta ver el tema de las observaciones (Sprint 2 o 3),
-    // Falta bloquear la calificacion cuando se califica (Sprint 2 o 3)
+
     submitCalificaciones() {
       let fechaActual = new Date();
       fechaActual = fechaActual.toISOString().slice(0, 10);
@@ -218,7 +278,7 @@ export default {
         fechaEntrega: this.informacionEvaluacion.fechaEntrega,
         ponderacion: this.informacionEvaluacion.ponderacion,
         estado: "E",
-        obs_general: this.informacionEvaluacion.obs_general,
+        obs_general: this.contenidoObservacion,
         adjunto: this.informacionEvaluacion.adjunto,
         id_tipoEvaluacion: this.informacionEvaluacion.id_tipoEvaluacion,
         id_docente: this.informacionEvaluacion.id_docente,
