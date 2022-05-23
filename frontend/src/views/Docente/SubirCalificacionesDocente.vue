@@ -59,6 +59,7 @@
               <th>D. Verificador</th>
               <th>Calificación</th>
               <th style="width: 10%;"></th>
+              <th class="row-ButtonIcon"></th>
             </tr>
           </thead>
 
@@ -94,6 +95,59 @@
                   v-model="calificacionesEstudiantes[index].nota"
                 />
               </td>
+              <td>
+                <div class="text-center">
+                  <button
+                  class="fa-solid fa-plus botonTabla"
+                  type="button"
+                  v-on:click="addObsPrivada($event, index)"
+                  ></button>
+                </div>
+              </td>
+
+              <!-- Modal que permite la subida de observaciones generales a una evaluación. -->
+      <transition name="fase" appear>
+        <div class="modal-overlay" v-if="showModalObservacionPrivada" :data="modalData">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Observación privada</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  @click="showModalObservacionPrivada = false"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="contenidoObservacion"
+                    >Indique una observación privada</label
+                  >
+                  <textarea
+                    name="contenidoObservacionPrivada"
+                    id="contenidoObservacionPrivada"
+                    rows="5"
+                    type="text"
+                    v-model="calificacionesEstudiantes[modalData].obs_privada"
+                    class="form-control"
+                    placeholder="Contenido de la observación"
+                  ></textarea>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    v-on:click="showModalObservacionPrivada = false"
+                  >
+                    Guardar cambios
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
             </tr>
           </tbody>
         </table>
@@ -192,6 +246,8 @@ export default {
       contenidoObservacion: '',
       informacionEvaluacion: [],
       showModalObservacion: false,
+      showModalObservacionPrivada: false,
+      modalData: null,
     };
   },
   mounted() {
@@ -252,6 +308,11 @@ export default {
       }
     },
 
+    addObsPrivada(event, index) {
+      this.modalData = index;
+      this.showModalObservacionPrivada = true;
+    },
+
     submitCalificaciones() {
       let fechaActual = new Date();
       fechaActual = fechaActual.toISOString().slice(0, 10);
@@ -263,7 +324,7 @@ export default {
           nombre: this.calificacionesEstudiantes[i].id_estudiante.rut,
           nota: this.calificacionesEstudiantes[i].nota,
           fecha_entrega: fechaActual,
-          obs_privada: '',
+          obs_privada: this.calificacionesEstudiantes[i].obs_privada,
           id_estudiante: this.calificacionesEstudiantes[i].id_estudiante.id,
           id_evaluacion: this.idEvaluacion,
         };
