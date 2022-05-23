@@ -33,12 +33,12 @@
               <td>{{asignatura.id_asignatura.componente}}</td>
               <td>{{asignatura.id_asignatura.id_coordinador.id_usuario.username}}</td>
               <td>
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" >
                   Detalles
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" @click="ingresar(asignatura.id_asignatura.id)">
                   Seleccionar
                 </button>
               </td>
@@ -86,7 +86,10 @@ export default {
     
   },
   methods:{
-   
+    ingresar(key){
+      router.push(`/jefe/asignaturas/cambios/${key}`)
+    }
+
   }
 };
 </script>

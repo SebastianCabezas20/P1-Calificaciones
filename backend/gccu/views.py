@@ -313,14 +313,21 @@ def updateCalificacion(request, idCalificacion):
         return Response(calificacion_actualizada.data)
     return Response(calificacion_actualizada.errors)
 
-
+## Agregar un cambio de nota
 @api_view(['GET','POST'])
-def addCambioNota(request):
+def addCambioNota(request,idAsignatura = None):
     
     if request.method == 'GET':
+        ## Devolver los cambios
         cambios = Cambio_nota.objects.all()
         serializer = CambioNotaSerializer(cambios, many = "true")
+        ## Coordinaciones disponibles
+        #coordinaciones = Cambio_nota.objects.values_list('id_calificacion__id_evaluacion__id_coordinacion__coordinacion',flat= True).distinct()
+        ## Secciones disponibles
+        #secciones = Cambio_nota.objects.values_list('id_calificacion__id_evaluacion__id_coordinacion__seccion',flat= True).distinct()
+        #return Response([serializer.data,coordinaciones, secciones])
         return Response(serializer.data)
+
     ## Agregar motivo de cambio de nota
     if request.method == 'POST':
         CambioAgregado = CambioNotaSerializer(data = request.data)
@@ -328,3 +335,18 @@ def addCambioNota(request):
             CambioAgregado.save()
             return Response(CambioAgregado.data)
         return Response(CambioAgregado.errors)
+
+# obtener los cambios segun una asignatura
+@api_view(['GET'])
+def getCambioNota_idAsignatura(request,idAsignatura = None):
+    
+    if request.method == 'GET':
+        ## Devolver los cambios 
+        cambios = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura)
+        serializer = CambioNotaSerializer(cambios, many = "true")
+        ## Coordinaciones disponibles
+        coordinaciones = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_calificacion__id_evaluacion__id_coordinacion__coordinacion',flat= True).distinct()
+        ## Secciones disponibles
+        secciones = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_calificacion__id_evaluacion__id_coordinacion__seccion',flat= True).distinct()
+        return Response([serializer.data,coordinaciones, secciones])
+

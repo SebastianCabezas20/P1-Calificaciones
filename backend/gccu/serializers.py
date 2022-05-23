@@ -228,6 +228,7 @@ class CalificacionEspecificaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CambioNotaSerializer(serializers.ModelSerializer):
+    id_calificacion = CalificacionSerializer()
     class Meta:
         model = Cambio_nota      
         fields = '__all__'

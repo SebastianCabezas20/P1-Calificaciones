@@ -29,6 +29,7 @@ import JefeApelacionesAsig from "../views/Autoridad/JefeApelacionesAsig.vue";
 import JefeAsignaturasGeneralVue from "../views/Autoridad/JefeAsignaturasGeneral.vue";
 import DashboardCoordinador from "../views/Autoridad/DashboardCoordinador.vue"
 import DashboardJefeCarrera from "../views/Autoridad/DashboardJefeCarrera.vue"
+import AsignaturasJefeCambiosVue from "../views/Autoridad/AsignaturasJefeCambios.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -179,6 +180,12 @@ const router = createRouter({
       path: "/jefe/asignaturas/apelaciones/:idAsignatura",
       name: "apelacionesAsignaturasJefeDeCarrera",
       component: JefeApelacionesAsig,
+      props: true,
+    },
+    { // Mostrar los cambios segun asignatura de jefe de carrera
+      path: "/jefe/asignaturas/cambios/:idAsignatura",
+      name: "cambiosAsignaturasJefeDeCarrera",
+      component: AsignaturasJefeCambiosVue,
       props: true,
     },
     {
