@@ -220,6 +220,16 @@
                     />
                   </div>
 
+                  <div id="divMotivo">
+                    <h5 class="textoFormulario">Motivo del cambio de fecha</h5>
+                    <textarea
+                      rows="7"
+                      placeholder="Escriba acá el motivo del cambio de fecha."
+                      id="motivoCambio"
+                      v-model="motivoCambio"
+                    ></textarea>
+                  </div>
+
                   <div class="modal-footer">
                     <button
                       type="button"
@@ -267,6 +277,8 @@ export default {
       fechaEvaluacion: "",
       modalIndex: "",
       idDocente: 0,
+      motivoCambio: "",
+      fechaOriginal: "",
     };
   },
 
@@ -357,11 +369,25 @@ export default {
         id_coordinacion: this.evaluacionesFull[index].id_coordinacion,
       };
       console.log(nuevaEvaluacion);
+      this.fechaOriginal = this.evaluacionesFull[index].fechaEvActual;
+      console.log(this.fechaOriginal);
+      let cambioFecha = {
+        fechaAnterior: this.fechaOriginal,
+        fechaNueva: this.fechaEvaluacion,
+        motivo: this.motivoCambio,
+        id_evaluacion: this.evaluacionesFull[index].id,
+      };
+      console.log(cambioFecha);
       axios
         .put(
           `http://localhost:8000/update/evaluacion/${idFechaModificar}`,
           nuevaEvaluacion
         )
+        .then(function (response) {
+          console.log("ok");
+        });
+      axios
+        .post("http://localhost:8000/add/cambioFecha", cambioFecha)
         .then(function (response) {
           location.reload();
         });

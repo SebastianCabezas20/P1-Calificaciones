@@ -350,3 +350,10 @@ def getCambioNota_idAsignatura(request,idAsignatura = None):
         secciones = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_calificacion__id_evaluacion__id_coordinacion__seccion',flat= True).distinct()
         return Response([serializer.data,coordinaciones, secciones])
 
+@api_view(['POST'])
+def cambioFechaCalificacion(request):
+    cambioFecha = CambioFechaSerializer(data = request.data)
+    if cambioFecha.is_valid():
+        cambioFecha.save()
+        return Response(cambioFecha.data)
+    return Response(cambioFecha.errors)

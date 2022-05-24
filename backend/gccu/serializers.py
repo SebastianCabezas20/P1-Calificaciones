@@ -232,3 +232,9 @@ class CambioNotaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cambio_nota      
         fields = '__all__'
+
+# Serializer exclusivo para cambios de fecha.
+class CambioFechaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cambio_Fecha
+        fields = '__all__'
