@@ -109,7 +109,7 @@
       </div>
       
       
-      <div v-if="this.mostrar" class="componentCourse">
+      <div v-show="this.mostrar" class="componentCourse">
         <div class="titleSection">
           <h3 class="textTitle">Calificaciones laboratorio</h3>
         </div>
@@ -131,7 +131,8 @@
                 v-for="calificacion in calificacionesLaboratorio"
                 :key="calificacion.id"
               >
-                <CalificacionInfo :calificacion="calificacion" />
+                <CalificacionInfo :calificacion="calificacion"
+                @EventBoton="(id) => ingresar(id)" />
               </tr>
             </tbody>
           </table>

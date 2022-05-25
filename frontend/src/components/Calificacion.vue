@@ -1,6 +1,14 @@
 <template>
+  
   <td>{{ calificacion.id_evaluacion.nombre }}</td>
-  <td>{{ calificacion.id_observacion }}</td>
+  <td>
+    <Popper :content="calificacion.obs_privada">
+    <button class="btn-primary" style="margin-right:20px"> Observación Privada</button>
+    </Popper>
+    <Popper :content="calificacion.id_evaluacion.obs_general">
+    <button class="btn-primary"> Observación General</button>
+    </Popper>
+  </td>
   <td>{{ calificacion.nota }}</td>
   <td>{{ calificacion.id_evaluacion.ponderacion }}</td>
   <td>{{ calificacion.fecha_entrega }}</td>
@@ -16,16 +24,37 @@
   </td>
 </template>
 
+
 <script>
-export default {
+  import Popper from "vue3-popper";
+export default {  
   props: {
     calificacion: Object,
   },
+  mounted(){
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+  },
+  
   emits: ["EventBoton"],
   methods: {
     eventoClick(id) {
       this.$emit("EventBoton", id);
     },
+    
   },
 };
 </script>
+
+<style>
+  :root {
+    --popper-theme-background-color: #333333;
+    --popper-theme-background-color-hover: #333333;
+    --popper-theme-text-color: #ffffff;
+    --popper-theme-border-width: 0px;
+    --popper-theme-border-style: solid;
+    --popper-theme-border-radius: 6px;
+    --popper-theme-padding: 32px;
+    --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+  }
+</style>
