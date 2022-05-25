@@ -233,8 +233,23 @@ class CambioNotaSerializer(serializers.ModelSerializer):
         model = Cambio_nota      
         fields = '__all__'
 
-# Serializer exclusivo para cambios de fecha.
+# Serializer para cambios de fecha.
 class CambioFechaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cambio_Fecha
         fields = '__all__'
+
+# Serializer para cambios de fecha en el dashboard.
+class CambioFechaDashboardSerializer(serializers.ModelSerializer):
+    id_evaluacion = EvaluacionSerializer()
+    class Meta:
+        model = Cambio_Fecha
+        fields = '__all__'
+
+# Serializer de evaluación para los cambios de fecha en el dashboard.       
+class EvaluacionCambioFechaSerializer(serializers.ModelSerializer):
+    id_coordinacion = CoordinacionSeccionSerializer()
+    id_docente = DocenteSerializer()  
+    class Meta:
+        model = Evaluacion
+        fields = ('id_docente', 'id_coordinacion')

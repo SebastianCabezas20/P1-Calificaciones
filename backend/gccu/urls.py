@@ -60,5 +60,6 @@ urlpatterns = [
     path('updateCalificacion/<int:idCalificacion>', views.updateCalificacion),
     path('add/cambio/calificacion/',views.addCambioNota),
     path('get/cambio/calificacion/asignatura/<int:idAsignatura>',views.getCambioNota_idAsignatura),
-    path('add/cambioFecha', views.cambioFechaCalificacion)
+    path('add/cambioFecha', views.cambioFechaCalificacion),
+    path('get/cambiosFecha', views.getCambiosFecha)
 ]

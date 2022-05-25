@@ -357,3 +357,9 @@ def cambioFechaCalificacion(request):
         cambioFecha.save()
         return Response(cambioFecha.data)
     return Response(cambioFecha.errors)
+
+@api_view(['GET'])
+def getCambiosFecha(request):
+    cambiosFecha = Cambio_Fecha.objects.all()
+    serializer = CambioFechaDashboardSerializer(cambiosFecha, many="true")
+    return Response(serializer.data)
