@@ -129,15 +129,44 @@ const router = createRouter({
     },
 
     // Vistas de Autoridades
-    {
-      path: "/autoridad/home",
-      name: "homeAutoridad",
-      component: DashboardAutoridad,
-    },
+
+    // COORDINADOR
     {
       path: "/coordinador/home",
       name: "homeCoordinador",
       component: DashboardCoordinador,
+    },
+    // Secciones de un coordinador para uso general
+    {
+      path: "/coordinador/asignaturas/general",
+      name: "asignaturasCoordinador",
+      component: AsignaturasCoordinador,
+    },  
+    // Secciones de un coordinador para solicitudes
+    { 
+      path: "/coordinador/seccion",
+      name: "seccionesCoordinador",
+      component: CoordinadorSecciones,
+    },
+    //Solicitudes segun coordinacion-curso de un coordinador
+    {
+      path: "/coordinador/seccion/solicitudes/:idCurso",
+      name: "solicitudesSeccionCoordinador",
+      component: CoordinadorSolicitudesCurso,
+      props: true,
+    },
+    {
+      path: "/coordinador/asignatura/:idAsignatura/seccion/:idCurso",
+      name: "seccionSeleccionadaCoordinador",
+      component: CoordinadorCursoSeleccionado,
+      props: true,
+    },
+    
+
+    {
+      path: "/autoridad/home",
+      name: "homeAutoridad",
+      component: DashboardAutoridad,
     },
     {
       path: "/jefeCarrera/home",
@@ -148,23 +177,6 @@ const router = createRouter({
       path: "/autoridad/solicitudes",
       name: "apelacionesAutoAutoridad",
       component: ApelacionesAutoView,
-    },
-    {/// Secciones de un coordinador para uso general
-      path: "/coordinador/asignaturas/general",
-      name: "asignaturasCoordinador",
-      component: AsignaturasCoordinador,
-    },  
-    { // Secciones de un coordinador para solicitudes
-      path: "/coordinador/seccion",
-      name: "seccionesCoordinador",
-      component: CoordinadorSecciones,
-    },
-    {
-      //Solicitudes segun coordinacion-curso de un coordinador
-      path: "/coordinador/seccion/solicitudes/:idCurso",
-      name: "solicitudesSeccionCoordinador",
-      component: CoordinadorSolicitudesCurso,
-      props: true,
     },
     { //Asignaturas de un jefe de carrera solicitudes
       path: "/jefe/asignaturas",

@@ -304,7 +304,6 @@ export default {
         that.tiposEvaluaciones = response.data;
       });
 
-    // Comentario de Miguel: Para que sirve esto?
     axios
       .get(`http://localhost:8000/allInfoEvaluaciones/${identificacionCurso}`)
       .then(function (response) {
@@ -325,7 +324,6 @@ export default {
         });
     },
     crearEvaluacion: function (event) {
-      // Funcionando. Ahora falta tirar los datos al back y estamos.
       let fecha = new Date(this.fechaEvActual);
       let fechaEntrega = new Date();
 

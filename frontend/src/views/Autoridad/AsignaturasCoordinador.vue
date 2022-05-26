@@ -9,36 +9,42 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h4 class="textTitle">Coordinaciones</h4>
+      <div class="titleSectionV2">
+        <h4 class="textTitleV2">Coordinaciones</h4>
       </div>
-      <div class="tableContent">
-        <table class="table">
+        <table class="tableV2">
           <thead>
             <tr>
-              <th>Seccion</th>
-              <th>Profesor</th>
+              <th>Código</th>
               <th>Asignatura</th>
+              <th>Componente</th>
+              <th>Profesor</th>
               <th>Horario</th>
-              <th>Seleccionar</th>
+              <th>Acción</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="seccion in secciones" :key="seccion.id">
-              <td>{{seccion.id_coordinacion.coordinacion}}-{{seccion.id_coordinacion.seccion}}</td>
-              <td>{{seccion.id_docente.rut}}-{{seccion.id_docente.dig_verificador}}</td>
+              <td>{{seccion.id_coordinacion.id_asignatura.codigo}}-{{seccion.id_coordinacion.coordinacion}}-{{seccion.id_coordinacion.seccion}}</td>
               <td>{{seccion.id_coordinacion.id_asignatura.nombre}}</td>
+              <td v-if="seccion.id_coordinacion.id_asignatura.componente == 'T'">Teoría</td>
+              <td v-else>Laboratorio</td>
+              <td>{{seccion.id_docente.id_usuario.first_name}} {{seccion.id_docente.id_usuario.last_name}}</td>
               <td>{{seccion.id_coordinacion.bloques_horario}}</td>
               <td>
-                <button type="button" class="btn btn-success">
-                  Seleccionar
+                <button 
+                  type="button" 
+                  class="botonTabla"
+                  @click="getCoordinacion($event, seccion.id_coordinacion.id_asignatura.id, seccion.id_coordinacion.id)"
+                  >
+                    Seleccionar
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
+    
   </div>
 </template>
 
@@ -56,7 +62,7 @@ export default {
   data(){
       return{
           secciones: [],
-          idCoordinador:0,
+          idCoordinador: 0,
       }
   },
   created() {
@@ -67,16 +73,17 @@ export default {
     .get(`http://localhost:8000/api/coordinador/${identificacionUsuario}`)
     .then(function (response) {
       ins.idCoordinador = response.data.id;
-      console.log(ins.idCoordinador)
       axios.get(`http://localhost:8000/coordinador/coordinacion/${ins.idCoordinador}`).then(function (response) {
         console.log(response.data);
         ins.secciones = response.data;
       });
     });
   },
-  methods:{
-    
-  }
+  methods: {
+    getCoordinacion(event, idAsignatura, idCoordinacion){
+      this.$router.push({ path: `/coordinador/asignatura/${idAsignatura}/seccion/${idCoordinacion}` });
+    },
+  },
 };
 </script>
 

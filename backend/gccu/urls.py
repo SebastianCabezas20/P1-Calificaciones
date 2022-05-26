@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -47,6 +47,7 @@ urlpatterns = [
     path('add/calificacion', views.calificacionesEstudiantes),                          
     path('evaluacion/tipos', views.getTiposEvaluaciones),
     path('coordinador/coordinacion/<int:idCoordinador>', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar segun coordinador
+    path('coordinaciones/asignatura/<int:idAsignatura>', views.getCoordinacionesAsignatura),
     path('coordinacion/solicitudes/<int:idCoordinacion>', views.getSolicitudesCurso), # Dada la coordinacion (seccion) mostrar sus solicitudes
     path('jefe/<int:idJefe>/asignaturas', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
     path('jefe/asignatura/solicitudes/<int:idAsignatura>', views.getSolicitudesAsignaturaJefeCarrera), # Apelaciones segun asignatura seleccionada por un jefe de carrera
@@ -62,4 +63,5 @@ urlpatterns = [
     path('get/cambio/calificacion/asignatura/<int:idAsignatura>',views.getCambioNota_idAsignatura),
     path('add/cambioFecha', views.cambioFechaCalificacion),
     path('get/cambiosFecha', views.getCambiosFecha)
+    # re_path(r'^get/evaluaciones/(?P<slug>[\w\s]+)/asignatura/<int:idAsignatura>$', views.getEvaluacionesPorNombre),
 ]
