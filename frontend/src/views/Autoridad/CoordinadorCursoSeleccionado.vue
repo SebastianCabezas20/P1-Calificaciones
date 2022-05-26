@@ -315,9 +315,18 @@ export default {
       location.reload();
     },
 
+    // Función para obtener las evaluaciones iguales de una asignatura.
+    async getEvaluacionesNombre(nombreEvaluacion) {
+      const response = await axios.get(
+        `http://localhost:8000/get/evaluaciones/${nombreEvaluacion}/asignatura/${this.idAsignatura}`
+      );
+      return response.data;
+    },
+
     modificarFecha(event, indexClic) {
       // Datos para el registro.
-      let fechaEvaluacionOriginal = this.evaluacionesInformacion[indexClic].fechaEvActual;
+      let fechaEvaluacionOriginal =
+        this.evaluacionesInformacion[indexClic].fechaEvActual;
       let idEvaluacion = this.evaluacionesInformacion[indexClic].id;
 
       console.log(this.evaluacionesInformacion[indexClic]);
@@ -329,50 +338,47 @@ export default {
       nuevaFechaEntrega = nuevaFechaEntrega.toISOString().slice(0, 10);
 
       let nombreEvaluacion = this.evaluacionesInformacion[indexClic].nombre;
-      let evaluacionesPorNombre;
-      axios
-        .get(`http://localhost:8000/get/evaluaciones/${nombreEvaluacion}/asignatura/${this.idAsignatura}`)
-        .then(function(response) {
-          evaluacionesPorNombre = response.data;
-        });
+      let that = this;
+      this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
+        let evaluacionesPorNombre = response;
 
-      console.log(evaluacionesPorNombre);
+        for (var i = 0; i < evaluacionesPorNombre.length; i++) {
+          let nuevaEvaluacion = {
+            nombre: evaluacionesPorNombre[i].nombre,
+            fechaEvActual: that.nuevaFechaEvaluacion,
+            fechaEntrega: nuevaFechaEntrega,
+            ponderacion: evaluacionesPorNombre[i].ponderacion,
+            estado: evaluacionesPorNombre[i].estado,
+            obs_general: evaluacionesPorNombre[i].obs_general,
+            adjunto: evaluacionesPorNombre[i].adjunto,
+            id_docente: evaluacionesPorNombre[i].id_docente,
+            id_tipoEvaluacion: evaluacionesPorNombre[i].id_tipoEvaluacion,
+            id_coordinacion: evaluacionesPorNombre[i].id_coordinacion,
+          };
 
-      /* let nuevaEvaluacion = {
-        nombre: this.evaluacionesInformacion[indexClic].nombre,
-        fechaEvActual: this.nuevaFechaEvaluacion,
-        fechaEntrega: nuevaFechaEntrega,
-        ponderacion: this.evaluacionesInformacion[indexClic].ponderacion,
-        estado: this.evaluacionesInformacion[indexClic].estado,
-        obs_general: this.evaluacionesInformacion[indexClic].obs_general,
-        adjunto: this.evaluacionesInformacion[indexClic].adjunto,
-        id_docente: this.evaluacionesInformacion[indexClic].id_docente,
-        id_tipoEvaluacion:
-          this.evaluacionesInformacion[indexClic].id_tipoEvaluacion,
-        id_coordinacion:
-          this.evaluacionesInformacion[indexClic].id_coordinacion,
-      };
+          let tuplaCambioFecha = {
+            fechaAnterior: fechaEvaluacionOriginal,
+            fechaNueva: that.nuevaFechaEvaluacion,
+            motivo: that.motivoCambioFecha,
+            id_evaluacion: evaluacionesPorNombre[i].id,
+          };
 
-      let tuplaCambioFecha = {
-        fechaAnterior: fechaEvaluacionOriginal,
-        fechaNueva: this.nuevaFechaEvaluacion,
-        motivo: this.motivoCambioFecha,
-        id_evaluacion: idEvaluacion,
-      };
+          let idEvaluacionCambio = evaluacionesPorNombre[i].id;
 
-      // Requests
-      axios
-        .put(
-          `http://localhost:8000/update/evaluacion/${idEvaluacion}`,
-          nuevaEvaluacion
-        )
-        .then(function (response) {
+          // Requests
           axios
-            .post("http://localhost:8000/add/cambioFecha", tuplaCambioFecha)
+            .put(
+              `http://localhost:8000/update/evaluacion/${idEvaluacionCambio}`,
+              nuevaEvaluacion
+            )
             .then(function (responseTwo) {
-              location.reload();
+              axios
+                .post("http://localhost:8000/add/cambioFecha", tuplaCambioFecha)
+                .then(function (responseThird) {});
             });
-        }); */
+        }
+      });
+      location.reload();
     },
   },
 };

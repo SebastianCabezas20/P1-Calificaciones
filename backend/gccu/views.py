@@ -267,8 +267,7 @@ def getAllEvaluaciones(request, idCoordinacion = None):
 
 @api_view(['GET'])
 def getEvaluacionesPorNombre(request, nombreEvaluacion = None, idAsignatura = None):
-    print(nombreEvaluacion)
-    evaluaciones = Evaluacion.objects.filter(id_coordinacion__id_asignatura_id = idAsignatura, nombre = nombreEvaluacion).all()
+    evaluaciones = Evaluacion.objects.filter(id_coordinacion__id_asignatura__id = idAsignatura, nombre = nombreEvaluacion).all()
     serializer = EvaluacionEspecificaSerializer(evaluaciones, many = "true")
     return Response(serializer.data)
 
