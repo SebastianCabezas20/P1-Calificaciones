@@ -253,3 +253,10 @@ class EvaluacionCambioFechaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion
         fields = ('id_docente', 'id_coordinacion')
+
+# Serializer para cambios de notas en  dashboard.
+class CambioNotaDashboardSerializer(serializers.ModelSerializer):
+    id_calificacion = CalificacionSerializer()
+    class Meta:
+        model = Cambio_nota
+        fields = '__all__'

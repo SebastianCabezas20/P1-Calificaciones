@@ -374,3 +374,10 @@ def getCambiosFecha(request):
     cambiosFecha = Cambio_Fecha.objects.all()
     serializer = CambioFechaDashboardSerializer(cambiosFecha, many="true")
     return Response(serializer.data)
+
+##Falta un filter para que solo muestre los cambios del semestre actual
+@api_view(['GET'])
+def getCambiosNota(request):
+    cambiosNota = Cambio_nota.objects.all()
+    serializer = CambioNotaDashboardSerializer(cambiosNota, many="true")
+    return Response(serializer.data)
