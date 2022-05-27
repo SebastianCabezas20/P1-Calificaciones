@@ -310,9 +310,9 @@ def getSolicitudesByIdDocente(request, idDocente):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getCalificaionesByDocente(request,  idUsuario):
-    calificaciones = Calificacion.objects.filter(id_evaluacion__id_docente__id_usuario__id = idUsuario)
-    serializer = CalificacionSerializerNoDate(calificaciones, many="true")
+def getCalificaionesByDocente(request,  idEvaluacion):
+    calificaciones = Calificacion.objects.filter(id_evaluacion__id = idEvaluacion).all().order_by('id_estudiante__rut')
+    serializer = CalificacionSerializer(calificaciones, many = "true")
     return Response(serializer.data)
 
 @api_view(['PUT'])
@@ -324,9 +324,8 @@ def updateCalificacion(request, idCalificacion):
         return Response(calificacion_actualizada.data)
     return Response(calificacion_actualizada.errors)
 
-## Agregar un cambio de nota
 @api_view(['GET','POST'])
-def addCambioNota(request,idAsignatura = None):
+def addCambioNota(request, idAsignatura = None):
     
     if request.method == 'GET':
         ## Devolver los cambios
@@ -339,9 +338,8 @@ def addCambioNota(request,idAsignatura = None):
         #return Response([serializer.data,coordinaciones, secciones])
         return Response(serializer.data)
 
-    ## Agregar motivo de cambio de nota
     if request.method == 'POST':
-        CambioAgregado = CambioNotaSerializer(data = request.data)
+        CambioAgregado = CambioNotaEspecificaSerializer(data = request.data)
         if CambioAgregado.is_valid():
             CambioAgregado.save()
             return Response(CambioAgregado.data)

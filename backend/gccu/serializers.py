@@ -94,6 +94,7 @@ class CoordinadorSerializer(serializers.ModelSerializer):
         model = Coordinador 
         fields = ('id', 'rut', 'dig_verificador', 'id_usuario')
 
+# Modelo: Calificación -------------------------------------------------------
 class CalificacionSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
     id_estudiante = EstudianteSerializer()
@@ -101,14 +102,11 @@ class CalificacionSerializer(serializers.ModelSerializer):
         model = Calificacion      
         fields = ('id', 'nota', 'fecha_entrega', 'obs_privada', 'id_evaluacion', 'id_estudiante')  
 
-# Encontrar la calificacion sin ningun dato adicional
 class CalificacionEspecificaSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Calificacion      
         fields = '__all__'
-
-
+# -----------------------------------------------------------------------------
 
 class SolicitudSerializer(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()
@@ -209,29 +207,26 @@ class CoordinacionSeccionV2Serializer(serializers.ModelSerializer):
         model = Coordinacion_Seccion      
         fields = ('id','coordinacion','seccion', 'bloques_horario', 'id_asignatura')  
 
-
 class EvaluacionEspecificaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion      
         fields = '__all__'
 
-class CalificacionSerializerNoDate(serializers.ModelSerializer):
-    id_evaluacion = EvaluacionSerializer()
-    id_estudiante = EstudianteSerializer()
-    class Meta:
-        model = Calificacion      
-        fields = '__all__' 
+# Modelo: Cambio_nota ---------------------------------------------------------
 
-class CalificacionEspecificaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Calificacion      
-        fields = '__all__'
-
+# Creo que este serializer está malo, ya que no se estaría considerando el 
+# id_calificacion al poner all. 
 class CambioNotaSerializer(serializers.ModelSerializer):
     id_calificacion = CalificacionSerializer()
     class Meta:
         model = Cambio_nota      
         fields = '__all__'
+
+class CambioNotaEspecificaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cambio_nota      
+        fields = '__all__'
+# -----------------------------------------------------------------------------
 
 # Serializer para cambios de fecha.
 class CambioFechaSerializer(serializers.ModelSerializer):
