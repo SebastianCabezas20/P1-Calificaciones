@@ -35,7 +35,7 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="#" v-on:click="cerrarSesion()">
             <span class="icon"
               ><i class="fa-solid fa-arrow-right-from-bracket"></i
             ></span>
@@ -48,7 +48,15 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    cerrarSesion() {
+      this.$store.dispatch("userLogout").then(() => {
+        this.$router.push({ name: "login" });
+      });
+    },
+  },
+};
 </script>
 
 <style></style>

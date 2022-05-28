@@ -24,6 +24,14 @@ const store = createStore({
       state.email = email;
       state.idRol = idRol;
     },
+    destroyToken (state) {
+      state.idUsuario = null;
+      state.nombreUsuario = "";
+      state.nombre = "";
+      state.apellido = "";
+      state.email = "";
+      state.idRol = null;
+    }
   },
   actions: {
     userLogin(context, usercredential) {
@@ -60,6 +68,9 @@ const store = createStore({
             reject(err);
           });
       });
+    },
+    userLogout(context) {
+      context.commit('destroyToken');
     },
   },
   getters: {
