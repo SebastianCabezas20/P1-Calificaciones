@@ -23,7 +23,7 @@
         <li>
           <a href="/jefe/asignaturas/general">
             <span class="icon"><i class="fa-solid fa-book"></i></span>
-            <span>Asignaturas</span>
+            <span>Cambios</span>
           </a>
         </li>
         <li>

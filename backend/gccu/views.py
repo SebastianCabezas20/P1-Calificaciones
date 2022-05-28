@@ -257,7 +257,11 @@ def getSolicitudesAsignaturaJefeCarrera(request, idAsignatura = None):
     ## ID asignatura seleccionado jefe de carrera
     solicitudes = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).all()    
     serializer = SolicitudSerializer(solicitudes, many="true")
-    return Response(serializer.data)
+    ## Coordinaciones disponibles
+    coordinaciones = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_evaluacion__id_coordinacion__coordinacion',flat= True).distinct()
+    ## Secciones disponibles
+    secciones = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_evaluacion__id_coordinacion__seccion',flat= True).distinct()
+    return Response([serializer.data,coordinaciones,secciones])
     
 @api_view(['GET'])
 def getAllEvaluaciones(request, idCoordinacion = None):

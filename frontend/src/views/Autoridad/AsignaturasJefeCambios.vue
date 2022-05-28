@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSectionV2">
-        <h3 class="textTitleV2">Mis coordinaciones (Teoría)</h3>
+        <h3 class="textTitleV2">Cambios de calificaciones</h3>
       </div>
 
       <!--Filtros-->
@@ -67,7 +67,6 @@
             <th class="row-Codigo">Nota actual</th>
             <th class="row-Codigo">Fecha del cambio</th>
             <th class="row-Codigo">Motivo</th>
-            <th class="row-ButtonText"></th>
           </tr>
         </thead>
         <tbody>
@@ -86,14 +85,6 @@
               <td>{{ cambio.actual_nota }}</td>
               <td>{{ cambio.fecha_cambio }}</td>
               <td>{{ cambio.motivo }}</td>
-              <td>
-                <button
-                  type="button"
-                  class="botonTabla"
-                >
-                  Más Información
-                </button>
-              </td>
             </tr>
           </template>
         </tbody>
