@@ -1,5 +1,6 @@
 <template>
-    <tr  :style="[solicitud.estado == 'A' ? {'background-color':'#90EE90'} : solicitud.estado == 'R' ? {'background-color': '#ffbfaa'} : {'background-color':'null'}]">
+    <tr  :style="[solicitud.estado == 'A' ? {'background-color':'#90EE90'} : solicitud.estado == 'R' ? {'background-color': '#ffbfaa'} : {'background-color':'null'}]"
+    v-show="filtroEstado(solicitud.estado) && filtroEvaluacion(solicitud.id_evaluacion.nombre)">
         <td>{{solicitud.id_evaluacion.nombre}}</td>
         <td>{{solicitud.id_docente.id_usuario.username}}</td>
         <td v-if="solicitud.estado == 'A'">Aprobada</td>
@@ -96,6 +97,32 @@ export default {
     },
     props:{
         solicitud: Array,
+        evaluacionFiltro: String,
+        estudiante: String,
+        docente: String,
+        aprobada: Boolean,
+        rechazada: Boolean,
+        pendiente: Boolean
+    },
+    methods:{
+        filtroEstado(estado){
+            if(estado == 'A'){
+                return this.aprobada
+            }
+            else if(estado == 'R'){
+                return this.rechazada
+            }
+            else if(estado == 'P'){
+                return this.pendiente
+            }
+            else{
+                return false
+            }
+        },
+        filtroEvaluacion(evaluacion){
+            let n = Array(evaluacion)
+            return n[0].toLocaleLowerCase().indexOf(this.evaluacionFiltro) >= 0
+        }
 
     }
 }

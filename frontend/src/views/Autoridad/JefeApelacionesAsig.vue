@@ -46,6 +46,26 @@
             <span class="input-group-text">Docente</span>
             <input type="text" class="form-control" v-model="docenteFiltro" placeholder="Docente a buscar">
           </div>
+
+
+          <div class="input-group row">
+          <h6> Tipo de apelaciones</h6>
+          <!-- Botones para la seleccion de estados -->
+          <div>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+              <input type="checkbox" class="btn-check" v-model="rechazadas" value="R" id="rechazada" autocomplete="off">
+              <label class="btn btn-outline-primary" for="rechazada"> Rechazadas</label>
+            </div>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" style="margin-left:30px">
+              <input type="checkbox" class="btn-check" v-model="aprobadas" value="A" id="aprobadas" autocomplete="off">
+              <label class="btn btn-outline-primary" for="aprobadas"> Aprobadas</label>
+            </div>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" style="margin-left:30px">
+              <input type="checkbox" class="btn-check" v-model="pendientes" value="P" id="pendiente" autocomplete="off">
+              <label class="btn btn-outline-primary" for="pendiente"> Pendientes</label>
+            </div>
+          </div>
+        </div>
         </div>
 
 
@@ -65,7 +85,8 @@
           </thead>
           <tbody v-for="solicitud in solicitudes" :key="solicitud.id">
             <ApelacionesAsignaJefe :solicitud="solicitud" :coordinaciones="this.coordinacionesChecked" :secciones="this.seccionesChecked"
-            :nombreEvaluacion="this.evaluacionFiltro"/>
+            :nombreEvaluacion="this.evaluacionFiltro" 
+            :pendiente="this.pendientes" :aprobada="this.aprobadas" :rechazada="this.rechazadas"/>
           </tbody>
         </table>
       </div>
@@ -96,6 +117,9 @@ props:['idAsignatura'],
           coordinacionesChecked:[],
           evaluacionFiltro:'',
           docenteFiltro:'',
+          aprobadas: true,
+          rechazadas: true,
+          pendientes: true
       }
   },
   created() {

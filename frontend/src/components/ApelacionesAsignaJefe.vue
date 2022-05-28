@@ -1,7 +1,7 @@
 <template>
     <tr
     v-show="filterSecciones(solicitud.id_evaluacion.id_coordinacion.coordinacion,solicitud.id_evaluacion.id_coordinacion.seccion) &&
-    filterEvaluacion(solicitud.id_evaluacion.nombre)" 
+    filterEvaluacion(solicitud.id_evaluacion.nombre) && filterEstado(solicitud.estado)" 
     :style="[solicitud.estado == 'A' ? {'background-color':'#90EE90'} : solicitud.estado == 'R' ? {'background-color': '#ffbfaa'} : {'background-color':'null'}]">
         <td>{{solicitud.id_evaluacion.nombre}}</td>
         <td v-if="solicitud.estado == 'A'">Aprobada</td>
@@ -102,6 +102,9 @@ export default {
         coordinaciones: Array,
         secciones: Array,
         nombreEvaluacion: String,
+        aprobada: Boolean,
+        rechazada: Boolean,
+        pendiente: Boolean
     },
     methods:{
         filterSecciones(coordinacion,seccion){
@@ -115,6 +118,20 @@ export default {
         filterEvaluacion(evaluacion){
         let n = Array(evaluacion)
         return n[0].toLocaleLowerCase().indexOf(this.nombreEvaluacion) >= 0
+        },
+        filterEstado(estado){
+            if(estado == 'A'){
+                return this.aprobada
+            }
+            else if(estado == 'R'){
+                return this.rechazada
+            }
+            else if(estado == 'P'){
+                return this.pendiente
+            }
+            else{
+                return false
+            }
         }
     }
 }
