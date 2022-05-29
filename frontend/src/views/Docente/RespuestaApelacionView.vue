@@ -24,9 +24,11 @@
           <h6 class="textoFormulario">
             Evaluación: {{ apelacion[0].id_evaluacion.nombre }}
           </h6>
-          <h6 class="textoFormulario">Calificación: {{ apelacion[0].id_calificacion.nota }}</h6>
+          <h6 class="textoFormulario">
+            Calificación: {{ apelacion[0].id_calificacion.nota }}
+          </h6>
 
-          <form class="mt-2">
+          <form class="mt-2" @submit.prevent="send">
             <div class="itemFormulario">
               <label for="nombreUsuarioEstudiante">Estudiante</label>
               <input
@@ -60,6 +62,7 @@
                 placeholder="Respuesta del Docente"
                 rows="5"
                 v-model="respuestaActual"
+                required
               ></textarea>
             </div>
 
@@ -100,13 +103,12 @@
                 v-if="isAceptar"
                 min="1"
                 max="7"
+                step="0.1"
                 placeholder="Nueva calificación"
               />
             </div>
 
-            <button class="submitButton" @click.prevent="send">
-              Enviar Respuesta
-            </button>
+            <button class="submitButton" type="submit">Enviar Respuesta</button>
           </form>
         </div>
       </div>
@@ -144,118 +146,102 @@ export default {
       this.isAceptar = true;
     },
     send() {
-      if (this.respuestaActual == "" || this.isAceptar == null) {
-        alert("Se necesita añadir una respuesta");
-      } else if (
-        (this.isAceptar == true && this.notaActual <= 0) ||
-        this.notaActual > 7
-      ) {
-        alert("Nota debe ser de 1 a 7");
-      } 
-      else {
-        let idEstudianteSolicitud = this.idEstudiante;
-        let idEvaluacionSolicitud = this.idEvaluacion;
-        // Caso aceptar solicitud y cambiar nota
-        if(this.isAceptar == true){
-          if(this.notaActual != null){
-              // Se crea la solicitud a cambiar
-              let solicitud = {
-              motivo: this.apelacion[0].motivo,
-              anterior_nota: this.apelacion[0].id_calificacion.nota, //Nota anterior
-              actual_nota:this.notaActual, // Nueva nota
-              fecha_creacion: this.apelacion[0].fecha_creacion,
-              respuesta: this.respuestaActual,
-              fecha_respuesta: new Date(),
-              estado: this.EstadoActual,
-              id_estudiante: idEstudianteSolicitud,
-              id_docente: this.apelacion[0].id_docente,
-              id_evaluacion: idEvaluacionSolicitud,
-              id_calificacion: this.apelacion[0].id_calificacion.id
-            }
-            // ID de la solictud para actulizar
-            let idSolicitud = this.apelacion[0].id;
-            axios
-              .put(
-                `http://localhost:8000/actualizar/solicitud/${idSolicitud}`,
-                solicitud
-              )
-              .then(function (response) {});
-            // Nueva tupla de calificacion
-            let notaNueva = {
-              nota: this.notaActual,
-              fecha_entrega: this.apelacion[0].id_calificacion.fecha_entrega,
-              obs_privada: this.apelacion[0].id_calificacion.obs_privada,
-              id_estudiante: this.apelacion[0].id_calificacion.id_estudiante,
-              id_evaluacion: this.apelacion[0].id_calificacion.id_evaluacion,
-            };
-            let idCalificacion = this.apelacion[0].id_calificacion.id;
-            axios
-              .put(
-                `http://localhost:8000/actualizar/calificacion/${idCalificacion}`,
-                notaNueva
-              )
-              .then(function (response) {});
-              // Se crea la tupla para el cambio de nota
-            let cambioNota ={
-              anterior_nota: this.apelacion[0].id_calificacion.nota,
-              actual_nota: this.notaActual,
-              fecha_cambio: new Date(),
-              motivo: this.respuestaActual, 
-              id_calificacion: this.apelacion[0].id_calificacion.id,
-            }
-            axios
-              .post(
-                `http://localhost:8000/add/cambio/calificacion`,cambioNota)
-              .then(function (response) {router.push(`/docente/solicitudes/`)});
-          }
-          else{// Nota no ingresada
-            alert("ingrese una nota");
-          }
-        }
-        else{// Rechazar una solicitud, solo actualizar solicitud
-          // Se crea la solicitud a cambiar
+      let fechaActual = new Date();
+      fechaActual = fechaActual.toISOString().slice(0, 10);
+      let idEstudianteSolicitud = this.idEstudiante;
+      let idEvaluacionSolicitud = this.idEvaluacion;
+
+      if (this.isAceptar == true && this.notaActual == null) {
+        alert(
+          "Para aceptar una solicitud, debe ingresar la nueva nota del estudiante"
+        );
+      } else {
+        // Caso 1: Solicitud es aceptada.
+        if (this.isAceptar == true) {
           let solicitud = {
-          motivo: this.apelacion[0].motivo,
-          anterior_nota: null, //Null debido a que no hubo cambio de nota
-          actual_nota: this.apelacion[0].id_calificacion.nota, // Se mantiene la nota actual
-          fecha_creacion: this.apelacion[0].fecha_creacion,
-          respuesta: this.respuestaActual,
-          fecha_respuesta: new Date(),
-          estado: this.EstadoActual,
-          id_estudiante: idEstudianteSolicitud,
-          id_docente: this.apelacion[0].id_docente,
-          id_evaluacion: idEvaluacionSolicitud,
-          id_calificacion: this.apelacion[0].id_calificacion.id
+            motivo: this.apelacion[0].motivo,
+            anterior_nota: this.apelacion[0].id_calificacion.nota, //Nota anterior
+            actual_nota: this.notaActual, // Nueva nota
+            fecha_creacion: this.apelacion[0].fecha_creacion,
+            respuesta: this.respuestaActual,
+            fecha_respuesta: fechaActual,
+            estado: this.EstadoActual,
+            id_estudiante: idEstudianteSolicitud,
+            id_docente: this.apelacion[0].id_docente,
+            id_evaluacion: idEvaluacionSolicitud,
+            id_calificacion: this.apelacion[0].id_calificacion.id,
+          };
+          // ID de la solictud para actulizar
+          let idSolicitud = this.apelacion[0].id;
+          axios
+            .put(
+              `http://localhost:8000/actualizar/solicitud/${idSolicitud}`,
+              solicitud
+            )
+            .then(function (response) {});
+          
+          // Nueva tupla de calificacion
+          let notaNueva = {
+            nota: this.notaActual,
+            fecha_entrega: this.apelacion[0].id_calificacion.fecha_entrega,
+            obs_privada: this.apelacion[0].id_calificacion.obs_privada,
+            id_estudiante: this.apelacion[0].id_calificacion.id_estudiante,
+            id_evaluacion: this.apelacion[0].id_calificacion.id_evaluacion,
+          };
+          let idCalificacion = this.apelacion[0].id_calificacion.id;
+          
+          axios
+            .put(
+              `http://localhost:8000/actualizar/calificacion/${idCalificacion}`,
+              notaNueva
+            )
+            .then(function (response) {});
+          // Se crea la tupla para el cambio de nota
+          let cambioNota = {
+            anterior_nota: this.apelacion[0].id_calificacion.nota,
+            actual_nota: this.notaActual,
+            fecha_cambio: fechaActual,
+            motivo: this.respuestaActual,
+            id_calificacion: this.apelacion[0].id_calificacion.id,
+          };
+          axios
+            .post(`http://localhost:8000/add/cambio/calificacion`, cambioNota)
+            .then(function (response) {
+              router.push(`/docente/solicitudes/`);
+            });
         }
-        // ID de la solictud para actulizar
-        let idSolicitud = this.apelacion[0].id;
-        axios
-          .put(
-            `http://localhost:8000/actualizar/solicitud/${idSolicitud}`,
-            solicitud
-          )
-          .then(function (response) {
-            router.push(`/docente/solicitudes/`);
-          });
+        // Caso 2: Se rechaza la solicitud.
+        else {
+          let solicitud = {
+            motivo: this.apelacion[0].motivo,
+            anterior_nota: null, //Null debido a que no hubo cambio de nota
+            actual_nota: this.apelacion[0].id_calificacion.nota, // Se mantiene la nota actual
+            fecha_creacion: this.apelacion[0].fecha_creacion,
+            respuesta: this.respuestaActual,
+            fecha_respuesta: fechaActual,
+            estado: this.EstadoActual,
+            id_estudiante: idEstudianteSolicitud,
+            id_docente: this.apelacion[0].id_docente,
+            id_evaluacion: idEvaluacionSolicitud,
+            id_calificacion: this.apelacion[0].id_calificacion.id,
+          };
+          // ID de la solictud para actulizar
+          let idSolicitud = this.apelacion[0].id;
+          axios
+            .put(
+              `http://localhost:8000/actualizar/solicitud/${idSolicitud}`,
+              solicitud
+            )
+            .then(function (response) {
+              router.push(`/docente/solicitudes/`);
+            });
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
         let solicitud = {
           id_estudiante: idEstudianteSolicitud,
           id_evaluacion: idEvaluacionSolicitud,
           motivo: this.apelacion[0].motivo,
-          
+
           fecha_creacion: this.apelacion[0].fecha_creacion,
           respuesta: this.respuestaActual,
           fecha_respuesta: new Date(),
@@ -302,7 +288,6 @@ export default {
     const that = this;
     let idEstudianteURL = this.idEstudiante;
     let idEvaluacionURL = this.idEvaluacion;
-    console.log("id Estudiante:" + idEstudianteURL + "id evaluacion:" + idEvaluacionURL)
     axios
       .get(
         `http://localhost:8000/solicitudRespuesta/${idEstudianteURL}/${idEvaluacionURL}`

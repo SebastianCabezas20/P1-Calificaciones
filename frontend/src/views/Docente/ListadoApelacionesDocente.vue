@@ -9,7 +9,6 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      
       <div class="titleSectionV2">
         <h3 class="textTitleV2">Solicitudes de Apelación</h3>
       </div>
@@ -19,13 +18,14 @@
             <th>Nombre asignatura</th>
             <th>Estudiante</th>
             <th>Evaluacion</th>
+            <th>Fecha de envío</th>
             <th>Estado</th>
             <th class="row-ButtonText"></th>
           </tr>
         </thead>
         <tbody>
           <template v-for="solicitud in solicitudes" :key="solicitud.id">
-            <tr scope="row" v-if="solicitud.id_docente.id === idDocente">
+            <tr>
               <SolicitudesDocente
                 :solicitud_revision="solicitud"
                 @EventIdEvaluacion="
@@ -57,7 +57,6 @@ export default {
   data() {
     return {
       solicitudes: [],
-      idDocente: 0,
     };
   },
   mounted() {
@@ -66,12 +65,12 @@ export default {
     axios
       .get(`http://localhost:8000/api/docente/${identificacionUsuario}`)
       .then(function (response) {
-        ins.idDocente = response.data.id;
-      });
-    axios
-      .get(`http://localhost:8000/solicitudesDocente`)
-      .then(function (response) {
-        ins.solicitudes = response.data;
+        let idDocente = response.data.id;
+        axios
+          .get(`http://localhost:8000/solicitudesDocente/${idDocente}`)
+          .then(function (responseTwo) {
+            ins.solicitudes = responseTwo.data;
+          });
       });
   },
   methods: {

@@ -125,19 +125,11 @@ class CoordinacionEstudianteSerializer(serializers.ModelSerializer):
         model = Coordinacion_Estudiante    
         fields = ('promedioEstudiante', 'id_estudiante', 'id_coordinacion')
 
-
-
 #Serializer para mostrar datos en respuesta de solicitud
 class SolicitudRespuestaSerializer(serializers.ModelSerializer):
     id_estudiante = EstudianteSerializer()
     id_evaluacion = EvaluacionSerializer()
     id_calificacion = CalificacionEspecificaSerializer()
-    class Meta:
-        model = Solicitud_Revision
-        fields = '__all__'
-
-#Serializer para actualizar datos en respuesta de solicitud
-class SolicitudActualizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Solicitud_Revision
         fields = '__all__'

@@ -24,20 +24,19 @@ urlpatterns = [
     path('api/estudiante/<int:idUsuario>', views.getIdEstudiante),                      # Funcionando.
 
     # Demás URLs
-    path('add/solicitud', views.getDataSolicitud),
+    path('add/solicitud', views.dataSolicitud),
+    path('actualizar/solicitud/<int:idSolicitud>', views.dataSolicitud),
+    path('solicitudes/<int:idUsuario>', views.dataSolicitud),
     path('calificacionesTeoria/<int:codigo>/<int:idUsuario>',views.getDataAsignatura),
     path('calificacionesLaboratorio/<int:codigo>/<int:idUsuario>',views.getDataAsignaturaLab),
     path('InformacionTeoria/<int:codigo>',views.getInformacionCursoTeoria),
     path('InformacionLaboratorio/<int:codigo>',views.getInformacionCursoLab),
-    path('solicitudes/<int:idUsuario>', views.getDataSolicitud),                        # Funcionando.
     path('cursosEstudiante/<int:idUsuario>', views.getCursosByEstudiante),              # Funcionando.
     path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.
     path('estudiantes', views.getEstudiante), ### SIRVE?
     path('solicitudRespuesta/<int:idEstudiante>/<int:idEvaluacion>', views.getDataSolicitudRespuesta), ## Ver los datos de la respuesta a la apelacion
-    path('actualizar/solicitud/<int:idSolicitud>', views.actualizacionSolicitudRespuesta), # Para poder actualizar respuesta y estado de una solicitud
     path('actualizar/calificacion/<int:idCalificacion>', views.actualizacionCalificacionEstudiante), # Para poder actualizar calificaion de un estudiante 
     path('calificacion/coordinacion/<int:idCoordinacion>', views.getCalifiacionesEstudiantes),
-    path('solicitudesDocente', views.getDataSolicitudesDocente),
     path('getCalificacionesPerAsignaturaEvaluacion/<int:idAsignatura>/<int:idEvaluacion>', views.getCalificacionesPerAsignaturaEvaluacion),
     path('asignaturascoordinador/<int:idCoordinador>', views.getAsignaturastoCoordinador),
     path('evaluaciones/<int:idCoordinacion>', views.evaluacionesCoordinacion),          # Funcionando.
@@ -54,8 +53,8 @@ urlpatterns = [
     path('update/evaluacion/<int:idEvaluacion>', views.evaluacionesCoordinacion),       # Funcionando. 
     path('allInfoEvaluaciones/<int:idCoordinacion>', views.getAllEvaluaciones),
     path('usuario/roles', views.getRolesUsuarios),                                      # Funcionando.
-    path('authUser', views.isRolUser),                                               # Funcionando.
-    path('solicitudesDocente/<int:idDocente>', views.getSolicitudesByIdDocente),                                     # Funcionando.
+    path('authUser', views.isRolUser),                                                  # Funcionando.
+    path('solicitudesDocente/<int:idDocente>', views.getSolicitudesByIdDocente),        # Funcionando.
     path('informacion/solicitud/estudiante/<int:idCalificacion>', views.getDataSolicitudApelacion),  
     path('calificacionesDocente/<int:idEvaluacion>', views.getCalificaionesByDocente),
     path('updateCalificacion/<int:idCalificacion>', views.updateCalificacion),

@@ -75,13 +75,21 @@ def getDataSolicitudApelacion(request, idCalificacion = None):
     return Response(serializer.data)
 
 # Solicitudes de revisión realizadas por un estudiante.
-@api_view(['GET', 'POST'])
-def getDataSolicitud(request, idUsuario = None):
+@api_view(['GET', 'PUT' ,'POST'])
+def dataSolicitud(request, idUsuario = None, idSolicitud = None):
     if request.method == 'GET':
         solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id_usuario__id = idUsuario).all()
         serializer = SolicitudSerializer(solicitudes, many = "true")
         return Response(serializer.data)
     
+    if request.method == 'PUT':
+        solicitud = Solicitud_Revision.objects.filter(id = idSolicitud).first()
+        solicitud_actualizada = OnlySolicitudSerializer(solicitud, data = request.data)
+        if solicitud_actualizada.is_valid():
+            solicitud_actualizada.save()
+            return Response(solicitud_actualizada.data)
+        return Response(solicitud_actualizada.errors)
+
     if request.method == 'POST':
         nuevaSolicitud = OnlySolicitudSerializer(data = request.data)
         if nuevaSolicitud.is_valid():
@@ -108,13 +116,6 @@ def getEstudiante(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getDataSolicitudesDocente(request):
-    solicitudes = Solicitud_Revision.objects.all()
-
-    serializer = SolicitudSerializer(solicitudes, many="true")
-    return Response(serializer.data)
-
-@api_view(['GET'])
 def getCalificacionesPerAsignaturaEvaluacion(request, idAsignatura, idEvaluacion):
     calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).all()
     serializer = CalificacionSerializer(calificaciones, many='true')
@@ -134,25 +135,6 @@ def getDataSolicitudRespuesta(request,idEstudiante = None, idEvaluacion = None):
     solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id = idEstudiante, id_evaluacion__id = idEvaluacion).all()
     serializer = SolicitudRespuestaSerializer(solicitudes, many = "true")
     return Response(serializer.data)
-
-#####################POSIBLE COMBINACION DE SERIALIZERS getDataSolicitudRespuesta
-## Actualizacion de Solicitud respuesta id_motivo y id_calificacion para cambiar nota
-@api_view(['GET','PUT'])
-def actualizacionSolicitudRespuesta(request, idSolicitud = None):
-
-    if request.method == 'GET':
-        solicitud = Solicitud_Revision.objects.all()
-        solicituds = SolicitudActualizacionSerializer(solicitud, many = "true")
-        return Response(solicituds.data)
-    
-    if request.method == 'PUT':
-        #### ID de la solicitud  ## Prueba 2
-        solicitud = Solicitud_Revision.objects.filter(id = idSolicitud).first()
-        solicitud_actualizada = SolicitudActualizacionSerializer(solicitud, data = request.data)
-        if solicitud_actualizada.is_valid():
-            solicitud_actualizada.save()
-            return Response(solicitud_actualizada.data)
-        return Response(solicitud_actualizada.errors)
 
 ## ACtualizacion de calificaciones de una solicitud
 @api_view(['GET','PUT'])
@@ -315,7 +297,7 @@ def crudOneEvaluacion(request, idEvaluacion = None):
 
 @api_view(['GET'])
 def getSolicitudesByIdDocente(request, idDocente):
-    solicitudes = Solicitud_Revision.objects.filter(id_docente__id = idDocente)
+    solicitudes = Solicitud_Revision.objects.filter(id_docente__id = idDocente).order_by('fecha_creacion')
     serializer = SolicitudSerializer(solicitudes, many="true")
     return Response(serializer.data)
 
