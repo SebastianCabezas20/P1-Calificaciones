@@ -68,6 +68,42 @@
 
 /* ------------------------------------------------------------------------- */
 
+/* Dashboards ------------------------------------------------------------- */
+
+#solPendientes {
+  border: 1px solid #004883;
+  height: 250px;
+  background-color: #f3f3f3;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.iconoDashboard {
+  margin-top: 15px;
+  height: 80px;
+  width: 80px;
+  display: flex;
+}
+
+.iconoDashboard span {
+  margin: auto;
+}
+
+#solPendientes h2 {
+  margin-top: 15px;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: -1px;
+}
+
+#solPendientes h3 {
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 35px;
+}
+
+/* ------------------------------------------------------------------------- */
+
 /* Otras vistas ------------------------------------------------------------ */
 
 .contentViews {
