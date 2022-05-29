@@ -64,4 +64,5 @@ urlpatterns = [
     path('get/cambiosFecha', views.getCambiosFecha),
     path('get/evaluaciones/<nombreEvaluacion>/asignatura/<int:idAsignatura>', views.getEvaluacionesPorNombre),
     path('get/cambiosNota', views.getCambiosNota),
+    path('get/coordinacion/<int:idCoordinacion>', views.informacionCoordinacion),
 ]

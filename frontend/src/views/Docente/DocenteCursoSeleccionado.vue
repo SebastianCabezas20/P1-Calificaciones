@@ -86,9 +86,19 @@
       </table>
 
       <!-- Botón que abre el modal para agregar una evaluación. -->
-      <button @click="showModal = true" type="button" class="submitButton">
-        Agregar evaluación
-      </button>
+      <template
+        v-for="informacion in informacionCoordinacion"
+        :key="informacion.id"
+      >
+        <button
+          @click="showModal = true"
+          type="button"
+          class="submitButton"
+          :disabled="informacion.id_asignatura.isAutogestionada == false"
+        >
+          Agregar evaluación
+        </button>
+      </template>
 
       <!-- Modal -->
       <transition name="fase" appear>
@@ -209,9 +219,7 @@
                   v-on:submit.prevent="modificarFecha($event, modalIndex)"
                 >
                   <div class="mb-3">
-                    <label class="form-label"
-                      >Nueva fecha de evaluación</label
-                    >
+                    <label class="form-label">Nueva fecha de evaluación</label>
                     <input
                       v-model="fechaEvaluacion"
                       class="form-control"
@@ -279,6 +287,7 @@ export default {
       idDocente: 0,
       motivoCambio: "",
       fechaOriginal: "",
+      informacionCoordinacion: [],
     };
   },
 
@@ -308,6 +317,12 @@ export default {
       .get(`http://localhost:8000/allInfoEvaluaciones/${identificacionCurso}`)
       .then(function (response) {
         that.evaluacionesFull = response.data;
+      });
+
+    axios
+      .get(`http://localhost:8000/get/coordinacion/${identificacionCurso}`)
+      .then(function (response) {
+        that.informacionCoordinacion = response.data;
       });
   },
 
@@ -341,7 +356,7 @@ export default {
           fechaEntrega: fechaEntrega,
           ponderacion: this.porcentajeEvaluacion,
           estado: "P",
-          obs_general: '',
+          obs_general: "",
           adjunto: null,
           id_tipoEvaluacion: this.tipoEvaluacion,
           id_docente: this.idDocente,

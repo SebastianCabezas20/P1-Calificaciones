@@ -151,10 +151,13 @@ export default {
       let idEstudianteSolicitud = this.idEstudiante;
       let idEvaluacionSolicitud = this.idEvaluacion;
 
-      if (this.isAceptar == true && this.notaActual == null) {
-        alert(
-          "Para aceptar una solicitud, debe ingresar la nueva nota del estudiante"
-        );
+      if (this.isAceptar == true && (this.notaActual == null || this.notaActual == '')) {
+        this.$swal
+          .fire({
+            icon: "error",
+            title: "No se pudo procesar la respuesta",
+            text: "Para aceptar la solicitud de revisión, debe indicar la nueva nota del estudiante",
+          });
       } else {
         // Caso 1: Solicitud es aceptada.
         if (this.isAceptar == true) {

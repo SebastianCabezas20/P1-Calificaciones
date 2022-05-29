@@ -15,6 +15,7 @@
       <table class="tableV2">
         <thead>
           <tr>
+            <th class="row-Codigo">Código</th>
             <th>Nombre asignatura</th>
             <th>Estudiante</th>
             <th>Evaluacion</th>

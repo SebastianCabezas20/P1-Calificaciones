@@ -192,12 +192,7 @@ class PlanesJefeSerializer(serializers.ModelSerializer):
     id_asignatura = AsignaturaV2Serializer()
     class Meta:
         model = Asignaturas_PlanEstudio  
-        fields = '__all__'  
-
-class CoordinacionSeccionV2Serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Coordinacion_Seccion      
-        fields = ('id','coordinacion','seccion', 'bloques_horario', 'id_asignatura')  
+        fields = '__all__'
 
 class EvaluacionEspecificaSerializer(serializers.ModelSerializer):
     class Meta:

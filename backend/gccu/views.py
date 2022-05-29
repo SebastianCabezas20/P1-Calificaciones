@@ -371,3 +371,9 @@ def getCambiosNota(request):
     cambiosNota = Cambio_nota.objects.all()
     serializer = CambioNotaDashboardSerializer(cambiosNota, many="true")
     return Response(serializer.data)
+
+@api_view(['GET'])
+def informacionCoordinacion(request, idCoordinacion = None):
+    coordinacion = Coordinacion_Seccion.objects.filter(id = idCoordinacion).all()
+    serializer = CoordinacionSeccionSerializer(coordinacion, many = "true")
+    return Response(serializer.data)

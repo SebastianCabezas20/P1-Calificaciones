@@ -175,6 +175,11 @@
   height: 40px;
 }
 
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .buttonSecondary {
   background: #ffffff;
   border-radius: 10px;
@@ -188,7 +193,7 @@
   height: 40px;
 }
 
-.submitButton:hover {
+.submitButton:hover:enabled {
   transition: all 0.1s ease-in-out;
   opacity: 0.9;
 }
