@@ -39,7 +39,7 @@
                 <button 
                   type="button" 
                   class="botonTabla"
-                  @click="getCoordinacion($event, seccion.id_coordinacion.id_asignatura.id, seccion.id_coordinacion.id)"
+                  @click="getCoordinacion($event, seccion[0].id_coordinacion.id_asignatura.id, seccion[0].id_coordinacion.id)"
                   >
                     Seleccionar
                 </button>
