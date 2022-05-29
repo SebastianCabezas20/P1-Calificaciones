@@ -25,15 +25,20 @@
           </thead>
           <tbody>
             <tr v-for="seccion in secciones" :key="seccion.id">
-              <td>{{seccion.id_coordinacion.coordinacion}}-{{seccion.id_coordinacion.seccion}}</td>
-              <td>{{seccion.id_docente.rut}}-{{seccion.id_docente.dig_verificador}}</td>
-              <td>{{seccion.id_coordinacion.bloques_horario}}</td>
-              <td>{{seccion.id_coordinacion.id_asignatura.nombre}}</td>
-              <td>
-                <button type="button" class="btn btn-success" @click.prevent="Ingresar(seccion.id_coordinacion.id)">
-                  Seleccionar
-                </button>
-              </td>
+                <td>{{seccion[0].id_coordinacion.coordinacion}}-{{seccion[0].id_coordinacion.seccion}}</td>
+                <!--V-for para obtener todas las tuplas con los distintos profesores-->
+                <td> 
+                  <label class="row" v-for="s in seccion" :key="s.index" >
+                    {{s.id_docente.id_usuario.first_name}} {{s.id_docente.id_usuario.last_name}}
+                  </label>
+                </td>
+                <td>{{seccion[0].id_coordinacion.bloques_horario}}</td>
+                <td>{{seccion[0].id_coordinacion.id_asignatura.nombre}}</td>    
+                <td>
+                  <button type="button" class="btn btn-success" @click.prevent="Ingresar(seccion[0].id_coordinacion.id)">
+                    Seleccionar
+                  </button>
+                </td>              
             </tr>
           </tbody>
         </table>
@@ -69,6 +74,7 @@ export default {
       console.log(ins.idCoordinador)
       axios.get(`http://localhost:8000/coordinador/coordinacion/${ins.idCoordinador}`).then(function (response) {
         console.log(response.data);
+        // Se obtienen las coordinaciones en un arreglo [[Co1],[Co2],[Co3]]
         ins.secciones = response.data;
       });
     });

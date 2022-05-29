@@ -31,7 +31,7 @@
           <div class="px-5 pt-2">
             <label for="password" class="sr-only">Contraseña</label>
             <input
-              type="password"
+              :type="tipoPassword"
               name="password"
               id="pass"
               v-model="password"
@@ -39,6 +39,12 @@
               required
               class="textLogin"
             />
+            <div>
+              <input class="form-check-input" type="checkbox" value="" id="mostrarContraseña" @click="cambioCampo()">
+              <label class="form-check-label" for="mostrarContraseña">
+                Mostrar contraseña
+              </label>
+            </div>
           </div>
 
           <div class="flex justify-center px-5 pt-2">
@@ -92,6 +98,7 @@ export default {
       rolSeleccionado: null,
       roles: [],
       incorrectAuth: false,
+      tipoPassword: 'password'
     };
   },
   methods: {
@@ -119,6 +126,14 @@ export default {
           this.incorrectAuth = true;
         });
     },
+    cambioCampo(){
+      if(this.tipoPassword == 'password'){
+        this.tipoPassword = 'text'
+      }
+      else{
+        this.tipoPassword = 'password'
+      }
+    }
   },
   mounted() {
     let that = this;

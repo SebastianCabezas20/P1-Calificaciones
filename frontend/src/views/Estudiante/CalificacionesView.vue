@@ -215,7 +215,8 @@ export default {
         `http://localhost:8000/calificacionesLaboratorio/${codigoAsig}/${idUsuario}`
       )
       .then(function (response) {
-        if (response.data.length != 0) {
+        if (response.data[0].length != 0) {
+          console.log(response.data.length)
           ins.calificacionesLaboratorio = response.data[0];
           ins.evaluacionesSinNotaLaboratorio = response.data[1];
           ins.mostrar = true;

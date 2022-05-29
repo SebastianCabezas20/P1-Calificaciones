@@ -218,13 +218,19 @@ def getTiposEvaluaciones(request):
     serializer = TipoEvaluacionSerializer(tiposEvaluaciones, many="true")
     return Response(serializer.data)
 
-# Arreglar esta vista para que entregue las coordinaciones con los profesores agrupados (2 o más profesores).
+# Arreglar esta vista para que entregue las coordinaciones con los profesores agrupados (2 o más profesores). ## Solucionado
 # Saber que coordinacion quiere visualizar, de aqui sacar el id para ver la tabla Solicitud -> CursoInscrito
 @api_view(['GET'])
 def getCoordinacionesCoordinador(request, idCoordinador = None):
-    coordinacionesCoordinador = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__id_coordinador = idCoordinador).all()
-    serializer = DocenteCursoSerializer(coordinacionesCoordinador, many="true")
-    return Response(serializer.data)
+    coordinacionesCoordinador = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__id_coordinador = idCoordinador)
+    idsCoordinacion = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__id_coordinador = idCoordinador).distinct('id_coordinacion__id').values_list('id_coordinacion__id', flat=True)
+    #print(idsCoordinacion)
+    arregloInformacion = []
+    for id in idsCoordinacion:
+        coordinacion_docentes = Coordinacion_Docente.objects.filter(id_coordinacion__id = id)
+        arregloInformacion.append(DocenteCursoSerializer(coordinacion_docentes, many="true").data)
+    #serializer = DocenteCursoSerializer(coordinacionesCoordinador, many="true")
+    return Response(arregloInformacion)
 
 @api_view(['GET'])
 def getCoordinacionesAsignatura(request, idAsignatura = None):
