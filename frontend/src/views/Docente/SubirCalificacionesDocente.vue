@@ -58,7 +58,7 @@
               <th>RUT</th>
               <th>D. Verificador</th>
               <th>Calificación</th>
-              <th style="width: 10%;"></th>
+              <th style="width: 10%"></th>
               <th class="row-ButtonIcon"></th>
             </tr>
           </thead>
@@ -80,7 +80,9 @@
               <td>
                 {{ calificacion.id_estudiante.dig_verificador }}
               </td>
-              <td v-if="(calificacion.nota == null) || (calificacion.nota == '')">-</td>
+              <td v-if="calificacion.nota == null || calificacion.nota == ''">
+                -
+              </td>
               <td v-else>{{ calificacion.nota }}</td>
 
               <td>
@@ -98,56 +100,62 @@
               <td>
                 <div class="text-center">
                   <button
-                  class="fa-solid fa-plus botonTabla"
-                  type="button"
-                  v-on:click="addObsPrivada($event, index)"
+                    class="fa-solid fa-plus botonTabla"
+                    type="button"
+                    v-on:click="addObsPrivada($event, index)"
                   ></button>
                 </div>
               </td>
 
               <!-- Modal que permite la subida de observaciones generales a una evaluación. -->
-      <transition name="fase" appear>
-        <div class="modal-overlay" v-if="showModalObservacionPrivada" :data="modalData">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Observación privada</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  @click="showModalObservacionPrivada = false"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div class="mb-3">
-                  <label for="contenidoObservacion"
-                    >Indique una observación privada</label
-                  >
-                  <textarea
-                    name="contenidoObservacionPrivada"
-                    id="contenidoObservacionPrivada"
-                    rows="5"
-                    type="text"
-                    v-model="calificacionesEstudiantes[modalData].obs_privada"
-                    class="form-control"
-                    placeholder="Contenido de la observación"
-                  ></textarea>
-                </div>
+              <transition name="fase" appear>
+                <div
+                  class="modal-overlay"
+                  v-if="showModalObservacionPrivada"
+                  :data="modalData"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Observación privada</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          @click="showModalObservacionPrivada = false"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label for="contenidoObservacion"
+                            >Indique una observación privada</label
+                          >
+                          <textarea
+                            name="contenidoObservacionPrivada"
+                            id="contenidoObservacionPrivada"
+                            rows="5"
+                            type="text"
+                            v-model="
+                              calificacionesEstudiantes[modalData].obs_privada
+                            "
+                            class="form-control"
+                            placeholder="Contenido de la observación"
+                          ></textarea>
+                        </div>
 
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    v-on:click="showModalObservacionPrivada = false"
-                  >
-                    Guardar cambios
-                  </button>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            v-on:click="showModalObservacionPrivada = false"
+                          >
+                            Guardar cambios
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </transition>
+              </transition>
             </tr>
           </tbody>
         </table>
@@ -243,7 +251,7 @@ export default {
       calificacionesEstudiantes: [],
       estudiantesPlanilla: [],
       calificaciones: [],
-      contenidoObservacion: '',
+      contenidoObservacion: "",
       informacionEvaluacion: [],
       showModalObservacion: false,
       showModalObservacionPrivada: false,
@@ -290,6 +298,8 @@ export default {
             range: 1,
           });
 
+          let contadorCarga = 0;
+          
           // Carga de datos en la tabla.
           for (var i = 0; i < that.calificacionesEstudiantes.length; i++) {
             for (var j = 0; j < data.length; j++) {
@@ -300,8 +310,36 @@ export default {
                   .dig_verificador == data[j][1]
               ) {
                 that.calificacionesEstudiantes[i].nota = data[j][2];
+                contadorCarga++;
               }
             }
+          }
+
+          // Caso 1: Todas las filas del archivo se cargaron.
+          if (contadorCarga == data.length) {
+            that.$swal.fire({
+              icon: "success",
+              title: "Carga de calificaciones exitosa",
+              text: "La planilla de calificaciones fue cargada satisfactoriamente",
+            });
+          }
+
+          // Caso 2: El archivo adjunto no sigue el formato.
+          else if (contadorCarga == 0) {
+            that.$swal.fire({
+              icon: "error",
+              title: "Carga de calificaciones fallida",
+              text: "La planilla de calificaciones adjunta no corresponde al formato requerido, por lo tanto, no se realizó la carga de calificaciones correctamente.",
+            });
+          }
+          
+          // Caso 3: Algunas filas del archivo no se cargaron.
+          else {
+            that.$swal.fire({
+              icon: "info",
+              title: "Subida de calificaciones exitosa con observaciones",
+              text: "La planilla de calificaciones fue cargada satisfactoriamente, sin embargo, algunos estudiantes de la planilla no coincidian con los estudiantes matriculados en la sección actual.",
+            });
           }
         };
         reader.readAsArrayBuffer(this.file);

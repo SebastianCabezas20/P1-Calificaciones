@@ -105,7 +105,7 @@ def getCursosByEstudiante(request, idUsuario = None):
 
 @api_view(['GET'])
 def getCursosByDocente(request, idUsuario = None):
-    cursosDocente = Coordinacion_Docente.objects.filter(id_docente__id_usuario__id = idUsuario).all()
+    cursosDocente = Coordinacion_Docente.objects.filter(id_docente__id_usuario__id = idUsuario, id_coordinacion__isActive = True).order_by('id_coordinacion__id_asignatura__codigo').all()
     serializer = CoordinacionDocenteSerializer(cursosDocente, many="true")
     return Response(serializer.data)
 

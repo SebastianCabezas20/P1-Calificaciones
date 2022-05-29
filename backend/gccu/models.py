@@ -162,7 +162,7 @@ class Evaluacion(models.Model):
     nombre = models.CharField(max_length = 40, blank = False)
     fechaEvActual = models.DateField(null = False)
     fechaEntrega = models.DateField(null = True, blank = True)
-    ponderacion = models.DecimalField(max_digits = 2, decimal_places = 1, null = False)
+    ponderacion = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
     estado = models.CharField(max_length = 1, choices = ESTADOS_EVALUACION_CHOICES, blank = False)
     obs_general = models.TextField(blank = True, default = '')
     adjunto = models.FileField(blank = True, null = True)

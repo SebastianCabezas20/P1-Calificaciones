@@ -1,5 +1,5 @@
 <template>
-    <td>{{solicitud_revision.id_evaluacion.id_coordinacion.coordinacion}}-{{solicitud_revision.id_evaluacion.id_coordinacion.seccion}}</td>
+    <td>{{solicitud_revision.id_evaluacion.id_coordinacion.id_asignatura.codigo}}-{{solicitud_revision.id_evaluacion.id_coordinacion.coordinacion}}-{{solicitud_revision.id_evaluacion.id_coordinacion.seccion}}</td>
     <td>{{solicitud_revision.id_evaluacion.id_coordinacion.id_asignatura.nombre}}</td>
     <td>{{solicitud_revision.id_estudiante.id_usuario.first_name}} {{solicitud_revision.id_estudiante.id_usuario.last_name}}</td>
     <td>{{solicitud_revision.id_evaluacion.nombre}}</td>

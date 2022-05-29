@@ -170,6 +170,10 @@
                       v-model="porcentajeEvaluacion"
                       class="form-control"
                       placeholder="50"
+                      type="number"
+                      min="1"
+                      max="100"
+                      step="0.1"
                       required
                     />
                   </div>
@@ -181,11 +185,7 @@
                     >
                       Cancelar
                     </button>
-                    <button
-                      @click="showModal = false"
-                      type="submit"
-                      class="btn btn-primary"
-                    >
+                    <button type="submit" class="btn btn-primary">
                       Guardar cambios
                     </button>
                   </div>
@@ -219,11 +219,23 @@
                   v-on:submit.prevent="modificarFecha($event, modalIndex)"
                 >
                   <div class="mb-3">
+                    <label class="form-label"
+                      >Anterior fecha de evaluación</label
+                    >
+                    <input
+                      class="form-control"
+                      type="date"
+                      :value="this.evaluacionesFull[modalIndex].fechaEvActual"
+                      disabled
+                    />
+                  </div>
+
+                  <div class="mb-3">
                     <label class="form-label">Nueva fecha de evaluación</label>
                     <input
                       v-model="fechaEvaluacion"
                       class="form-control"
-                      placeholder="2022-01-01"
+                      type="date"
                       required
                     />
                   </div>
@@ -231,7 +243,9 @@
                   <div id="divMotivo">
                     <h5 class="textoFormulario">Motivo del cambio de fecha</h5>
                     <textarea
-                      rows="7"
+                      class="form-control"
+                      rows="5"
+                      required
                       placeholder="Escriba acá el motivo del cambio de fecha."
                       id="motivoCambio"
                       v-model="motivoCambio"
@@ -286,7 +300,6 @@ export default {
       modalIndex: "",
       idDocente: 0,
       motivoCambio: "",
-      fechaOriginal: "",
       informacionCoordinacion: [],
     };
   },
@@ -339,40 +352,68 @@ export default {
         });
     },
     crearEvaluacion: function (event) {
-      let fecha = new Date(this.fechaEvActual);
-      let fechaEntrega = new Date();
+      // Se transforma el porcentaje 40% -> 0.4
+      let porcentajeEvaluacionIngresado = this.porcentajeEvaluacion / 100;
 
-      // Se suman 14 dias desde la fecha tentativa de realización. Y se pasa a String del tipo YYYY-MM-DD
+      // Se comprueba que no se sobrepase el 100%.
+      let ponderacionTotal = 0;
+      for (var i = 0; i < this.evaluacionesCurso.length; i++) {
+        ponderacionTotal =
+          ponderacionTotal + parseFloat(this.evaluacionesCurso[i].ponderacion);
+      }
+      ponderacionTotal = ponderacionTotal + porcentajeEvaluacionIngresado;
+
+      // Caso 1: Con la nueva evaluación se sobrepasa el 100%
+      if (ponderacionTotal > 1) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Porcentaje de evaluación no permitido",
+          text: "El porcentaje ingresado sobrepasa el 100% total permitido",
+        });
+      }
+
+      // Caso 2: No se sobrepasa.
+      else {
+        let fecha = new Date(this.fechaEvActual);
+        let fechaEntrega = new Date();
+
+        // Se suman 14 dias desde la fecha tentativa de realización. Y se pasa a String del tipo YYYY-MM-DD
+        fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
+        fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
+
+        axios
+          .post("http://localhost:8000/add/evaluacion", {
+            nombre: this.nombreEvaluacion,
+            fechaEvActual: this.fechaEvActual,
+            fechaEntrega: fechaEntrega,
+            ponderacion: porcentajeEvaluacionIngresado,
+            estado: "P",
+            obs_general: "",
+            adjunto: null,
+            id_tipoEvaluacion: this.tipoEvaluacion,
+            id_docente: this.idDocente,
+            id_coordinacion: this.idCurso,
+          })
+          .then(function (response) {
+            location.reload();
+          });
+      }
+    },
+    modificarFecha: function (event, index) {
+      // Calcúlo de la nueva fecha de entrega.
+      let fecha = new Date(this.fechaEvaluacion);
+      let fechaEntrega = new Date();
       fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
       fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
 
-      // Se transforma el porcentaje 40% -> 0.4
-      this.porcentajeEvaluacion = this.porcentajeEvaluacion / 100;
-
-      axios
-        .post("http://localhost:8000/add/evaluacion", {
-          nombre: this.nombreEvaluacion,
-          fechaEvActual: this.fechaEvActual,
-          fechaEntrega: fechaEntrega,
-          ponderacion: this.porcentajeEvaluacion,
-          estado: "P",
-          obs_general: "",
-          adjunto: null,
-          id_tipoEvaluacion: this.tipoEvaluacion,
-          id_docente: this.idDocente,
-          id_coordinacion: this.idCurso,
-        })
-        .then(function (response) {
-          location.reload();
-        });
-    },
-    modificarFecha: function (event, index) {
-      console.log(this.evaluacionesFull[index]);
+      // Otras variables a utilizar.
       let idFechaModificar = this.evaluacionesFull[index].id;
+      let fechaOriginal = this.evaluacionesFull[index].fechaEvActual;
+
       let nuevaEvaluacion = {
         nombre: this.evaluacionesFull[index].nombre,
         fechaEvActual: this.fechaEvaluacion,
-        fechaEntrega: this.evaluacionesFull[index].fechaEntrega,
+        fechaEntrega: fechaEntrega,
         ponderacion: this.evaluacionesFull[index].ponderacion,
         estado: this.evaluacionesFull[index].estado,
         obs_general: this.evaluacionesFull[index].obs_general,
@@ -381,16 +422,15 @@ export default {
         id_tipoEvaluacion: this.evaluacionesFull[index].id_tipoEvaluacion,
         id_coordinacion: this.evaluacionesFull[index].id_coordinacion,
       };
-      console.log(nuevaEvaluacion);
-      this.fechaOriginal = this.evaluacionesFull[index].fechaEvActual;
-      console.log(this.fechaOriginal);
+
       let cambioFecha = {
-        fechaAnterior: this.fechaOriginal,
+        fechaAnterior: fechaOriginal,
         fechaNueva: this.fechaEvaluacion,
         motivo: this.motivoCambio,
         id_evaluacion: this.evaluacionesFull[index].id,
       };
-      console.log(cambioFecha);
+
+      // Requests.
       axios
         .put(
           `http://localhost:8000/update/evaluacion/${idFechaModificar}`,

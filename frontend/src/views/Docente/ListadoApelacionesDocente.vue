@@ -16,10 +16,10 @@
         <thead>
           <tr>
             <th class="row-Codigo">Código</th>
-            <th>Nombre asignatura</th>
+            <th>Asignatura</th>
             <th>Estudiante</th>
-            <th>Evaluacion</th>
-            <th>Fecha de envío</th>
+            <th>Evaluación</th>
+            <th>Fecha de solicitud</th>
             <th>Estado</th>
             <th class="row-ButtonText"></th>
           </tr>
