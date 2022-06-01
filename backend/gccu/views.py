@@ -41,8 +41,17 @@ def getDataAsignatura(request, codigo = None, idUsuario = None):
     evaluacionesSinNota = Evaluacion.objects.filter(estado = 'P',id_coordinacion__id_asignatura__codigo = codigo,id_coordinacion__id_asignatura__componente = "T")
     serializerEvaluaciones = EvaluacionEspecificaSerializer(evaluacionesSinNota, many = 'true')
     serializer = CalificacionSerializer(calificaciones, many="true")
+    ## Calificaciones con solicitudes segun asignaturas de Lab del estudiante
+    idsCalificacionSolicitudes =  calificaciones.values_list('id',flat=True) ## Obtener ids de las calificaciones existentes
+    idsCalificacionesConSolicitudes = [] # Arreglo a devolver
+    for id in idsCalificacionSolicitudes:
+        solicitud = Solicitud_Revision.objects.filter(id_calificacion = id).values_list('id_calificacion', flat=True) # buscar si existe esa calificacion en alguna solicitud
+        if solicitud:
+            print(solicitud)
+            idsCalificacionesConSolicitudes.append(solicitud[0]) # Si existe se añade
+
     ## Respuesta 
-    return Response([serializer.data,serializerEvaluaciones.data])
+    return Response([serializer.data,serializerEvaluaciones.data, idsCalificacionesConSolicitudes])
 
 @api_view(['GET'])
 def getDataAsignaturaLab(request, codigo = None, idUsuario = None):
@@ -51,7 +60,17 @@ def getDataAsignaturaLab(request, codigo = None, idUsuario = None):
     ## Evaluaciones sin nota
     evaluacionesSinNota = Evaluacion.objects.filter(estado = 'P',id_coordinacion__id_asignatura__codigo = codigo,id_coordinacion__id_asignatura__componente = "L")
     serializerEvaluaciones = EvaluacionEspecificaSerializer(evaluacionesSinNota, many = 'true')
-    return Response([serializer.data,serializerEvaluaciones.data])
+    ## Calificaciones con solicitudes segun asignaturas de Lab del estudiante
+    idsCalificacionSolicitudes =  calificaciones.values_list('id',flat=True) ## Obtener ids de las calificaciones existentes
+    idsCalificacionesConSolicitudes = []
+    for id in idsCalificacionSolicitudes:
+        solicitud = Solicitud_Revision.objects.filter(id_calificacion = id).values_list('id_calificacion', flat=True) # buscar si existe esa calificacion en alguna solicitud
+        if solicitud:
+            print(solicitud)
+            idsCalificacionesConSolicitudes.append(solicitud[0])# Si existe se añade
+
+    # Respuesta        
+    return Response([serializer.data,serializerEvaluaciones.data, idsCalificacionesConSolicitudes])
 
 # Obtener la informacion del curso - asignatura lab
 @api_view(['GET'])
@@ -206,7 +225,7 @@ def getTiposEvaluaciones(request):
 def getCoordinacionesCoordinador(request, idCoordinador = None):
     coordinacionesCoordinador = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__id_coordinador = idCoordinador)
     idsCoordinacion = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__id_coordinador = idCoordinador).distinct('id_coordinacion__id').values_list('id_coordinacion__id', flat=True)
-    #print(idsCoordinacion)
+    #Arreglo donde cada espacio es una seccion de una asignatura
     arregloInformacion = []
     for id in idsCoordinacion:
         coordinacion_docentes = Coordinacion_Docente.objects.filter(id_coordinacion__id = id)

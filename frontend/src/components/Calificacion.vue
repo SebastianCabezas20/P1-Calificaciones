@@ -3,10 +3,10 @@
   <td>{{ calificacion.id_evaluacion.nombre }}</td>
   <td>
     <Popper :content="calificacion.obs_privada">
-    <button class="btn-primary" style="margin-right:20px"> Observación Privada</button>
+    <button class="btn btn-primary" style="margin-right:20px"> Observación Privada</button>
     </Popper>
     <Popper :content="calificacion.id_evaluacion.obs_general">
-    <button class="btn-primary"> Observación General</button>
+    <button class="btn btn-primary"> Observación General</button>
     </Popper>
   </td>
   <td>{{ calificacion.nota }}</td>
@@ -18,6 +18,7 @@
       type="button"
       class="btn btn-light"
       @click.prevent="eventoClick(calificacion.id)"
+      v-show="existeSolicitud(calificacion.id)"
     >
       Apelar Calificación
     </button>
@@ -28,19 +29,24 @@
 <script>
   import Popper from "vue3-popper";
 export default {  
-  props: {
+  props:{
     calificacion: Object,
+    CalificacionSolicitudes: Array,
   },
-  mounted(){
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-  },
-  
   emits: ["EventBoton"],
   methods: {
     eventoClick(id) {
       this.$emit("EventBoton", id);
     },
+    existeSolicitud(id){
+
+      if(this.CalificacionSolicitudes.includes(id)){
+        return false
+      }
+      else{
+        return true
+      }
+    }
     
   },
 };

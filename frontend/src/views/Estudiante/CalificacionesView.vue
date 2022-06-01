@@ -53,6 +53,7 @@
                 <CalificacionInfo
                   :calificacion="calificacion"
                   @EventBoton="(id) => ingresar(id)"
+                  :CalificacionSolicitudes="this.idsCalificacionesSolicitudesTeoria"
                 />
               </tr>
             </tbody>
@@ -132,7 +133,8 @@
                 :key="calificacion.id"
               >
                 <CalificacionInfo :calificacion="calificacion"
-                @EventBoton="(id) => ingresar(id)" />
+                @EventBoton="(id) => ingresar(id)"
+                :CalificacionSolicitudes="this.idsCalificacionesSolicitudesLab" />
               </tr>
             </tbody>
           </table>
@@ -187,6 +189,8 @@ export default {
       evaluacionesSinNotaLaboratorio:[],
       informacionLaboratorio: [],
       mostrar: false,
+      idsCalificacionesSolicitudesTeoria: [],
+      idsCalificacionesSolicitudesLab: [],
     };
   },
   props: ["codigoAsignatura"],
@@ -209,6 +213,7 @@ export default {
       .then(function (response) {
         ins.calificacionesTeoria = response.data[0];
         ins.evaluacionesSinNotaTeoria = response.data[1]
+        ins.idsCalificacionesSolicitudesTeoria = response.data[2]
       });
     axios
       .get(
@@ -219,6 +224,7 @@ export default {
           console.log(response.data.length)
           ins.calificacionesLaboratorio = response.data[0];
           ins.evaluacionesSinNotaLaboratorio = response.data[1];
+          ins.idsCalificacionesSolicitudesLab = response.data[2]
           ins.mostrar = true;
         }
       });
