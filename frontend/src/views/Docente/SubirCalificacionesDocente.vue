@@ -107,7 +107,7 @@
                 </div>
               </td>
 
-              <!-- Modal que permite la subida de observaciones generales a una evaluación. -->
+              <!-- Modal que permite la subida de observaciones privada a una evaluación. -->
               <transition name="fase" appear>
                 <div
                   class="modal-overlay"
