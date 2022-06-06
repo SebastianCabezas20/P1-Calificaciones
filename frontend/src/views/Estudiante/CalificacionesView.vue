@@ -9,122 +9,167 @@
 
   <div class="contentViews">
     <div class="centralContent">
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Teoría</h3>
+      </div>
+
       <div
-        id="filaInformacion"
-        class="row row-cols-3"
+        class="row"
+        style="margin: 0px 2px 20px 2px; padding: 10px 0px; background-color: #fff"
       >
-        <div class="col">
-          {{ informacionTeoria[0].id_coordinacion.id_asignatura.nombre }}
+        <div class="col-sm" style="margin: 0px; padding: 0px">
+          <p class="informationCalification">
+            Asignatura:
+            {{ informacionTeoria[0].id_coordinacion.id_asignatura.nombre }}
+          </p>
+          <p class="informationCalification">
+            Nivel:
+            {{ informacionTeoria[0].id_coordinacion.id_asignatura.nivel }}
+          </p>
         </div>
-        <div class="col">
-          Nivel: {{ informacionTeoria[0].id_coordinacion.id_asignatura.nivel }}
-        </div>
-        <div class="col">
-          <div class="col" v-for="(info,id) in informacionTeoria" :key="info.id">
-          <label v-if="id == 0">Docente: {{info.id_docente.id_usuario.username}}</label>
-          <label v-else style="margin-left:72px">{{info.id_docente.id_usuario.username}}</label>
+
+        <div class="col-sm">
+          <div
+            class="col-sm"
+            v-for="(info, id) in informacionTeoria"
+            :key="info.id"
+          >
+            <label v-if="id == 0" class="informationCalification"
+              >Docente: {{ info.id_docente.id_usuario.first_name }}
+              {{ info.id_docente.id_usuario.last_name }}</label
+            >
+            <label
+              v-else
+              style="margin-left: 79px"
+              class="informationCalification"
+              >{{ info.id_docente.id_usuario.first_name }}
+              {{ info.id_docente.id_usuario.last_name }}</label
+            >
           </div>
         </div>
       </div>
 
       <div class="componentCourse">
-        <div class="titleSection">
-          <h3 class="textTitle">Calificaciones Catedra</h3>
+        <div class="titleSectionV2">
+          <h3 class="textSubTitleV2">Evaluaciones calificadas</h3>
         </div>
 
-        <div class="tableContent">
-          <table class="table text-center">
-            <thead>
-              <tr>
-                <th>Evaluacion</th>
-                <th>Observacion</th>
-                <th>Calificacion</th>
-                <th>Ponderacion</th>
-                <th>Fecha entrega</th>
-                <th>Apelar</th>
-                <!--Saque estado de la evaluacion-->
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="calificacion in calificacionesTeoria"
-                :key="calificacion.id"
-              >
-                <CalificacionInfo
-                  :calificacion="calificacion"
-                  @EventBoton="(id) => ingresar(id)"
-                  :CalificacionSolicitudes="this.idsCalificacionesSolicitudesTeoria"
-                />
-              </tr>
-            </tbody>
-          </table>
+        <table class="tableV2">
+          <thead>
+            <tr>
+              <th style="width: 25%">Evaluación</th>
+              <th style="width: 25%">Obervaciones</th>
+              <th style="width: 10%">Calificación</th>
+              <th style="width: 10%">Pondera</th>
+              <th style="width: 20%">Fecha de entrega</th>
+              <th style="width: 10%"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="calificacion in calificacionesTeoria"
+              :key="calificacion.id"
+            >
+              <CalificacionInfo
+                :calificacion="calificacion"
+                @EventBoton="(id) => ingresar(id)"
+                :CalificacionSolicitudes="
+                  this.idsCalificacionesSolicitudesTeoria
+                "
+              />
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="titleSectionV2">
+          <h3 class="textSubTitleV2">Evaluaciones pendientes</h3>
         </div>
 
-        <div class="row">
-          <div class="col-md-3">
-            Evaluaciones pendientes
-          </div>
-        </div>
-        <div class="tableContent">
-          <table class="table text-center">
-            <thead>
-              <tr>
-                <th>Evaluacion</th>
-                <th>Ponderacion</th>
-                <th>Fecha de evaluación</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="evaluacion in evaluacionesSinNotaTeoria" :key="evaluacion.id">
-                <td>{{evaluacion.nombre}}</td>
-                <td>{{evaluacion.ponderacion}}</td>
-                <td>{{evaluacion.fechaEvActual}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <table class="tableV2">
+          <thead>
+            <tr>
+              <th>Evaluación</th>
+              <th>Pondera</th>
+              <th>Fecha de evaluación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="evaluacion in evaluacionesSinNotaTeoria"
+              :key="evaluacion.id"
+            >
+              <td>{{ evaluacion.nombre }}</td>
+              <td>{{ evaluacion.ponderacion * 100 }}%</td>
+              <td>{{ evaluacion.fechaEvActual }}</td>
+            </tr>
+          </tbody>
+        </table>
 
-        <div class="stateStudent">
+        <!-- Comentado, ya que no está claro que vamos a gregar aquí. -->
+        <!-- <div class="stateStudent">
           <h4>Estado del estudiante</h4>
-        </div>
+        </div> -->
       </div>
-      <br><br><br>
 
-       <div
-        v-if="this.mostrar"
-        id="filaInformacion"
-        class="row row-cols-3"
-      >
-        <div class="col">
-          {{ informacionLaboratorio[0].id_coordinacion.id_asignatura.nombre }}
+      <div class="lineaSeparatoria"></div>
+
+      <div v-if="this.mostrar">
+        <div class="titleSectionV2">
+          <h3 class="textTitleV2">Laboratorio</h3>
         </div>
-        <div class="col">
-          Nivel: {{ informacionLaboratorio[0].id_coordinacion.id_asignatura.nivel }}
-        </div>
-        <div class="col">
-          <div class="col" v-for="(info,id) in informacionLaboratorio" :key="info.id">
-          <label v-if="id == 0">Docente: {{info.id_docente.id_usuario.username}}</label>
-          <label v-else style="margin-left:72px">{{info.id_docente.id_usuario.username}}</label>
+
+        <div
+          class="row"
+          style="margin: 0px 2px 20px 2px; padding: 10px 0px; background-color: #fff"
+        >
+          <div class="col-sm" style="margin: 0px; padding: 0px">
+            <p class="informationCalification">
+              Asignatura:
+              {{
+                informacionLaboratorio[0].id_coordinacion.id_asignatura.nombre
+              }}
+            </p>
+            <p class="informationCalification">
+              Nivel:
+              {{
+                informacionLaboratorio[0].id_coordinacion.id_asignatura.nivel
+              }}
+            </p>
+          </div>
+          <div class="col">
+            <div
+              class="col"
+              v-for="(info, id) in informacionLaboratorio"
+              :key="info.id"
+            >
+              <label v-if="id == 0" class="informationCalification"
+                >Docente: {{ info.id_docente.id_usuario.first_name }}
+                {{ info.id_docente.id_usuario.last_name }}</label
+              >
+              <label
+                v-else
+                style="margin-left: 79px"
+                class="informationCalification"
+                >{{ info.id_docente.id_usuario.first_name }}
+                {{ info.id_docente.id_usuario.last_name }}</label
+              >
+            </div>
           </div>
         </div>
-      </div>
-      
-      
-      <div v-show="this.mostrar" class="componentCourse">
-        <div class="titleSection">
-          <h3 class="textTitle">Calificaciones laboratorio</h3>
-        </div>
 
-        <div class="tableContent">
-          <table class="table text-center">
+        <div class="componentCourse">
+          <div class="titleSectionV2">
+            <h3 class="textSubTitleV2">Evaluaciones calificadas</h3>
+          </div>
+          <table class="tableV2">
             <thead>
               <tr>
-                <th>Evaluacion</th>
-                <th>Observacion</th>
-                <th>Calificacion</th>
-                <th>Ponderacion</th>
-                <th>Fecha entrega</th>
-                <th>Apelar</th>
+                <th style="width: 25%">Evaluación</th>
+                <th style="width: 25%">Obervaciones</th>
+                <th style="width: 10%">Calificación</th>
+                <th style="width: 10%">Pondera</th>
+                <th style="width: 20%">Fecha de entrega</th>
+                <th style="width: 10%"></th>
               </tr>
             </thead>
             <tbody>
@@ -132,20 +177,22 @@
                 v-for="calificacion in calificacionesLaboratorio"
                 :key="calificacion.id"
               >
-                <CalificacionInfo :calificacion="calificacion"
-                @EventBoton="(id) => ingresar(id)"
-                :CalificacionSolicitudes="this.idsCalificacionesSolicitudesLab" />
+                <CalificacionInfo
+                  :calificacion="calificacion"
+                  @EventBoton="(id) => ingresar(id)"
+                  :CalificacionSolicitudes="
+                    this.idsCalificacionesSolicitudesLab
+                  "
+                />
               </tr>
             </tbody>
           </table>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            Evaluaciones pendientes
+
+          <div class="titleSectionV2">
+            <h3 class="textSubTitleV2">Evaluaciones pendientes</h3>
           </div>
-        </div>
-        <div class="tableContent">
-          <table class="table text-center">
+
+          <table class="tableV2">
             <thead>
               <tr>
                 <th>Evaluacion</th>
@@ -154,17 +201,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="evaluacion in evaluacionesSinNotaLaboratorio" :key="evaluacion.id">
-                <td>{{evaluacion.nombre}}</td>
-                <td>{{evaluacion.ponderacion}}</td>
-                <td>{{evaluacion.fechaEvActual}}</td>
+              <tr
+                v-for="evaluacion in evaluacionesSinNotaLaboratorio"
+                :key="evaluacion.id"
+              >
+              <td>{{ evaluacion.nombre }}</td>
+              <td>{{ evaluacion.ponderacion * 100 }}%</td>
+              <td>{{ evaluacion.fechaEvActual }}</td>
               </tr>
             </tbody>
           </table>
-        </div>
-        
-        <div class="stateStudent">
-          <h4>Estado del estudiante</h4>
+
+          <!-- <div class="stateStudent">
+            <h4>Estado del estudiante</h4>
+          </div> -->
         </div>
       </div>
     </div>
@@ -183,10 +233,10 @@ export default {
   data() {
     return {
       calificacionesTeoria: [],
-      evaluacionesSinNotaTeoria:[],
+      evaluacionesSinNotaTeoria: [],
       informacionTeoria: [],
       calificacionesLaboratorio: [],
-      evaluacionesSinNotaLaboratorio:[],
+      evaluacionesSinNotaLaboratorio: [],
       informacionLaboratorio: [],
       mostrar: false,
       idsCalificacionesSolicitudesTeoria: [],
@@ -204,7 +254,9 @@ export default {
     let ins = this;
     let codigoAsig = this.codigoAsignatura;
     const idUsuario = this.$store.getters.idUsuario;
-    console.log("ID del usuario:"+ idUsuario + "ID de la asignatura:" + codigoAsig )
+    console.log(
+      "ID del usuario:" + idUsuario + "ID de la asignatura:" + codigoAsig
+    );
 
     axios
       .get(
@@ -212,8 +264,8 @@ export default {
       )
       .then(function (response) {
         ins.calificacionesTeoria = response.data[0];
-        ins.evaluacionesSinNotaTeoria = response.data[1]
-        ins.idsCalificacionesSolicitudesTeoria = response.data[2]
+        ins.evaluacionesSinNotaTeoria = response.data[1];
+        ins.idsCalificacionesSolicitudesTeoria = response.data[2];
       });
     axios
       .get(
@@ -221,10 +273,10 @@ export default {
       )
       .then(function (response) {
         if (response.data[0].length != 0) {
-          console.log(response.data.length)
+          console.log(response.data.length);
           ins.calificacionesLaboratorio = response.data[0];
           ins.evaluacionesSinNotaLaboratorio = response.data[1];
-          ins.idsCalificacionesSolicitudesLab = response.data[2]
+          ins.idsCalificacionesSolicitudesLab = response.data[2];
           ins.mostrar = true;
         }
       });

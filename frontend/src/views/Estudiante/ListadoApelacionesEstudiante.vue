@@ -9,27 +9,26 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h3 class="textTitle">Mis Apelaciones</h3>
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Apelaciones</h3>
       </div>
-      <div class="tableContent">
-        <table class="table text-center">
-          <thead>
-            <tr>
-              <th>Curso</th>
-              <th>Evaluación</th>
-              <th>Estado</th>
-              <th>Detalle Motivo</th>
-              <th>Respuesta</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="solicitud in solicitudes" :key="solicitud.id">
-              <Solicitudes :solicitud="solicitud" />
-            </tr>
-          </tbody>
-        </table>
-      </div>
+
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th style="width: 20%">Curso</th>
+            <th style="width: 10%;">Evaluación</th>
+            <th style="width: 10%;">Estado</th>
+            <th style="width: 30%;">Detalle Motivo</th>
+            <th style="width: 30%;">Respuesta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="solicitud in solicitudes" :key="solicitud.id">
+            <Solicitudes :solicitud="solicitud" />
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>

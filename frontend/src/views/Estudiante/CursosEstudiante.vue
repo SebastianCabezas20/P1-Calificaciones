@@ -9,44 +9,46 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h1 class="textTitle">Mis Cursos Inscritos</h1>
+      <div class="titleSectionV2">
+        <h1 class="textTitleV2">Mis Cursos Inscritos</h1>
       </div>
 
-      <div class="tableContent">
-        <table class="table text-center">
-          <thead>
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th class="row-Codigo">Código</th>
+            <th class="row-Nombre">Nombre</th>
+            <th class="row-Horario">Horario</th>
+            <th class="row-Nivel">Nivel</th>
+            <th class="row-ButtonText"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="asignatura in asignaturas" :key="asignatura.id">
             <tr>
-              <th scope="col">Código</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Horario</th>
-              <th scope="col">Nivel</th>
-              <th scope="col">Detalles</th>
+              <td>
+                {{ asignatura.id_coordinacion.id_asignatura.codigo }}-{{
+                  asignatura.id_coordinacion.coordinacion
+                }}-{{ asignatura.id_coordinacion.seccion }}
+              </td>
+              <td>{{ asignatura.id_coordinacion.id_asignatura.nombre }}</td>
+              <td>{{ asignatura.id_coordinacion.bloques_horario }}</td>
+              <td>{{ asignatura.id_coordinacion.id_asignatura.nivel }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="botonTabla"
+                  v-on:click="
+                    ingresar(asignatura.id_coordinacion.id_asignatura.codigo)
+                  "
+                >
+                  Más Información
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <template v-for="asignatura in asignaturas" :key="asignatura.id">
-              <tr scope="row">
-                <td>{{ asignatura.id_coordinacion.id_asignatura.codigo }}</td>
-                <td>{{ asignatura.id_coordinacion.id_asignatura.nombre }}</td>
-                <td>{{ asignatura.id_coordinacion.bloques_horario }}</td>
-                <td>{{ asignatura.id_coordinacion.id_asignatura.nivel }}</td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-light"
-                    v-on:click="
-                      ingresar(asignatura.id_coordinacion.id_asignatura.codigo)
-                    "
-                  >
-                    Más Información
-                  </button>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
-      </div>
+          </template>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -71,7 +73,7 @@ export default {
   },
   mounted() {
     let identificacionUsuario = this.$store.getters.idUsuario;
-    console.log(identificacionUsuario)
+    console.log(identificacionUsuario);
     let ins = this;
     axios
       .get(`http://localhost:8000/cursosEstudiante/${identificacionUsuario}`)
@@ -87,50 +89,4 @@ export default {
 };
 </script>
 
-<style>
-.centralContent {
-  margin: auto;
-  width: 98%;
-  margin-top: 10px;
-  font-family: "Inter", sans-serif;
-}
-
-.titleSection {
-  display: block;
-  background: #c4c4c4;
-  border: 2px solid #004883;
-  border-radius: 20px;
-  padding: 3px;
-  margin-bottom: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.textTitle {
-  text-align: center;
-  font-size: 30px;
-  color: #000;
-  font-weight: 600;
-}
-
-.tableContent {
-  background: #c4c4c4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  border: 2px solid #004883;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-bottom: 20px;
-}
-
-.tableContent .table {
-  border-collapse: collapse;
-}
-
-.tableContent .table thead tr {
-  text-align: center;
-}
-
-.tableContent .table thead tr th {
-  padding: 8px;
-}
-</style>
+<style></style>
