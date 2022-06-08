@@ -9,11 +9,10 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h4 class="textTitle">Apelaciones</h4>
+      <div class="titleSectionV2">
+        <h4 class="textTitleV2">Apelaciones</h4>
       </div>
-      <div class="tableContent">
-        <table class="table">
+        <table class="tableV2">
           <thead>
             <tr>
               <th>Seccion</th>
@@ -35,14 +34,13 @@
                 <td>{{seccion[0].id_coordinacion.bloques_horario}}</td>
                 <td>{{seccion[0].id_coordinacion.id_asignatura.nombre}}</td>    
                 <td>
-                  <button type="button" class="btn btn-success" @click.prevent="Ingresar(seccion[0].id_coordinacion.id)">
+                  <button type="button" class="botonTabla" @click.prevent="Ingresar(seccion[0].id_coordinacion.id)">
                     Seleccionar
                   </button>
                 </td>              
             </tr>
           </tbody>
         </table>
-      </div>
     </div>
   </div>
 </template>

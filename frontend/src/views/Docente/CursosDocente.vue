@@ -95,7 +95,7 @@
                     getAsignatura($event, coordinacion.id_coordinacion.id)
                   "
                   type="button"
-                  class="btn btn-light"
+                  class="botonTabla"
                 >
                   Más Información
                 </button>
