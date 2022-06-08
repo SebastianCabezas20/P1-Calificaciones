@@ -177,12 +177,14 @@ class Cambio_Ponderacion(models.Model):
     ponderacionAnterior = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
     ponderacionNueva = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
     motivo = models.TextField(blank = False)
+    fecha_cambio = models.DateField(null = True)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
 
 class Cambio_Fecha(models.Model):
     fechaAnterior = models.DateField(null = False)
     fechaNueva = models.DateField(null = False)
     motivo = models.TextField(blank = False)
+    fecha_cambio = models.DateField(null = True)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
 
 

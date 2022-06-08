@@ -55,6 +55,8 @@
                     <th>Nombre Evaluación</th>
                     <th>Nombre Asignatura</th>
                     <th>Nombre Alumno</th>
+                    <th>Nombre profesor</th>
+                    <th>Fecha cambio</th>
                     <th>Nota Anterior</th>
                     <th>Nota Nueva</th>
                     <th>Motivo</th>
@@ -66,7 +68,9 @@
                     <td class="text-center">{{ cambio_nota.id_calificacion.id_evaluacion.id_coordinacion.id_asignatura.nombre }}</td>
                     <td class="text-center">{{ cambio_nota.id_calificacion.id_estudiante.id_usuario.first_name }}
                       {{ cambio_nota.id_calificacion.id_estudiante.id_usuario.last_name }}</td>
-                    
+                      <td class="text-center">{{ cambio_nota.id_calificacion.id_evaluacion.id_docente.id_usuario.first_name }}
+                      {{ cambio_nota.id_calificacion.id_evaluacion.id_docente.id_usuario.last_name }}</td>
+                    <td class="text-center">{{ cambio_nota.fecha_cambio }}</td>
                     <td class="text-center">{{ cambio_nota.anterior_nota }}</td>
                     <td class="text-center">{{ cambio_nota.actual_nota }}</td>
                     <td class="text-center">{{ cambio_nota.motivo }}</td>

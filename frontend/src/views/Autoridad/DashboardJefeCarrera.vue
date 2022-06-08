@@ -19,6 +19,7 @@
               <th>Nombre Evaluación</th>
               <th>Nombre Asignatura</th>
               <th>Docente</th>
+              <th>Fecha del cambio</th>
               <th>Fecha Anterior</th>
               <th>Fecha Nueva</th>
               <th>Motivo</th>
@@ -29,6 +30,7 @@
               <td class="text-center">{{cambio_fecha.id_evaluacion.nombre}}</td>
               <td class="text-center">{{cambio_fecha.id_evaluacion.id_coordinacion.id_asignatura.nombre}}</td>
               <td class="text-center">{{cambio_fecha.id_evaluacion.id_docente.id_usuario.first_name}} {{cambio_fecha.id_evaluacion.id_docente.id_usuario.last_name}}</td>
+              <td class="text-center">{{cambio_fecha.fecha_cambio}}</td>
               <td class="text-center">{{cambio_fecha.fechaAnterior}}</td>
               <td class="text-center">{{cambio_fecha.fechaNueva}}</td>
               <td class="text-center">{{cambio_fecha.motivo}}</td>
