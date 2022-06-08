@@ -27,6 +27,18 @@
           </a>
         </li>
         <li>
+          <a href="/jefe/asignaturas/cambio/ponderacion">
+            <span class="icon"><i class="fa-solid fa-book"></i></span>
+            <span>Cambio de ponderaciones</span>
+          </a>
+        </li>
+        <li>
+          <a href="/jefe/asignaturas/cambio/fecha">
+            <span class="icon"><i class="fa-solid fa-book"></i></span>
+            <span>Cambio de fechas</span>
+          </a>
+        </li>
+        <li>
           <a href="/jefe/asignaturas">
             <span class="icon"
               ><i class="fa-solid fa-file-circle-question"></i

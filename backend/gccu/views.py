@@ -378,11 +378,17 @@ def cambioFechaCalificacion(request):
         return Response(cambioFecha.data)
     return Response(cambioFecha.errors)
 
+######
+# #########
+# #### Nose si funciona ya que se agrega la vista aparte para ver los cambios de fecha a jefe de carrera
 @api_view(['GET'])
 def getCambiosFecha(request):
     cambiosFecha = Cambio_Fecha.objects.all()
     serializer = CambioFechaDashboardSerializer(cambiosFecha, many="true")
     return Response(serializer.data)
+##########3
+###########
+###########
 
 ##Falta un filter para que solo muestre los cambios del semestre actual
 @api_view(['GET'])
@@ -396,3 +402,25 @@ def informacionCoordinacion(request, idCoordinacion = None):
     coordinacion = Coordinacion_Seccion.objects.filter(id = idCoordinacion).all()
     serializer = CoordinacionSeccionSerializer(coordinacion, many = "true")
     return Response(serializer.data)
+
+# Get de los cambios de ponderaciones segun jefe de carrera
+@api_view(['GET'])
+def getCambioPonderaciones(request, idAsignatura = None):
+    cambiosPonderaciones = Cambio_Ponderacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura)
+    serializer = CambioPonderacionesJefe(cambiosPonderaciones, many = "true")
+    ## Coordinaciones disponibles
+    coordinaciones = Cambio_Ponderacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_evaluacion__id_coordinacion__coordinacion',flat= True).distinct()
+    ## Secciones disponibles
+    secciones = Cambio_Ponderacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_evaluacion__id_coordinacion__seccion',flat= True).distinct()
+    return Response([serializer.data,coordinaciones,secciones])
+
+# Get cambios de fecha segun jefe de carrera
+@api_view(['GET'])
+def getCambioFecha(request, idAsignatura = None):
+    cambiosPonderaciones = Cambio_Fecha.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura)
+    serializer = CambioFechaDashboardSerializer(cambiosPonderaciones, many = "true")
+    ## Coordinaciones disponibles
+    coordinaciones = Cambio_Fecha.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_evaluacion__id_coordinacion__coordinacion',flat= True).distinct()
+    ## Secciones disponibles
+    secciones = Cambio_Fecha.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_evaluacion__id_coordinacion__seccion',flat= True).distinct()
+    return Response([serializer.data,coordinaciones,secciones])

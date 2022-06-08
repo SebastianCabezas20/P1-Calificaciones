@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSection">
-        <h4 class="textTitle">Asignaturas</h4>
+        <h4 class="textTitle">Cambio de ponderacion</h4>
       </div>
       <div class="tableContent">
         <table class="table">
@@ -87,7 +87,7 @@ export default {
   },
   methods:{
     ingresar(key){
-      router.push(`/jefe/asignaturas/cambios/nota/${key}`)
+      router.push(`/jefe/asignaturas/cambios/fecha/${key}`)
     }
 
   }

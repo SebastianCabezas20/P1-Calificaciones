@@ -60,9 +60,11 @@ urlpatterns = [
     path('updateCalificacion/<int:idCalificacion>', views.updateCalificacion),
     path('add/cambio/calificacion',views.addCambioNota),
     path('get/cambio/calificacion/asignatura/<int:idAsignatura>',views.getCambioNota_idAsignatura),
-    path('add/cambioFecha', views.cambioFechaCalificacion),
-    path('get/cambiosFecha', views.getCambiosFecha),
+    path('add/cambioFecha', views.cambioFechaCalificacion), 
+    path('get/cambiosFecha', views.getCambiosFecha),  ## Verificar si aun se necesita para el dashboard
     path('get/evaluaciones/<nombreEvaluacion>/asignatura/<int:idAsignatura>', views.getEvaluacionesPorNombre),
     path('get/cambiosNota', views.getCambiosNota),
     path('get/coordinacion/<int:idCoordinacion>', views.informacionCoordinacion),
+    path('get/cambio/ponderacion/asignatura/<int:idAsignatura>',views.getCambioPonderaciones),
+    path('get/cambio/fecha/asignatura/<int:idAsignatura>',views.getCambioFecha),
 ]

@@ -91,6 +91,7 @@
               <th>Evaluación</th>
               <th>Pondera</th>
               <th>Fecha de evaluación</th>
+              <th>Fecha limite de entrega de notas</th>
             </tr>
           </thead>
           <tbody>
@@ -101,6 +102,7 @@
               <td>{{ evaluacion.nombre }}</td>
               <td>{{ evaluacion.ponderacion * 100 }}%</td>
               <td>{{ evaluacion.fechaEvActual }}</td>
+              <td>{{ evaluacion.fechaEntrega }}</td>
             </tr>
           </tbody>
         </table>
@@ -198,6 +200,7 @@
                 <th>Evaluacion</th>
                 <th>Ponderacion</th>
                 <th>Fecha de evaluación</th>
+                <th>Fecha limite de entrega de notas</th>
               </tr>
             </thead>
             <tbody>
@@ -208,6 +211,7 @@
               <td>{{ evaluacion.nombre }}</td>
               <td>{{ evaluacion.ponderacion * 100 }}%</td>
               <td>{{ evaluacion.fechaEvActual }}</td>
+              <td>{{ evaluacion.fechaEntrega }}</td>
               </tr>
             </tbody>
           </table>

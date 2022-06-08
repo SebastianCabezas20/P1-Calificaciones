@@ -30,6 +30,10 @@ import JefeAsignaturasGeneralVue from "../views/Autoridad/JefeAsignaturasGeneral
 import DashboardCoordinador from "../views/Autoridad/DashboardCoordinador.vue"
 import DashboardJefeCarrera from "../views/Autoridad/DashboardJefeCarrera.vue"
 import AsignaturasJefeCambiosVue from "../views/Autoridad/AsignaturasJefeCambios.vue";
+import JefeAsignaturaCambioPonderacionVue from "../views/Autoridad/JefeAsignaturaCambioPonderacion.vue";
+import CambioPonderacionJefeVue from "../views/Autoridad/CambioPonderacionJefe.vue";
+import JefeAsignaturaCambioFechaVue from "../views/Autoridad/JefeAsignaturaCambioFecha.vue";
+import CambiosFechaJefeVue from "../views/Autoridad/CambiosFechaJefe.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -183,7 +187,7 @@ const router = createRouter({
       name: "asignaturasJefeDeCarreraGeneral",
       component: JefeAsignaturasApe,
     },
-    { //Asignaturas de un jefe de carrera general
+    { //Asignaturas de un jefe de carrera general para cambio de notas
       path: "/jefe/asignaturas/general",
       name: "asignaturasJefeDeCarrera",
       component: JefeAsignaturasGeneralVue,
@@ -194,10 +198,32 @@ const router = createRouter({
       component: JefeApelacionesAsig,
       props: true,
     },
-    { // Mostrar los cambios segun asignatura de jefe de carrera
-      path: "/jefe/asignaturas/cambios/:idAsignatura",
+    { // Mostrar los cambios de nota segun asignatura de jefe de carrera
+      path: "/jefe/asignaturas/cambios/nota/:idAsignatura",
       name: "cambiosAsignaturasJefeDeCarrera",
       component: AsignaturasJefeCambiosVue,
+      props: true,
+    },
+    { // Mostrar las asignatura de jefe de carrera para mostrar cambios de ponderacion
+      path: "/jefe/asignaturas/cambio/ponderacion",
+      name: "AsignaturasCambioPonderacion",
+      component: JefeAsignaturaCambioPonderacionVue,
+    },
+    { // Mostrar los cambios de ponderacion segun asignatura de jefe de carrera
+      path: "/jefe/asignaturas/cambios/ponderacion/:idAsignatura",
+      name: "cambiosPonderacionJefeCarrera",
+      component: CambioPonderacionJefeVue,
+      props: true,
+    },
+    { // Mostrar las asignatura de jefe de carrera para mostrar cambios de fecha
+      path: "/jefe/asignaturas/cambio/fecha",
+      name: "AsignaturasCambioFecha",
+      component: JefeAsignaturaCambioFechaVue,
+    },
+    { // Mostrar los cambios de fecha segun asignatura de jefe de carrera
+      path: "/jefe/asignaturas/cambios/fecha/:idAsignatura",
+      name: "cambiosFechaJefeCarrera",
+      component: CambiosFechaJefeVue,
       props: true,
     },
     {
