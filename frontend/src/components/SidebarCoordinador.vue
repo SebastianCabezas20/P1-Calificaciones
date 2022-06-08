@@ -35,6 +35,14 @@
           </a>
         </li>
         <li>
+          <a href="/coordinador/cursos/cambio/calificacion">
+            <span class="icon"
+              ><i class="fa-solid fa-file-circle-question"></i
+            ></span>
+            <span>Cambio de notas</span>
+          </a>
+        </li>
+        <li>
           <a href="#" v-on:click="cerrarSesion()">
             <span class="icon"
               ><i class="fa-solid fa-arrow-right-from-bracket"></i

@@ -424,3 +424,14 @@ def getCambioFecha(request, idAsignatura = None):
     ## Secciones disponibles
     secciones = Cambio_Fecha.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = idAsignatura).values_list('id_evaluacion__id_coordinacion__seccion',flat= True).distinct()
     return Response([serializer.data,coordinaciones,secciones])
+
+
+## LUego de especificar la seccion se recogen los cambios de notas de este curso-seccion id para VISTA COORDINADOR
+@api_view(['GET'])
+def getCambioNotaCurso(request, idCurso = None):
+    
+    ### ID de cursoInscrito o Coordinacion Seccion
+    cambioNotasCurso = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion = idCurso).all()
+    
+    serializer = CambioNotaDashboardSerializer(cambioNotasCurso, many="true")
+    return Response(serializer.data)
