@@ -4,8 +4,8 @@
     <td>{{solicitud_revision.id_estudiante.id_usuario.first_name}} {{solicitud_revision.id_estudiante.id_usuario.last_name}}</td>
     <td>{{solicitud_revision.id_evaluacion.nombre}}</td>
     <td>{{solicitud_revision.fecha_creacion}}</td>
-    <td v-if="solicitud_revision.estado == 'P'"> Pendiente</td>
-    <td v-else-if="solicitud_revision.estado == 'A'"> Aprobada</td>
+    <td v-if="solicitud_revision.estado == 'P'">Pendiente</td>
+    <td v-else-if="solicitud_revision.estado == 'A'">Aprobada</td>
     <td v-else>Rechazada</td>
     <!-- Mantener id Estudiante - id Evaluacion -->
     <td>

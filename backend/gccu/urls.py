@@ -68,4 +68,5 @@ urlpatterns = [
     path('get/cambio/ponderacion/asignatura/<int:idAsignatura>',views.getCambioPonderaciones), ## Obtener los cambios de ponderacion de una asignatura
     path('get/cambio/fecha/asignatura/<int:idAsignatura>',views.getCambioFecha), ## Obtener los cambios de fecha de una asignatura
     path('get/cambio/calificacion/curso/<int:idCurso>',views.getCambioNotaCurso),
+    path('get/evPendientesEntrega/<int:idDocente>', views.getEntregaPendienteEvaluacion),
 ]

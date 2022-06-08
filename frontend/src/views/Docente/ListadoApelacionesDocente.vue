@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSectionV2">
-        <h3 class="textTitleV2">Solicitudes de Apelación</h3>
+        <h3 class="textTitleV2">Solicitudes de apelación</h3>
       </div>
       <table class="tableV2">
         <thead>

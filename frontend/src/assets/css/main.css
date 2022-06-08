@@ -70,12 +70,20 @@
 
 /* Dashboards ------------------------------------------------------------- */
 
-#solPendientes {
+.cuadradoDashboard {
   border: 1px solid #004883;
   height: 250px;
   background-color: #f3f3f3;
   border-radius: 3px;
   cursor: pointer;
+}
+
+.rectanguloDashboard {
+  border: 1px solid #004883;
+  min-height: 250px;
+  height: max-content;
+  background-color: #f3f3f3;
+  border-radius: 3px;
 }
 
 .iconoDashboard {
@@ -89,14 +97,15 @@
   margin: auto;
 }
 
-#solPendientes h2 {
+.cuadradoDashboard h2, 
+.rectanguloDashboard h2 {
   margin-top: 15px;
   font-weight: 400;
   font-size: 20px;
   letter-spacing: -1px;
 }
 
-#solPendientes h3 {
+.cuadradoDashboard h3 {
   margin-top: 15px;
   font-weight: 600;
   font-size: 35px;
@@ -125,7 +134,8 @@
   letter-spacing: -1px;
 }
 
-.tableV2 {
+.tableV2,
+.tableDashboard {
   border-collapse: collapse;
   font-size: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -134,7 +144,8 @@
   margin: 15px 0px 30px 0px;
 }
 
-.tableV2 thead tr {
+.tableV2 thead tr,
+.tableDashboard thead tr {
   background-color: #004883;
   color: #ffffff;
   text-align: left;
@@ -142,20 +153,31 @@
 }
 
 .tableV2 th,
-.tableV2 td {
+.tableV2 td,
+.tableDashboard th,
+.tableDashboard td {
   padding: 12px 15px;
 }
 
-.tableV2 tbody tr {
+.tableV2 tbody tr,
+.tableDashboard tbody tr {
   border-bottom: 2px solid #dddddd;
 }
 
-.tableV2 tbody tr:nth-of-type(even) {
+.tableV2 tbody tr:nth-of-type(even),
+.tableDashboard tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;
 }
 
-.tableV2 tbody tr:last-of-type {
+.tableV2 tbody tr:last-of-type,
+.tableDashboard tbody tr:last-of-type {
   border-bottom: 3px solid #004883;
+}
+
+.tableDashboard tbody tr:hover {
+  background-color: #ececec;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .row-Codigo,
@@ -263,7 +285,7 @@
 }
 
 .styleRow {
-  margin: 0px 2px; 
+  margin: 0px 2px;
   padding: 10px 0px;
 }
 

@@ -14,18 +14,26 @@
       </div>
 
       <div class="d-flex align-middle justify-content-center mt-4">
-        <div class="formApelacion">
+        <div class="formApelacion" v-for="solicitud in apelacion.slice(0, 1)">
           <h6 class="textoFormulario">
             Asignatura:
             {{
-              apelacion[0].id_evaluacion.id_coordinacion.id_asignatura.nombre
+              solicitud.id_evaluacion.id_coordinacion.id_asignatura.nombre
             }}
           </h6>
           <h6 class="textoFormulario">
-            Evaluación: {{ apelacion[0].id_evaluacion.nombre }}
+            Código:
+            {{
+              solicitud.id_evaluacion.id_coordinacion.id_asignatura.codigo
+            }}-{{ solicitud.id_evaluacion.id_coordinacion.coordinacion }}-{{
+              solicitud.id_evaluacion.id_coordinacion.seccion
+            }}
           </h6>
           <h6 class="textoFormulario">
-            Calificación: {{ apelacion[0].id_calificacion.nota }}
+            Evaluación: {{ solicitud.id_evaluacion.nombre }}
+          </h6>
+          <h6 class="textoFormulario">
+            Calificación: {{ solicitud.id_calificacion.nota }}
           </h6>
 
           <form class="mt-2" @submit.prevent="send">
@@ -35,7 +43,7 @@
                 class="form-control relative block w-full"
                 id="nombreUsuarioEstudiante"
                 type="text"
-                :value="apelacion[0].id_estudiante.id_usuario.username"
+                :value="solicitud.id_estudiante.id_usuario.username"
                 disabled
                 readonly
               />
@@ -46,7 +54,7 @@
               <textarea
                 class="form-control relative block w-full"
                 id="ApelacionContenido"
-                :value="apelacion[0].motivo"
+                :value="solicitud.motivo"
                 rows="4"
                 disabled
                 readonly
@@ -59,7 +67,7 @@
               <textarea
                 class="form-control relative block w-full"
                 id="ContenidoRespuesta"
-                placeholder="Respuesta del Docente"
+                placeholder="Respuesta del docente"
                 rows="5"
                 v-model="respuestaActual"
                 required
@@ -151,13 +159,15 @@ export default {
       let idEstudianteSolicitud = this.idEstudiante;
       let idEvaluacionSolicitud = this.idEvaluacion;
 
-      if (this.isAceptar == true && (this.notaActual == null || this.notaActual == '')) {
-        this.$swal
-          .fire({
-            icon: "error",
-            title: "No se pudo procesar la respuesta",
-            text: "Para aceptar la solicitud de revisión, debe indicar la nueva nota del estudiante",
-          });
+      if (
+        this.isAceptar == true &&
+        (this.notaActual == null || this.notaActual == "")
+      ) {
+        this.$swal.fire({
+          icon: "error",
+          title: "No se pudo procesar la respuesta",
+          text: "Para aceptar la solicitud de revisión, debe indicar la nueva nota del estudiante",
+        });
       } else {
         // Caso 1: Solicitud es aceptada.
         if (this.isAceptar == true) {
@@ -182,7 +192,7 @@ export default {
               solicitud
             )
             .then(function (response) {});
-          
+
           // Nueva tupla de calificacion
           let notaNueva = {
             nota: this.notaActual,
@@ -192,7 +202,7 @@ export default {
             id_evaluacion: this.apelacion[0].id_calificacion.id_evaluacion,
           };
           let idCalificacion = this.apelacion[0].id_calificacion.id;
-          
+
           axios
             .put(
               `http://localhost:8000/actualizar/calificacion/${idCalificacion}`,

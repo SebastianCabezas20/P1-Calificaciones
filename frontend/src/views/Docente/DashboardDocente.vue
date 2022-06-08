@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="row" style="background-color: #ffffff">
-        <div class="col-md-3" id="solPendientes" @click="solicitudes()">
+        <div class="col-md-3 cuadradoDashboard" @click="solicitudes()">
           <!-- Icono -->
           <div class="iconoDashboard">
             <span class="fa-solid fa-file-circle-exclamation fa-3x"></span>
@@ -21,6 +21,39 @@
           <h3>{{ solicitudesPendientes }} - {{ solicitudesTotales }}</h3>
         </div>
         <div class="col-md"></div>
+      </div>
+
+      <div class="row" style="background-color: #ffffff">
+        <div class="col-md rectanguloDashboard">
+          <h2>Próximas entregas de calificaciones</h2>
+          <table class="tableDashboard">
+            <thead>
+              <tr>
+                <th style="width: 10%">Código</th>
+                <th style="width: 40%">Asignatura</th>
+                <th>Evaluación</th>
+                <th>Entrega de notas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(evaluacion, index) in evPendientesEntrega.slice(0, 3)"
+                :key="index"
+                @click="evaluacionPendiente(index)"
+              >
+                <td>
+                  {{ evaluacion.id_coordinacion.id_asignatura.codigo }}-{{
+                    evaluacion.id_coordinacion.coordinacion
+                  }}-{{ evaluacion.id_coordinacion.seccion }}
+                </td>
+                <td>{{ evaluacion.id_coordinacion.id_asignatura.nombre }}</td>
+                <td>{{ evaluacion.nombre }}</td>
+                <td>{{ evaluacion.fechaEntrega }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-3"></div>
       </div>
     </div>
   </div>
@@ -40,6 +73,7 @@ export default {
     return {
       solicitudesPendientes: 0,
       solicitudesTotales: 0,
+      evPendientesEntrega: [],
     };
   },
   mounted() {
@@ -63,12 +97,23 @@ export default {
               }
             }
           });
+        axios
+          .get(`http://localhost:8000/get/evPendientesEntrega/${idDocente}`)
+          .then(function (responseThree) {
+            that.evPendientesEntrega = responseThree.data;
+            console.log(responseThree.data);
+          });
       });
   },
   methods: {
     solicitudes() {
       this.$router.push({ name: "Apelacionesdocente" });
     },
+    evaluacionPendiente(index) {
+      let idCurso = this.evPendientesEntrega[index].id_coordinacion.id;
+      let idEvaluacion = this.evPendientesEntrega[index].id;
+      this.$router.push({ path: `/docente/curso/${idCurso}/add/calificacion/${idEvaluacion}` });
+    }
   },
 };
 </script>
