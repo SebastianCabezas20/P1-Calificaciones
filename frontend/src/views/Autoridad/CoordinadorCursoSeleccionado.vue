@@ -190,11 +190,12 @@
                   <div id="divMotivo">
                     <h5 class="textoFormulario">Motivo del cambio de fecha</h5>
                     <textarea
-                      rows="7"
+                      rows="9"
                       placeholder="Escriba acá el motivo del cambio de fecha."
                       id="motivoCambioFecha"
                       required
                       v-model="motivoCambioFecha"
+                      style="width:450px"
                     ></textarea>
                   </div>
 
