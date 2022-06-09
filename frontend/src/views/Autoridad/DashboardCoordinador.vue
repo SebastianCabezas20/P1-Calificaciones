@@ -114,16 +114,19 @@ export default {
       cambio_notas:[],
     }
   },
-  created() {
+  created() {},
+  mounted() {
+
     let ins = this;
+    let identificacionUsuario = this.$store.getters.idUsuario;
     axios
-      .get(`http://localhost:8000/get/cambiosNota`)
+      .get(`http://localhost:8000/get/cambiosNota/${identificacionUsuario}`)
       .then(function (response) {
         console.log(response.data);
         ins.cambio_notas = response.data;
       });
-  },
-  mounted() {
+
+
     const ctx = document.getElementById('graficoBarras').getContext('2d');
     const graficoBarras = new Chart(ctx, {
     type: 'bar',

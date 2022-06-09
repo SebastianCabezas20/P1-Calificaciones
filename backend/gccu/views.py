@@ -400,8 +400,8 @@ def getCambiosFecha(request):
 
 ##Falta un filter para que solo muestre los cambios del semestre actual
 @api_view(['GET'])
-def getCambiosNota(request):
-    cambiosNota = Cambio_nota.objects.all()
+def getCambiosNota(request, idCoordinador = None):
+    cambiosNota = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion__id_asignatura__id_coordinador__id_usuario = idCoordinador)
     serializer = CambioNotaDashboardSerializer(cambiosNota, many="true")
     return Response(serializer.data)
 

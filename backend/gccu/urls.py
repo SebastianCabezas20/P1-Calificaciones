@@ -64,7 +64,7 @@ urlpatterns = [
     path('add/cambioPonderacion', views.addCambioPonderacion),
     path('get/cambiosFecha', views.getCambiosFecha),  ## Verificar si aun se necesita para el dashboard
     path('get/evaluaciones/<nombreEvaluacion>/asignatura/<int:idAsignatura>', views.getEvaluacionesPorNombre),
-    path('get/cambiosNota', views.getCambiosNota),
+    path('get/cambiosNota/<int:idCoordinador>', views.getCambiosNota),
     path('get/coordinacion/<int:idCoordinacion>', views.informacionCoordinacion),
     path('get/cambio/ponderacion/asignatura/<int:idAsignatura>',views.getCambioPonderaciones), ## Obtener los cambios de ponderacion de una asignatura
     path('get/cambio/fecha/asignatura/<int:idAsignatura>',views.getCambioFecha), ## Obtener los cambios de fecha de una asignatura
