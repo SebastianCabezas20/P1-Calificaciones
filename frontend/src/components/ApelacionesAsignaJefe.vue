@@ -1,16 +1,18 @@
 <template>
     <tr
     v-show="filterSecciones(solicitud.id_evaluacion.id_coordinacion.coordinacion,solicitud.id_evaluacion.id_coordinacion.seccion) &&
-    filterEvaluacion(solicitud.id_evaluacion.nombre) && filterEstado(solicitud.estado)" 
+    filterEvaluacion(solicitud.id_evaluacion.nombre) && filterEstado(solicitud.estado) &&
+    filterDocente(solicitud.id_docente.id_usuario.first_name, solicitud.id_docente.id_usuario.last_name)" 
     :style="[solicitud.estado == 'A' ? {'background-color':'#90EE90'} : solicitud.estado == 'R' ? {'background-color': '#ffbfaa'} : {'background-color':'null'}]">
+    
         <td>{{solicitud.id_evaluacion.nombre}}</td>
         <td v-if="solicitud.estado == 'A'">Aprobada</td>
         <td v-else-if="solicitud.estado == 'R'" >Rechazado</td>
         <td v-else >Pendiente</td>
         <td>{{solicitud.fecha_creacion}}</td>
-        <td>{{solicitud.id_estudiante.id_usuario.username}}</td>
+        <td>{{solicitud.id_estudiante.id_usuario.first_name}} {{solicitud.id_estudiante.id_usuario.last_name}}</td>
         <td>{{solicitud.id_evaluacion.id_coordinacion.coordinacion}}-{{solicitud.id_evaluacion.id_coordinacion.seccion}}</td>
-        <td>{{solicitud.id_docente.id_usuario.username}}</td>
+        <td> {{solicitud.id_docente.id_usuario.first_name}} {{solicitud.id_docente.id_usuario.last_name}}</td>
         <td>
         <button type="button" @click="showModal = !showModal" class="btn btn-success">
             Detalles
@@ -102,6 +104,7 @@ export default {
         coordinaciones: Array,
         secciones: Array,
         nombreEvaluacion: String,
+        nombreDocente: String,
         aprobada: Boolean,
         rechazada: Boolean,
         pendiente: Boolean
@@ -118,6 +121,10 @@ export default {
         filterEvaluacion(evaluacion){
         let n = Array(evaluacion)
         return n[0].toLocaleLowerCase().indexOf(this.nombreEvaluacion) >= 0
+        },
+        filterDocente(nombre,apellido){
+        let n = Array(nombre+' '+apellido)
+        return n[0].indexOf(this.nombreDocente) >= 0
         },
         filterEstado(estado){
             if(estado == 'A'){

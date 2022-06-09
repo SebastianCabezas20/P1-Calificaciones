@@ -10,8 +10,8 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSection">
-        <h4 class="textTitle">Cambio de ponderacion</h4>
-      </div>
+        <h4 class="textTitle">Cambios de fecha</h4>
+      </div>  
       <div class="tableContent">
         <table class="table">
           <thead>

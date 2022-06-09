@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSectionV2">
-        <h3 class="textTitleV2">Cambios de calificaciones</h3>
+        <h3 class="textTitleV2">Cambios de fechas</h3>
       </div>
 
       <!--Filtros-->
@@ -75,7 +75,7 @@
           >
             <tr v-show="filterSecciones(cambio.id_evaluacion.id_coordinacion.seccion,
             cambio.id_evaluacion.id_coordinacion.coordinacion) &&
-             filterEvaluacion(cambio.id_evaluacion.nombre)">
+             filterEvaluacion(cambio.id_evaluacion.nombre) && filterDocente(cambio.id_evaluacion.id_docente.id_usuario.first_name,cambio.id_evaluacion.id_docente.id_usuario.last_name)">
               <td>{{ cambio.id_evaluacion.id_coordinacion.coordinacion }}-{{cambio.id_evaluacion.id_coordinacion.seccion}}</td>
               <td>{{cambio.id_evaluacion.id_docente.id_usuario.first_name}} {{cambio.id_evaluacion.id_docente.id_usuario.last_name}}</td>
               <td>{{ cambio.id_evaluacion.nombre }}</td>
@@ -139,6 +139,11 @@ export default {
     filterEvaluacion(evaluacion){
       let n = Array(evaluacion)
       return n[0].toLocaleLowerCase().indexOf(this.evaluacionFiltro) >= 0
+    },
+    filterDocente(nombre,apellido){
+      let n = Array(nombre+' '+apellido)
+      console.log(n)
+      return n[0].indexOf(this.docenteFiltro) >= 0
     }
   },
 };

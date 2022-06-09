@@ -76,10 +76,11 @@
           >
             <tr v-show="filterSecciones(cambio.id_calificacion.id_evaluacion.id_coordinacion.seccion,
             cambio.id_calificacion.id_evaluacion.id_coordinacion.coordinacion) &&
-             filterEvaluacion(cambio.id_calificacion.id_evaluacion.nombre)">
+             filterEvaluacion(cambio.id_calificacion.id_evaluacion.nombre) && 
+             filterDocente(cambio.id_calificacion.id_evaluacion.id_docente.id_usuario.first_name,cambio.id_calificacion.id_evaluacion.id_docente.id_usuario.last_name)">
               <td>{{ cambio.id_calificacion.id_evaluacion.id_coordinacion.coordinacion }}-{{cambio.id_calificacion.id_evaluacion.id_coordinacion.seccion}}</td>
-              <td>{{ cambio.id_calificacion.id_evaluacion.id_docente.id_usuario.username }}</td>
-              <td>{{ cambio.id_calificacion.id_estudiante.id_usuario.username }}</td>
+              <td>{{cambio.id_calificacion.id_evaluacion.id_docente.id_usuario.first_name}} {{cambio.id_calificacion.id_evaluacion.id_docente.id_usuario.last_name}}</td>
+              <td>{{ cambio.id_calificacion.id_estudiante.id_usuario.first_name }} {{ cambio.id_calificacion.id_estudiante.id_usuario.last_name }}</td>
               <td>{{ cambio.id_calificacion.id_evaluacion.nombre }}</td>
               <td>{{ cambio.anterior_nota }}</td>
               <td>{{ cambio.actual_nota }}</td>
@@ -141,6 +142,11 @@ export default {
     filterEvaluacion(evaluacion){
       let n = Array(evaluacion)
       return n[0].toLocaleLowerCase().indexOf(this.evaluacionFiltro) >= 0
+    },
+    filterDocente(nombre,apellido){
+      let n = Array(nombre+' '+apellido)
+      console.log(n)
+      return n[0].indexOf(this.docenteFiltro) >= 0
     }
   },
 };

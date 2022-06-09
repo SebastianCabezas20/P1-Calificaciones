@@ -23,6 +23,14 @@
             <input type="text" class="form-control" v-model="docenteFiltro" placeholder="Docente a buscar">
           </div>
         </div>
+
+        <div class="col-6">
+          <div class="input-group row">
+            <span class="input-group-text">Estudiante</span>
+            <input type="text" class="form-control" v-model="estudianteFiltro" placeholder="Estudiante a buscar">
+          </div>
+        </div>
+
       </div>
 
       <div class="tableContent">
@@ -41,7 +49,9 @@
                 </thead>
                 <tbody>
                 <template v-for="cambio_nota in cambio_notas" :key="cambio_nota.id">
-                  <tr v-show="filterEvaluacion(cambio_nota.id_calificacion.id_evaluacion.nombre)">
+                  <tr v-show="filterEvaluacion(cambio_nota.id_calificacion.id_evaluacion.nombre)
+                  && filterDocente(cambio_nota.id_calificacion.id_evaluacion.id_docente.id_usuario.first_name,cambio_nota.id_calificacion.id_evaluacion.id_docente.id_usuario.last_name)
+                  && filterEstudiante(cambio_nota.id_calificacion.id_estudiante.id_usuario.first_name, cambio_nota.id_calificacion.id_estudiante.id_usuario.last_name)">
                     <td class="text-center">{{ cambio_nota.id_calificacion.id_evaluacion.nombre }}</td>
                     <td class="text-center">{{ cambio_nota.id_calificacion.id_evaluacion.id_coordinacion.id_asignatura.nombre }}</td>
                     <td class="text-center">{{ cambio_nota.id_calificacion.id_estudiante.id_usuario.first_name }}
@@ -96,7 +106,16 @@ props:['idCurso'],
     filterEvaluacion(evaluacion){
       let n = Array(evaluacion)
       return n[0].toLocaleLowerCase().indexOf(this.evaluacionFiltro) >= 0
+    },
+    filterDocente(nombre,apellido){
+      let n = Array(nombre+' '+apellido)
+      return n[0].indexOf(this.docenteFiltro) >= 0
+    },
+    filterEstudiante(nombre,apellido){
+      let n = Array(nombre+' '+apellido)
+      return n[0].indexOf(this.estudianteFiltro) >= 0
     }
+    
   },
 };
 </script>

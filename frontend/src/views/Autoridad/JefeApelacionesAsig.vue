@@ -85,8 +85,8 @@
           </thead>
           <tbody v-for="solicitud in solicitudes" :key="solicitud.id">
             <ApelacionesAsignaJefe :solicitud="solicitud" :coordinaciones="this.coordinacionesChecked" :secciones="this.seccionesChecked"
-            :nombreEvaluacion="this.evaluacionFiltro" 
-            :pendiente="this.pendientes" :aprobada="this.aprobadas" :rechazada="this.rechazadas"/>
+            :nombreEvaluacion="this.evaluacionFiltro"
+            :pendiente="this.pendientes" :aprobada="this.aprobadas" :rechazada="this.rechazadas" :nombreDocente="this.docenteFiltro"/>
           </tbody>
         </table>
       </div>

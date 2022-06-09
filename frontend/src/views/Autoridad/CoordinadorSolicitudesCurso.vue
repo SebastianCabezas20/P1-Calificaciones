@@ -26,7 +26,7 @@
         <div class="col-6">
           <div class="input-group row">
             <span class="input-group-text">Estudiante</span>
-            <input type="text" class="form-control" v-model="estudianteFiltro" placeholder="Evaluación a buscar">
+            <input type="text" class="form-control" v-model="estudianteFiltro" placeholder="Estudiante a buscar">
           </div>
           <div class="input-group row">
           <h6> Tipo de apelaciones</h6>
@@ -65,7 +65,7 @@
           </thead>
           <tbody v-for="solicitud in solicitudes" :key="solicitud.id">
             <ApelacionesCoordinador :solicitud="solicitud" :pendiente="this.pendientes" :aprobada="this.aprobadas" :rechazada="this.rechazadas"
-            :evaluacionFiltro="this.evaluacionFiltro" />
+            :evaluacionFiltro="this.evaluacionFiltro" :docente="this.docenteFiltro" :estudiante="this.estudianteFiltro"/>
           </tbody>
         </table>
       </div>
