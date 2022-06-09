@@ -78,8 +78,6 @@ export default {
     .then(function (response) {
       ins.idCoordinador = response.data.id;
       axios.get(`http://localhost:8000/coordinador/coordinacion/${ins.idCoordinador}`).then(function (response) {
-        console.log(response.data);
-        // Se obtienen las coordinaciones en un arreglo [[Co1],[Co2],[Co3]]
         ins.secciones = response.data;
       });
     });

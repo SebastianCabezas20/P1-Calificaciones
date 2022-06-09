@@ -243,6 +243,11 @@ class CambioNotaDashboardSerializer(serializers.ModelSerializer):
         model = Cambio_nota
         fields = '__all__'
 
+class CambioPonderacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cambio_Ponderacion
+        fields = '__all__'
+
 # Serializer para obtener los cambios de ponderacion segun asignatura.
 class CambioPonderacionesJefe(serializers.ModelSerializer):
     id_evaluacion = EvaluacionSerializer()

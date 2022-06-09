@@ -23,6 +23,7 @@
             <th class="row-Ponderacion">Pondera</th>
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
+            <th class="row-ButtonIcon"></th>
           </tr>
         </thead>
 
@@ -34,6 +35,18 @@
             <td v-if="evaluacion.estado == 'E'">Evaluada</td>
             <td v-else>Pendiente</td>
             <td>{{ evaluacion.ponderacion * 100 }}%</td>
+            <!-- Cambio de Ponderación. -->
+            <td>
+              <div class="text-center">
+                <button
+                  @click="(showModalPonderacion = true), (modalIndex = index)"
+                  class="fa-solid fa-percent botonTabla"
+                  :disabled="evaluacion.estado == 'E'"
+                  title="Modificar la ponderación de la evaluación."
+                ></button>
+              </div>
+            </td>
+            <!-- Cambio en la fecha de evaluación. -->
             <td>
               <div class="text-center">
                 <button
@@ -44,6 +57,7 @@
                 ></button>
               </div>
             </td>
+            <!-- Eliminar una evaluación. -->
             <td>
               <div class="text-center">
                 <button
@@ -195,7 +209,7 @@
                       id="motivoCambioFecha"
                       required
                       v-model="motivoCambioFecha"
-                      style="width:450px"
+                      style="width: 450px"
                     ></textarea>
                   </div>
 
@@ -204,6 +218,75 @@
                       type="button"
                       class="btn btn-secondary"
                       v-on:click="showModalFecha = false"
+                    >
+                      Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      Guardar cambios
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+
+      <!-- Modal para modificar la ponderación de una evaluación. -->
+      <transition name="fase" appear>
+        <div class="modal-overlay" v-if="showModalPonderacion">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">
+                  Modificar ponderación de la evaluación
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  @click="showModalPonderacion = false"
+                ></button>
+              </div>
+
+              <div class="modal-body">
+                <form
+                  action="#"
+                  method="PUT"
+                  v-on:submit.prevent="modificarPonderacion($event, modalIndex)"
+                >
+                  <div class="mb-3">
+                    <label class="form-label">Nueva ponderación</label>
+                    <input
+                      v-model="nuevaPonderacionEv"
+                      class="form-control"
+                      placeholder="15"
+                      type="number"
+                      min="1"
+                      max="100"
+                      step="0.1"
+                      required
+                    />
+                  </div>
+
+                  <div id="divMotivo">
+                    <h5 class="textoFormulario">
+                      Motivo del cambio de ponderación.
+                    </h5>
+                    <textarea
+                      rows="9"
+                      placeholder="Escriba acá el motivo del cambio de ponderación."
+                      id="motivoCambioPonderacion"
+                      required
+                      v-model="motivoCambioPonderacion"
+                      style="width: 450px"
+                    ></textarea>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      v-on:click="showModalPonderacion = false"
                     >
                       Cancelar
                     </button>
@@ -240,6 +323,7 @@ export default {
       evaluacionesInformacion: [],
       showModalAdd: false,
       showModalFecha: false,
+      showModalPonderacion: false,
       modalIndex: "",
 
       // V-Models
@@ -249,6 +333,8 @@ export default {
       porcentajeEvaluacion: "",
       nuevaFechaEvaluacion: "",
       motivoCambioFecha: "",
+      nuevaPonderacionEv: null,
+      motivoCambioPonderacion: "",
     };
   },
 
@@ -380,6 +466,105 @@ export default {
         }
       });
       location.reload();
+    },
+    modificarPonderacion(event, indexClic) {
+      // Se transforma el porcentaje 40% -> 0.4
+      let ponderacionEvaluacion = this.nuevaPonderacionEv / 100;
+
+      // Se comprueba que no se sobrepase el 100% (Incluyendo las evaluaciones evaluadas).
+      let ponderacionTotal = 0;
+      for (var i = 0; i < this.evaluacionesInformacion.length; i++) {
+        if (i == indexClic) {
+          ponderacionTotal = ponderacionTotal + ponderacionEvaluacion;
+        } else {
+          ponderacionTotal =
+            ponderacionTotal +
+            parseFloat(this.evaluacionesInformacion[i].ponderacion);
+        }
+      }
+
+      // Caso 1: Con la nueva ponderación se sobrepasa el 100%
+      if (ponderacionTotal > 1) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Porcentaje de evaluación no permitido",
+          text: "El porcentaje ingresado sobrepasa el 100% total permitido",
+        });
+      }
+
+      // Caso 2: No se sobrepasa.
+      else {
+        // Datos para el registro.
+        let ponderacionAnterior =
+          this.evaluacionesInformacion[indexClic].ponderacion;
+        let idEvaluacion = this.evaluacionesInformacion[indexClic].id;
+        let nombreEvaluacion = this.evaluacionesInformacion[indexClic].nombre;
+        let fechaActual = new Date();
+        fechaActual = fechaActual.toISOString().slice(0, 10);
+        let that = this;
+
+        /* En la tabla Evaluación, se buscan las evaluaciones con un nombre especifico
+        y que pertenezcan a una misma asignatura, lo que provoca que se actualice
+        esa evaluación en todas las coordinaciones asociadas a esa asignatura. */
+        this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
+          let evaluacionesPorNombre = response;
+          console.log(evaluacionesPorNombre);
+
+          /* Cada una de las evaluaciones se va modificando y además, se 
+          registra el cambio de ponderación. */
+          for (var i = 0; i < evaluacionesPorNombre.length; i++) {
+            let nuevaEvaluacion = {
+              nombre: evaluacionesPorNombre[i].nombre,
+              fechaEvActual: evaluacionesPorNombre[i].fechaEvActual,
+              fechaEntrega: evaluacionesPorNombre[i].fechaEntrega,
+              ponderacion: ponderacionEvaluacion,
+              estado: evaluacionesPorNombre[i].estado,
+              obs_general: evaluacionesPorNombre[i].obs_general,
+              adjunto: evaluacionesPorNombre[i].adjunto,
+              id_docente: evaluacionesPorNombre[i].id_docente,
+              id_tipoEvaluacion: evaluacionesPorNombre[i].id_tipoEvaluacion,
+              id_coordinacion: evaluacionesPorNombre[i].id_coordinacion,
+            };
+
+            let tuplaCambioPonderacion = {
+              ponderacionAnterior: ponderacionAnterior,
+              ponderacionNueva: ponderacionEvaluacion,
+              motivo: that.motivoCambioPonderacion,
+              fecha_cambio: fechaActual,
+              id_evaluacion: evaluacionesPorNombre[i].id,
+            };
+
+            let idEvaluacionCambio = evaluacionesPorNombre[i].id;
+
+            // Requests
+            axios
+              .put(
+                `http://localhost:8000/update/evaluacion/${idEvaluacionCambio}`,
+                nuevaEvaluacion
+              )
+              .then(function (responseTwo) {
+                axios
+                  .post(
+                    "http://localhost:8000/add/cambioPonderacion",
+                    tuplaCambioPonderacion
+                  )
+                  .then(function (responseThird) {
+                    that.$swal
+                      .fire({
+                        icon: "success",
+                        title: "Modificación exitosa",
+                        text: `La evaluacion ${nombreEvaluacion} fue modificada satisfactoriamente. La nueva ponderación de la evaluación es ${
+                          ponderacionEvaluacion * 100
+                        }%`,
+                      })
+                      .then((result) => {
+                        location.reload();
+                      });
+                  });
+              });
+          }
+        });
+      }
     },
   },
 };

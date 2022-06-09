@@ -378,6 +378,14 @@ def cambioFechaCalificacion(request):
         return Response(cambioFecha.data)
     return Response(cambioFecha.errors)
 
+@api_view(['POST'])
+def addCambioPonderacion(request):
+    cambioPonderacion = CambioPonderacionSerializer(data = request.data)
+    if cambioPonderacion.is_valid():
+        cambioPonderacion.save()
+        return Response(cambioPonderacion.data)
+    return Response(cambioPonderacion.errors)
+
 ######
 # #########
 # #### Nose si funciona ya que se agrega la vista aparte para ver los cambios de fecha a jefe de carrera
