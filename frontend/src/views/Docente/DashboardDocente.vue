@@ -101,7 +101,6 @@ export default {
           .get(`http://localhost:8000/get/evPendientesEntrega/${idDocente}`)
           .then(function (responseThree) {
             that.evPendientesEntrega = responseThree.data;
-            console.log(responseThree.data);
           });
       });
   },

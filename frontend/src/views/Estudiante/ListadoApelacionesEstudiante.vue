@@ -20,7 +20,8 @@
             <th style="width: 10%;">Evaluación</th>
             <th style="width: 10%;">Estado</th>
             <th style="width: 30%;">Detalle Motivo</th>
-            <th style="width: 30%;">Respuesta</th>
+            <th style="width: 25%;">Respuesta</th>
+            <th style="width: 5%;"></th>
           </tr>
         </thead>
         <tbody>
