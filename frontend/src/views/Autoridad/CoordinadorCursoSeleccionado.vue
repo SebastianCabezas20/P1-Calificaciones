@@ -372,7 +372,17 @@ export default {
   },
 
   methods: {
-    deleteEvaluacion(event, index) {},
+    deleteEvaluacion: function (event, index) {
+      let idEvaluacionEliminar = this.evaluacionesCurso[index].id;
+      axios
+        .delete(
+          `http://localhost:8000/delete/evaluacion/${idEvaluacionEliminar}`
+        )
+        .then(function (response) {
+          // Funcionando pero quizas falta agregar una alerta emergente que diga que se elimino.
+          location.reload();
+        });
+    },
 
     // Coordinador crea una evaluación en todas las coordinaciones de su asignatura.
     crearEvaluacion: function (event) {
