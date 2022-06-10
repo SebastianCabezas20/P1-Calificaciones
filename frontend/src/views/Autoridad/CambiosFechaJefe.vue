@@ -20,7 +20,7 @@
           <h5> Seleccione la coordinacion</h5>
           <!-- Botones para la seleccion de coordinaciones -->
           <div class="btn-group-vertical">
-            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"
+            <div class="btn" role="group" aria-label="Basic checkbox toggle button group"
             v-for="(coordinacion,index) in coordinaciones" :key="index">
               <input type="checkbox" class="btn-check" :value="coordinacion" :id="coordinacion" v-model="coordinacionesChecked" autocomplete="off">
               <label class="btn btn-outline-primary" :for="coordinacion"> Coordinacion {{coordinacion}}</label>
@@ -32,7 +32,7 @@
           <!-- Botones para la seleccion de secciones -->
           <h5> Seleccione la sección</h5>
           <div class="btn-group-vertical">
-            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"
+            <div class="btn" role="group" aria-label="Basic checkbox toggle button group"
             v-for="(seccion,index) in secciones" :key="index">
               <input type="checkbox" class="btn-check" :value="seccion" :id="seccion" v-model="seccionesChecked" autocomplete="off">
               <label class="btn btn-outline-primary" :for="seccion">Seccion {{seccion}}</label>
@@ -138,7 +138,7 @@ export default {
     },
     filterEvaluacion(evaluacion){
       let n = Array(evaluacion)
-      return n[0].toLocaleLowerCase().indexOf(this.evaluacionFiltro) >= 0
+      return n[0].toLocaleLowerCase().indexOf(this.evaluacionFiltro.toLocaleLowerCase()) >= 0
     },
     filterDocente(nombre,apellido){
       let n = Array(nombre+' '+apellido)

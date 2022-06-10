@@ -131,7 +131,7 @@ export default {
     const graficoBarras = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels:['curso 1', 'curso 2', 'curso 3', 'curso 4', 'curso 5', 'curso 6'],  
         datasets: [{
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],
@@ -167,7 +167,7 @@ export default {
     const graficoPie = new Chart(ctx2, {
     type: 'pie',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['curso 1', 'curso 2', 'curso 3', 'curso 4', 'curso 5', 'curso 6'],
         datasets: [{
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],
