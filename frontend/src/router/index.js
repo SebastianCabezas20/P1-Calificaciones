@@ -36,6 +36,7 @@ import JefeAsignaturaCambioFechaVue from "../views/Autoridad/JefeAsignaturaCambi
 import CambiosFechaJefeVue from "../views/Autoridad/CambiosFechaJefe.vue";
 import CoordinadorSeccionCambioNotasVue from "../views/Autoridad/CoordinadorSeccionCambioNotas.vue";
 import CambioNotasCoordinador from "../views/Autoridad/CambioNotasCoordinador.vue";
+import SubirCalificacionesCoordinador from "../views/Autoridad/SubirCalificacionesCoordinador.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -165,6 +166,12 @@ const router = createRouter({
       path: "/coordinador/asignatura/:idAsignatura/seccion/:idCurso",
       name: "seccionSeleccionadaCoordinador",
       component: CoordinadorCursoSeleccionado,
+      props: true,
+    },
+    { //Calificacion de una evaluacion por parte de un coordinador
+      path: "/coordinador/curso/:idCurso/add/calificacion/:idEvaluacion",
+      name: "cursosubircalificacionescoordinador",
+      component: SubirCalificacionesCoordinador,
       props: true,
     },
     // Secciones de un coordinador para visualizar cambio de calificaciones

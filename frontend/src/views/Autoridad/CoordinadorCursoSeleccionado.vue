@@ -24,6 +24,7 @@
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
+            <th class="row-ButtonIcon"></th>
           </tr>
         </thead>
 
@@ -35,6 +36,17 @@
             <td v-if="evaluacion.estado == 'E'">Evaluada</td>
             <td v-else>Pendiente</td>
             <td>{{ evaluacion.ponderacion * 100 }}%</td>
+            <!-- Calificacion de Evaluacion-->
+            <td>
+              <div class="text-center">
+                <button
+                  class="fa-solid fa-pencil botonTabla"
+                  v-on:click="calificarEvaluacion($event, evaluacion.id)"
+                  :disabled="evaluacion.estado == 'E'"
+                  title="Ingresar calificaciones"
+                ></button>
+              </div>
+            </td>
             <!-- Cambio de Ponderación. -->
             <td>
               <div class="text-center">
@@ -372,6 +384,13 @@ export default {
   },
 
   methods: {
+    
+    calificarEvaluacion: function (event, idEvaluacion) {
+      this.$router.push({
+        path: `/coordinador/curso/${this.idCurso}/add/calificacion/${idEvaluacion}`,
+      });
+    },
+
     deleteEvaluacion: function (event, index) {
       let idEvaluacionEliminar = this.evaluacionesCurso[index].id;
       axios
