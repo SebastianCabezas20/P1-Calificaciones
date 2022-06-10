@@ -32,12 +32,12 @@
               <td v-if="asignatura.id_asignatura.componente == 'L'">Laboratorio</td>
               <td v-else>Teoria</td>
               <td>
-                <button type="button" class="btn btn-success">
+                <button type="button" class="botonTabla">
                   Detalles
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-success" @click="Ingresar(asignatura.id_asignatura.id)">
+                <button type="button" class="botonTabla" @click="Ingresar(asignatura.id_asignatura.id)">
                   Seleccionar
                 </button>
               </td>

@@ -14,7 +14,7 @@
         <td>{{solicitud.id_evaluacion.id_coordinacion.coordinacion}}-{{solicitud.id_evaluacion.id_coordinacion.seccion}}</td>
         <td> {{solicitud.id_docente.id_usuario.first_name}} {{solicitud.id_docente.id_usuario.last_name}}</td>
         <td>
-        <button type="button" @click="showModal = !showModal" class="btn btn-success">
+        <button type="button" @click="showModal = !showModal" class="botonTabla">
             Detalles
         </button>
         </td>

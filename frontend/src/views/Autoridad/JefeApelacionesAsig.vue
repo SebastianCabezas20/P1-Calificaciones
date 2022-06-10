@@ -71,7 +71,7 @@
 
       </div>
       <div class="tableContent">
-        <table class="table">
+        <table class="tableV2">
           <thead>
             <tr>
               <th>Nombre Evaluacion</th>

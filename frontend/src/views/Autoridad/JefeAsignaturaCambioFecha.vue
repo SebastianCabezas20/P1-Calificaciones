@@ -36,12 +36,12 @@
             <td v-else>Teoria</td>
 
             <td>
-              <button type="button" class="btn btn-success">Detalles</button>
+              <button type="button" class="botonTabla">Detalles</button>
             </td>
             <td>
               <button
                 type="button"
-                class="btn btn-success"
+                class="botonTabla"
                 @click="ingresar(asignatura.id_asignatura.id)"
               >
                 Seleccionar
