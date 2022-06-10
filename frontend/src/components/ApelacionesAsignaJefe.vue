@@ -120,7 +120,7 @@ export default {
         },
         filterEvaluacion(evaluacion){
         let n = Array(evaluacion)
-        return n[0].toLocaleLowerCase().indexOf(this.nombreEvaluacion) >= 0
+        return n[0].toLocaleLowerCase().indexOf(this.nombreEvaluacion.toLocaleLowerCase()) >= 0
         },
         filterDocente(nombre,apellido){
         let n = Array(nombre+' '+apellido)
