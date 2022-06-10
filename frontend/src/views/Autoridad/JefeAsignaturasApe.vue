@@ -9,13 +9,13 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h4 class="textTitle">Apelaciones</h4>
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Apelaciones</h3>
       </div>
-      <div class="tableContent">
-        <table class="table">
-          <thead>
-            <tr>
+
+      <table class="tableV2">
+        <thead>
+          <tr>
               <th>Nombre Asignatura</th>
               <th>Codigo</th>
               <th>Nivel</th>
@@ -24,8 +24,8 @@
               <th>Detalle</th>
               <th>Seleccionar</th>
             </tr>
-          </thead>
-          <tbody>
+        </thead>
+         <tbody>
             <tr v-for="asignatura in asignaturas" :key="asignatura.id">
               <td>{{asignatura.id_asignatura.nombre}}</td>
               <td>{{asignatura.id_asignatura.codigo}} </td>
@@ -44,8 +44,7 @@
               </td>
             </tr>
           </tbody>
-        </table>
-      </div>
+      </table>
     </div>
   </div>
 </template>

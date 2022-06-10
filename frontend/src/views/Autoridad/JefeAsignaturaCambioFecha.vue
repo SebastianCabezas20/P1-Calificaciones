@@ -9,23 +9,23 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h4 class="textTitle">Cambios de fecha</h4>
-      </div>  
-      <div class="tableContent">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nombre Asignatura</th>
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Cambios de fecha</h3>
+      </div>
+
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th>Nombre Asignatura</th>
               <th>Codigo</th>
               <th>Nivel</th>
               <th>Componente</th>
               <th>Coordinador</th>
               <th>Detalle</th>
               <th>Seleccionar</th>
-            </tr>
-          </thead>
-          <tbody>
+          </tr>
+        </thead>
+        <tbody>
             <tr v-for="asignatura in asignaturas" :key="asignatura.id">
               <td>{{asignatura.id_asignatura.nombre}}</td>
               <td>{{asignatura.id_asignatura.codigo}} </td>
@@ -44,8 +44,7 @@
               </td>
             </tr>
           </tbody>
-        </table>
-      </div>
+      </table>
     </div>
   </div>
 </template>

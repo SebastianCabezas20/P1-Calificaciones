@@ -9,24 +9,24 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h4 class="textTitle">Asignaturas</h4>
+        <div class="titleSectionV2">
+        <h3 class="textTitleV2">Asignaturas</h3>
       </div>
-      <div class="tableContent">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nombre Asignatura</th>
+
+      <table class="tableV2">
+        <thead>
+          <tr>
+            <th>Nombre Asignatura</th>
               <th>Codigo</th>
               <th>Nivel</th>
               <th>Componente</th>
               <th>Coordinador</th>
               <th>Detalle</th>
               <th>Seleccionar</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="asignatura in asignaturas" :key="asignatura.id">
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="asignatura in asignaturas" :key="asignatura.id">
               <td>{{asignatura.id_asignatura.nombre}}</td>
               <td>{{asignatura.id_asignatura.codigo}} </td>
               <td>{{asignatura.id_asignatura.nivel}}</td>
@@ -43,9 +43,8 @@
                 </button>
               </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
