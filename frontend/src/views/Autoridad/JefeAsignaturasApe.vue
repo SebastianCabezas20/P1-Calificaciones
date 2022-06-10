@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSectionV2">
-        <h3 class="textTitleV2">Apelaciones</h3>
+        <h3 class="textTitleV2">Solicitudes de revisión</h3>
       </div>
 
       <table class="tableV2">
@@ -20,7 +20,6 @@
               <th>Codigo</th>
               <th>Nivel</th>
               <th>Componente</th>
-              <th>Coordinador</th>
               <th>Detalle</th>
               <th>Seleccionar</th>
             </tr>
@@ -30,8 +29,8 @@
               <td>{{asignatura.id_asignatura.nombre}}</td>
               <td>{{asignatura.id_asignatura.codigo}} </td>
               <td>{{asignatura.id_asignatura.nivel}}</td>
-              <td>{{asignatura.id_asignatura.componente}}</td>
-              <td>{{asignatura.id_asignatura.id_coordinador.id_usuario.username}}</td>
+              <td v-if="asignatura.id_asignatura.componente == 'L'">Laboratorio</td>
+              <td v-else>Teoria</td>
               <td>
                 <button type="button" class="btn btn-success">
                   Detalles
