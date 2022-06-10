@@ -394,7 +394,7 @@ export default {
               text: "Los estudiantes fueron calificados satisfactoriamente",
             })
             .then((result) => {
-              that.$router.push({ path: `coordinador/asignaturas/general` });
+              that.$router.push({ path: `/coordinador/asignaturas/general` });
             });
         });
     },
