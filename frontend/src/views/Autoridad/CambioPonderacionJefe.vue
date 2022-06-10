@@ -79,8 +79,8 @@
               <td>{{ cambio.id_evaluacion.id_coordinacion.coordinacion }}-{{cambio.id_evaluacion.id_coordinacion.seccion}}</td>
               <td>{{cambio.id_evaluacion.id_docente.id_usuario.first_name}} {{cambio.id_evaluacion.id_docente.id_usuario.last_name}}</td>
               <td>{{ cambio.id_evaluacion.nombre }}</td>
-              <td>{{ cambio.ponderacionAnterior * 10 }}%</td>
-              <td>{{ cambio.ponderacionNueva * 10}}%</td>
+              <td>{{ cambio.ponderacionAnterior * 100 }}%</td>
+              <td>{{ cambio.ponderacionNueva * 100}}%</td>
               <td>{{ cambio.fecha_cambio }}</td>
               <td>{{ cambio.motivo }}</td>
             </tr>
