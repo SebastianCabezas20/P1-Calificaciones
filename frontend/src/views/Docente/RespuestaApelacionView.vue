@@ -15,26 +15,41 @@
 
       <div class="d-flex align-middle justify-content-center mt-4">
         <div class="formApelacion" v-for="solicitud in apelacion.slice(0, 1)">
-          <h6 class="textoFormulario">
-            Asignatura:
-            {{
-              solicitud.id_evaluacion.id_coordinacion.id_asignatura.nombre
-            }}
-          </h6>
-          <h6 class="textoFormulario">
-            Código:
-            {{
-              solicitud.id_evaluacion.id_coordinacion.id_asignatura.codigo
-            }}-{{ solicitud.id_evaluacion.id_coordinacion.coordinacion }}-{{
-              solicitud.id_evaluacion.id_coordinacion.seccion
-            }}
-          </h6>
-          <h6 class="textoFormulario">
-            Evaluación: {{ solicitud.id_evaluacion.nombre }}
-          </h6>
-          <h6 class="textoFormulario">
-            Calificación: {{ solicitud.id_calificacion.nota }}
-          </h6>
+          <!-- Información de la solicitud. -->
+          <div class="row" style="margin: 0px 0px 20px 0px; padding: 10px 0px">
+            <div class="col" style="margin: 0px; padding: 0px">
+              <h6 class="textoFormulario">
+                Asignatura:
+                {{
+                  solicitud.id_evaluacion.id_coordinacion.id_asignatura.nombre
+                }}
+              </h6>
+              <h6 class="textoFormulario">
+                Código:
+                {{
+                  solicitud.id_evaluacion.id_coordinacion.id_asignatura.codigo
+                }}-{{ solicitud.id_evaluacion.id_coordinacion.coordinacion }}-{{
+                  solicitud.id_evaluacion.id_coordinacion.seccion
+                }}
+              </h6>
+              <h6 class="textoFormulario">
+                Evaluación: {{ solicitud.id_evaluacion.nombre }}
+              </h6>
+              <h6 class="textoFormulario">
+                Calificación: {{ solicitud.id_calificacion.nota }}
+              </h6>
+            </div>
+            <div class="col" style="display: flex; justify-content: end">
+              <button
+                class="buttonSecondary"
+                type="button"
+                @click="enRevision()"
+                :disabled="solicitud.estado == 'E'"
+              >
+                Informar revisión
+              </button>
+            </div>
+          </div>
 
           <form class="mt-2" @submit.prevent="send">
             <div class="itemFormulario">
@@ -295,6 +310,49 @@ export default {
           router.push(`/docente/solicitudes/`);
         }
       }
+    },
+    enRevision() {
+      let that = this;
+      this.$swal
+        .fire({
+          title: "¿Desea informar la revisión de esta solicitud?",
+          text: "En caso de informar la revisión, el estudiante no podrá realizar nuevas modificaciones al motivo de la solicitud.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Indicar revisión",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            let solicitud = {
+              id_estudiante: this.apelacion[0].id_estudiante.id,
+              id_evaluacion: this.apelacion[0].id_evaluacion.id,
+              motivo: this.apelacion[0].motivo,
+              fecha_creacion: this.apelacion[0].fecha_creacion,
+              respuesta: this.apelacion[0].respuesta,
+              fecha_respuesta: this.apelacion[0].fecha_respuesta,
+              estado: "E",
+              id_docente: this.apelacion[0].id_docente,
+            };
+            let idSolicitud = this.apelacion[0].id;
+
+            axios
+              .put(
+                `http://localhost:8000/actualizar/solicitud/${idSolicitud}`,
+                solicitud
+              )
+              .then(function (response) {
+                that.$swal.fire(
+                  "Solicitud actualizada",
+                  "La solicitud se encuentra actualmente en revisión",
+                  "success"
+                ).then((result) => {
+                  location.reload();
+                });
+              });
+          }
+        });
     },
   },
   created() {

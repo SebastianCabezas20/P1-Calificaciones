@@ -3,6 +3,7 @@
   <td>{{ solicitud.id_evaluacion.nombre }}</td>
   <td v-if="solicitud.estado == 'P'">Pendiente</td>
   <td v-else-if="solicitud.estado == 'A'">Aceptada</td>
+  <td v-else-if="solicitud.estado == 'E'">En revisión</td>
   <td v-else>Rechazada</td>
   <td>{{ solicitud.motivo }}</td>
   <td>{{ solicitud.respuesta }}</td>
@@ -48,8 +49,6 @@
                       >
                     </p>
                   </div>
-
-                  <!-- Último paso. -->
                   <div v-else class="track completed">
                     <span class="is-complete"></span>
                     <p>
@@ -60,6 +59,7 @@
                     </p>
                   </div>
 
+                  <!-- Último paso. -->
                   <!-- Se verifica si la solicitud fue aprobada o rechazada.-->
                   <div v-if="solicitud.estado == 'R'" class="track rejected">
                     <span class="is-complete"></span>
