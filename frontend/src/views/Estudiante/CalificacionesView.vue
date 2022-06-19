@@ -9,13 +9,14 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSectionV2">
+      <div class="titleSectionV2" v-if="mostrarInformacionTeoria">
         <h3 class="textTitleV2">Teoría</h3>
       </div>
 
       <div
         class="row"
         style="margin: 0px 2px 20px 2px; padding: 10px 0px; background-color: #fff"
+        v-if="mostrarInformacionTeoria"
       >
         <div class="col-sm" style="margin: 0px; padding: 0px">
           <p class="informationCalification">
@@ -49,7 +50,8 @@
         </div>
       </div>
 
-      <div class="componentCourse">
+      <div class="componentCourse" 
+      v-if="mostrarInformacionTeoria">
         <div class="titleSectionV2">
           <h3 class="textSubTitleV2">Evaluaciones calificadas</h3>
         </div>
@@ -243,6 +245,7 @@ export default {
       evaluacionesSinNotaLaboratorio: [],
       informacionLaboratorio: [],
       mostrar: false,
+      mostrarInformacionTeoria: false,
       idsCalificacionesSolicitudesTeoria: [],
       idsCalificacionesSolicitudesLab: [],
     };
@@ -270,6 +273,8 @@ export default {
         ins.calificacionesTeoria = response.data[0];
         ins.evaluacionesSinNotaTeoria = response.data[1];
         ins.idsCalificacionesSolicitudesTeoria = response.data[2];
+        ins.informacionTeoria = response.data[3]
+        ins.mostrarInformacionTeoria = true
       });
     axios
       .get(
@@ -281,22 +286,11 @@ export default {
           ins.calificacionesLaboratorio = response.data[0];
           ins.evaluacionesSinNotaLaboratorio = response.data[1];
           ins.idsCalificacionesSolicitudesLab = response.data[2];
+          ins.informacionLaboratorio = response.data[3]
           ins.mostrar = true;
         }
       });
-    axios
-      .get(`http://localhost:8000/InformacionTeoria/${codigoAsig}`)
-      .then(function (response) {
-        ins.informacionTeoria = response.data;
-      });
-    axios
-      .get(`http://localhost:8000/InformacionLaboratorio/${codigoAsig}`)
-      .then(function (response) {
-        if (response.data.length != 0) {
-          ins.informacionLaboratorio = response.data;
-          ins.mostrar = true;
-        }
-      });
+
   },
   methods: {
     ingresar(idCalificacion) {

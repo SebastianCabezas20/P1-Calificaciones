@@ -34,57 +34,75 @@ def getIdEstudiante(request, idUsuario = None):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getDataAsignatura(request, codigo = None, idUsuario = None):  
-    ## Evaluaciones con calificaciones
-    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigo, id_evaluacion__id_coordinacion__id_asignatura__componente = "T", id_estudiante__id_usuario__id = idUsuario).all()
-    ##Evaluaciones sin evaluar
-    evaluacionesSinNota = Evaluacion.objects.filter(estado = 'P',id_coordinacion__id_asignatura__codigo = codigo,id_coordinacion__id_asignatura__componente = "T")
-    serializerEvaluaciones = EvaluacionEspecificaSerializer(evaluacionesSinNota, many = 'true')
-    serializer = CalificacionSerializer(calificaciones, many="true")
-    ## Calificaciones con solicitudes segun asignaturas de Lab del estudiante
-    idsCalificacionSolicitudes =  calificaciones.values_list('id',flat=True) ## Obtener ids de las calificaciones existentes
-    idsCalificacionesConSolicitudes = [] # Arreglo a devolver
-    for id in idsCalificacionSolicitudes:
-        solicitud = Solicitud_Revision.objects.filter(id_calificacion = id).values_list('id_calificacion', flat=True) # buscar si existe esa calificacion en alguna solicitud
-        if solicitud:
-            print(solicitud)
-            idsCalificacionesConSolicitudes.append(solicitud[0]) # Si existe se añade
+def getDataAsignatura(request, codigo = None, idUsuario = None):
 
-    ## Respuesta 
-    return Response([serializer.data,serializerEvaluaciones.data, idsCalificacionesConSolicitudes])
+    ## Buscar la coordinacion del curso de teoria con el codigo y id del usuario - verificar que existe seccion del estudiante
+    ids_coordinacion = Coordinacion_Estudiante.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "T", id_estudiante__id_usuario = idUsuario).values_list('id_coordinacion__id',flat=True)
+    if ids_coordinacion.count() != 0:
+
+        ## Evaluaciones con calificaciones
+        calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigo, id_evaluacion__id_coordinacion__id_asignatura__componente = "T", id_estudiante__id_usuario__id = idUsuario).all()
+        serializer = CalificacionSerializer(calificaciones, many="true")
+
+        ## Calificaciones con solicitudes segun asignaturas de Teoria del estudiante
+        idsCalificacionSolicitudes =  calificaciones.values_list('id',flat=True) ## Obtener ids de las calificaciones existentes
+        idsCalificacionesConSolicitudes = [] # Arreglo a devolver
+        for id in idsCalificacionSolicitudes:
+            solicitud = Solicitud_Revision.objects.filter(id_calificacion = id).values_list('id_calificacion', flat=True) # buscar si existe esa calificacion en alguna solicitud
+            if solicitud:
+                idsCalificacionesConSolicitudes.append(solicitud[0]) # Si existe se añade
+
+        ##Evaluaciones sin evaluar
+        #Este pendiente, sea de la asignatura y de una seccion en especifico y de teoria
+        evaluacionesSinNota = Evaluacion.objects.filter(estado = 'P',id_coordinacion__id_asignatura__codigo = codigo,id_coordinacion = ids_coordinacion[0],id_coordinacion__id_asignatura__componente = "T")
+        serializerEvaluaciones = EvaluacionEspecificaSerializer(evaluacionesSinNota, many = 'true')
+
+        ## Informacion correspodiente a los docente de dicho curso
+        informacionDocente = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "T", id_coordinacion = ids_coordinacion[0]).all()
+        serializerInformacionDocente = DocenteCursoSerializer(informacionDocente, many="true")
+
+
+        ## Respuesta si existe coordinacion 
+        return Response([serializer.data,serializerEvaluaciones.data, idsCalificacionesConSolicitudes, serializerInformacionDocente.data])
+    else: ## No existe seccion por lo que no tiene curso de teoria
+        return Response([[],[],[],[]])
+
+    
 
 @api_view(['GET'])
 def getDataAsignaturaLab(request, codigo = None, idUsuario = None):
-    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigo, id_evaluacion__id_coordinacion__id_asignatura__componente = "L", id_estudiante__id_usuario__id = idUsuario).all()
-    serializer = CalificacionSerializer(calificaciones, many="true")
-    ## Evaluaciones sin nota
-    evaluacionesSinNota = Evaluacion.objects.filter(estado = 'P',id_coordinacion__id_asignatura__codigo = codigo,id_coordinacion__id_asignatura__componente = "L")
-    serializerEvaluaciones = EvaluacionEspecificaSerializer(evaluacionesSinNota, many = 'true')
-    ## Calificaciones con solicitudes segun asignaturas de Lab del estudiante
-    idsCalificacionSolicitudes =  calificaciones.values_list('id',flat=True) ## Obtener ids de las calificaciones existentes
-    idsCalificacionesConSolicitudes = []
-    for id in idsCalificacionSolicitudes:
-        solicitud = Solicitud_Revision.objects.filter(id_calificacion = id).values_list('id_calificacion', flat=True) # buscar si existe esa calificacion en alguna solicitud
-        if solicitud:
-            print(solicitud)
-            idsCalificacionesConSolicitudes.append(solicitud[0])# Si existe se añade
+    ## Buscar la coordinacion del curso de teoria con el codigo y id del usuario - verificar que existe seccion del estudiante
+    ids_coordinacion = Coordinacion_Estudiante.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "L", id_estudiante__id_usuario = idUsuario).values_list('id_coordinacion__id',flat=True)
+    if ids_coordinacion.count() != 0:
 
-    # Respuesta        
-    return Response([serializer.data,serializerEvaluaciones.data, idsCalificacionesConSolicitudes])
+        ## Evaluaciones con calificaciones
+        calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigo, id_evaluacion__id_coordinacion__id_asignatura__componente = "L", id_estudiante__id_usuario__id = idUsuario).all()
+        serializer = CalificacionSerializer(calificaciones, many="true")
 
-# Obtener la informacion del curso - asignatura lab
-@api_view(['GET'])
-def getInformacionCursoLab(request, codigo = None):  
-    informacion = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "L").all()
-    serializer = DocenteCursoSerializer(informacion, many="true")
-    return Response(serializer.data)
+        ## Calificaciones con solicitudes segun asignaturas de Teoria del estudiante
+        idsCalificacionSolicitudes =  calificaciones.values_list('id',flat=True) ## Obtener ids de las calificaciones existentes
+        idsCalificacionesConSolicitudes = [] # Arreglo a devolver
+        for id in idsCalificacionSolicitudes:
+            solicitud = Solicitud_Revision.objects.filter(id_calificacion = id).values_list('id_calificacion', flat=True) # buscar si existe esa calificacion en alguna solicitud
+            if solicitud:
+                idsCalificacionesConSolicitudes.append(solicitud[0]) # Si existe se añade
 
-# Obtener la informacion del curso - asignatura Teoria
-@api_view(['GET'])
-def getInformacionCursoTeoria(request, codigo = None):
-    informacion = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "T").all()
-    serializer = DocenteCursoSerializer(informacion, many="true")
-    return Response(serializer.data)
+        ##Evaluaciones sin evaluar
+        #Este pendiente, sea de la asignatura y de una seccion en especifico y de lab
+        evaluacionesSinNota = Evaluacion.objects.filter(estado = 'P',id_coordinacion__id_asignatura__codigo = codigo,id_coordinacion = ids_coordinacion[0],id_coordinacion__id_asignatura__componente = "L")
+        serializerEvaluaciones = EvaluacionEspecificaSerializer(evaluacionesSinNota, many = 'true')
+
+        ## Informacion correspodiente a los docente de dicho curso
+        informacionDocente = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura__codigo = codigo, id_coordinacion__id_asignatura__componente = "L", id_coordinacion = ids_coordinacion[0]).all()
+        serializerInformacionDocente = DocenteCursoSerializer(informacionDocente, many="true")
+
+
+        ## Respuesta si existe coordinacion 
+        return Response([serializer.data,serializerEvaluaciones.data, idsCalificacionesConSolicitudes, serializerInformacionDocente.data])
+    else: ## No existe seccion por lo que no tiene curso de lab
+        return Response([[],[],[],[]])
+
+    
 
 # Informacion para la apelacion de un estudiante
 @api_view(['GET'])
