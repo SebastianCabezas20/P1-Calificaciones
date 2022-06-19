@@ -534,3 +534,7 @@ varias vistas. Ahora solo se deja la tabla. */
 .track.rejected:before {
   background-color: red;
 }
+
+.informacionAdicional p {
+  font-size: small;
+}

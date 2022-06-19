@@ -97,7 +97,7 @@ def getDataSolicitudApelacion(request, idCalificacion = None):
 @api_view(['GET', 'PUT' ,'POST'])
 def dataSolicitud(request, idUsuario = None, idSolicitud = None):
     if request.method == 'GET':
-        solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id_usuario__id = idUsuario).all()
+        solicitudes = Solicitud_Revision.objects.filter(id_estudiante__id_usuario__id = idUsuario).all().order_by('fecha_creacion')
         serializer = SolicitudSerializer(solicitudes, many = "true")
         return Response(serializer.data)
     
