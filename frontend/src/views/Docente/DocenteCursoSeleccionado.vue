@@ -25,6 +25,7 @@
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
+            <th class="row-ButtonIcon"></th>
           </tr>
         </thead>
         <tbody>
@@ -78,6 +79,15 @@
                       false || evaluacion.estado == 'E'
                   "
                   title="Eliminar evaluación"
+                ></button>
+              </div>
+            </td>
+            <td>
+              <div class="text-center">
+                <button
+                  class="fa-solid fa-pencil-can botonTabla"
+                  v-on:click="sendEmail(index)"
+                  title="Prueba mail"
                 ></button>
               </div>
             </td>
@@ -278,6 +288,7 @@
 import Sidebar from "../../components/SidebarDocente.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from "axios";
+import emailjs from 'emailjs-com';
 
 export default {
   components: {
@@ -301,12 +312,19 @@ export default {
       idDocente: 0,
       motivoCambio: "",
       informacionCoordinacion: [],
+      mailDocente: "",
+      nombreDocente: "",
+      mail_mail: "",
+      mail_evaluacion: "",
+      mail_docente: "",
+      mail_fecha: "",
     };
   },
 
   mounted() {
     let identificacionCurso = this.idCurso;
     let identificacionUsuario = this.$store.getters.idUsuario;
+    this.nombreDocente = this.$store.getters.nameUser;
     let that = this;
     axios
       .get(`http://localhost:8000/evaluaciones/${identificacionCurso}`)
@@ -453,6 +471,22 @@ export default {
     modificarCalificacion: function (event, idEvaluacion) {
       this.$router.push({
         path: `/docente/curso/${this.idCurso}/evaluacion/${idEvaluacion}`,
+      });
+    },
+    sendEmail(index) {
+      this.mailDocente = this.$store.getters.email;
+      console.log(this.mailDocente);
+      emailjs.send('pingeso', 'template_evaluacion', {
+        mail_mail: this.mailDocente,
+        mail_evaluacion: this.evaluacionesFull[index].nombre,
+        mail_docente: this.nombreDocente,
+        mail_fecha: this.evaluacionesFull[index].fechaEvActual
+      },
+      'SyuCtsEL7QgxKw2_J')
+      .then(function(response) {
+        console.log('SUCCESS!', response.status, response.text);
+      }, function(error) {
+        console.log('FAILED...', error);
       });
     },
   },

@@ -85,6 +85,10 @@ const store = createStore({
         let idUsuario = state.idUsuario;
       return idUsuario;
     },
+    email(state) {
+      let email = state.email;
+      return email;
+    }
   },
   // Forma de que no se pierdan los estados al refrescar la pág.
   plugins: [createPersistedState()],
