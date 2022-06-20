@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-sm-4">
-          <label for="formFile" class="form-label">Adjuntar planilla</label>
+          <label for="formFile" class="form-label">Adjuntar planilla (formato .xlsx)</label>
           <input
             class="form-control"
             type="file"
@@ -57,8 +57,7 @@
               <th>Apellido</th>
               <th>RUT</th>
               <th>D. Verificador</th>
-              <th>Calificación</th>
-              <th style="width: 10%"></th>
+              <th style="width: 10%">Calificación</th>
               <th class="row-ButtonIcon"></th>
             </tr>
           </thead>
@@ -80,10 +79,6 @@
               <td>
                 {{ calificacion.id_estudiante.dig_verificador }}
               </td>
-              <td v-if="calificacion.nota == null || calificacion.nota == ''">
-                -
-              </td>
-              <td v-else>{{ calificacion.nota }}</td>
 
               <td>
                 <input
@@ -299,47 +294,78 @@ export default {
           });
 
           let contadorCarga = 0;
-          
-          // Carga de datos en la tabla.
-          for (var i = 0; i < that.calificacionesEstudiantes.length; i++) {
-            for (var j = 0; j < data.length; j++) {
-              if (
-                that.calificacionesEstudiantes[i].id_estudiante.rut ==
-                  data[j][0] &&
-                that.calificacionesEstudiantes[i].id_estudiante
-                  .dig_verificador == data[j][1]
-              ) {
-                that.calificacionesEstudiantes[i].nota = data[j][2];
-                contadorCarga++;
-              }
+          let calificacionesErroneas = 0;
+
+          console.log(data.length);
+
+          // Comprobación de errores.
+          for (var i = 0; i < data.length; i++) {
+            // Calificación es mayor que 7 y menor que 1.
+            if (Number(data[i][2]) && (data[i][2] < 1 || data[i][2] > 7)) {
+              calificacionesErroneas++;
+            }
+            // Calificación tiene más de un decimal.
+            else if (
+              Number(data[i][2]) &&
+              data[i][2] % 1 !== 0 &&
+              String(data[i][2]).split(".")[1].length !== 1
+            ) {
+              calificacionesErroneas++;
             }
           }
 
-          // Caso 1: Todas las filas del archivo se cargaron.
-          if (contadorCarga == data.length) {
-            that.$swal.fire({
-              icon: "success",
-              title: "Carga de calificaciones exitosa",
-              text: "La planilla de calificaciones fue cargada satisfactoriamente",
-            });
+          // Caso 1: Archivo no tiene errores en las calificaciones.
+          if (calificacionesErroneas == 0) {
+            // Carga de datos en la tabla.
+            for (var i = 0; i < that.calificacionesEstudiantes.length; i++) {
+              for (var j = 0; j < data.length; j++) {
+                if (
+                  that.calificacionesEstudiantes[i].id_estudiante.rut ==
+                    data[j][0] &&
+                  that.calificacionesEstudiantes[i].id_estudiante
+                    .dig_verificador == data[j][1] &&
+                    Number(data[j][2])
+                ) {
+                  that.calificacionesEstudiantes[i].nota = data[j][2];
+                  contadorCarga++;
+                }
+              }
+            }
+
+            // Caso 1: Todas las filas del archivo se cargaron.
+            if (contadorCarga == data.length && contadorCarga == that.calificacionesEstudiantes.length) {
+              that.$swal.fire({
+                icon: "success",
+                title: "Carga de calificaciones exitosa",
+                text: "La planilla de calificaciones fue cargada satisfactoriamente",
+              });
+            }
+
+            // Caso 2: El archivo adjunto no sigue el formato.
+            else if (contadorCarga == 0) {
+              that.$swal.fire({
+                icon: "error",
+                title: "Carga de calificaciones fallida",
+                text: "La planilla de calificaciones adjunta no corresponde al formato requerido, por lo tanto, no se realizó la carga de calificaciones correctamente.",
+              });
+            }
+
+            // Caso 3: Algunas filas del archivo no se cargaron.
+            else {
+              that.$swal.fire({
+                icon: "info",
+                title: "Subida de calificaciones exitosa con observaciones",
+                text: "La planilla de calificaciones fue cargada satisfactoriamente, sin embargo, algunos estudiantes de la planilla no coincidian con los estudiantes matriculados en la sección actual o viceversa.",
+              });
+            }
           }
 
-          // Caso 2: El archivo adjunto no sigue el formato.
-          else if (contadorCarga == 0) {
-            that.$swal.fire({
-              icon: "error",
-              title: "Carga de calificaciones fallida",
-              text: "La planilla de calificaciones adjunta no corresponde al formato requerido, por lo tanto, no se realizó la carga de calificaciones correctamente.",
-            });
-          }
-          
-          // Caso 3: Algunas filas del archivo no se cargaron.
           else {
             that.$swal.fire({
-              icon: "info",
-              title: "Subida de calificaciones exitosa con observaciones",
-              text: "La planilla de calificaciones fue cargada satisfactoriamente, sin embargo, algunos estudiantes de la planilla no coincidian con los estudiantes matriculados en la sección actual.",
-            });
+                icon: "error",
+                title: "Carga de calificaciones fallida",
+                text: "La planilla de calificaciones adjunta no corresponde al formato requerido, por lo tanto, no se realizó la carga de calificaciones correctamente.",
+              });
           }
         };
         reader.readAsArrayBuffer(this.file);
