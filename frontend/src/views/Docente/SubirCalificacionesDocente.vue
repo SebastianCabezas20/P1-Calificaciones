@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSectionV2">
-        <h3 class="textTitleV2">Calificación de Estudiantes</h3>
+        <h3 class="textTitleV2">Calificación de estudiantes</h3>
       </div>
 
       <!-- Modificar el diseño con el que se muestra la información, por algo mas moderno. -->
@@ -39,7 +39,9 @@
         </div>
 
         <div class="col-sm-4">
-          <label for="formFile" class="form-label">Adjuntar planilla (formato .xlsx)</label>
+          <label for="formFile" class="form-label"
+            >Adjuntar planilla (formato .xlsx)</label
+          >
           <input
             class="form-control"
             type="file"
@@ -49,7 +51,11 @@
         </div>
       </div>
 
-      <form @submit.prevent="submitCalificaciones" action="POST">
+      <form
+        @submit.prevent="submitCalificaciones"
+        action="POST"
+        enctype="multipart/form-data"
+      >
         <table class="tableV2">
           <thead>
             <tr>
@@ -101,57 +107,75 @@
                   ></button>
                 </div>
               </td>
+            </tr>
 
-              <!-- Modal que permite la subida de observaciones privada a una evaluación. -->
-              <transition name="fase" appear>
-                <div
-                  class="modal-overlay"
-                  v-if="showModalObservacionPrivada"
-                  :data="modalData"
-                >
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Observación privada</h5>
+            <!-- Modal que permite la subida de observaciones privada a una evaluación. -->
+            <transition name="fase" appear>
+              <div
+                class="modal-overlay"
+                v-if="showModalObservacionPrivada"
+                :data="modalData"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Observación privada</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        @click="showModalObservacionPrivada = false"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label for="contenidoObservacion"
+                          >Indique una observación privada</label
+                        >
+                        <textarea
+                          name="contenidoObservacionPrivada"
+                          id="contenidoObservacionPrivada"
+                          rows="5"
+                          type="text"
+                          v-model="
+                            calificacionesEstudiantes[modalData].obs_privada
+                          "
+                          class="form-control"
+                          placeholder="Contenido de la observación"
+                        ></textarea>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="formFile" class="form-label"
+                          >Adjuntar archivo</label
+                        >
+                        <input
+                          class="form-control"
+                          type="file"
+                          id="formFile"
+                          @change="subirArchivoPrivado($event, modalData)"
+                        />
+                        <p v-if="calificacionesEstudiantes[modalData].adjunto">
+                          Archivo guardado:
+                          {{
+                            calificacionesEstudiantes[modalData].adjunto.name
+                          }}
+                        </p>
+                      </div>
+
+                      <div class="modal-footer">
                         <button
                           type="button"
-                          class="btn-close"
-                          @click="showModalObservacionPrivada = false"
-                        ></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="mb-3">
-                          <label for="contenidoObservacion"
-                            >Indique una observación privada</label
-                          >
-                          <textarea
-                            name="contenidoObservacionPrivada"
-                            id="contenidoObservacionPrivada"
-                            rows="5"
-                            type="text"
-                            v-model="
-                              calificacionesEstudiantes[modalData].obs_privada
-                            "
-                            class="form-control"
-                            placeholder="Contenido de la observación"
-                          ></textarea>
-                        </div>
-
-                        <div class="modal-footer">
-                          <button
-                            type="button"
-                            class="btn btn-primary"
-                            v-on:click="showModalObservacionPrivada = false"
-                          >
-                            Guardar cambios
-                          </button>
-                        </div>
+                          class="btn btn-primary"
+                          v-on:click="showModalObservacionPrivada = false"
+                        >
+                          Guardar cambios
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </transition>
-            </tr>
+              </div>
+            </transition>
           </tbody>
         </table>
 
@@ -173,58 +197,66 @@
             Subir calificaciones
           </button>
         </div>
-      </form>
 
-      <!-- Modal que permite la subida de observaciones generales a una evaluación. -->
-      <transition name="fase" appear>
-        <div class="modal-overlay" v-if="showModalObservacion">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Observación general</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  @click="showModalObservacion = false"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div class="mb-3">
-                  <label for="contenidoObservacion"
-                    >Indique una observación general</label
-                  >
-                  <textarea
-                    name="contenidoObservacion"
-                    id="contenidoObservacion"
-                    rows="5"
-                    type="text"
-                    v-model="contenidoObservacion"
-                    class="form-control"
-                    placeholder="Contenido de la observación"
-                  ></textarea>
-                </div>
-
-                <!-- Subir un archivo adjunto a una evaluación (Sprint 3). -->
-                <div class="mb-3">
-                  <label for="formFile" class="form-label"
-                    >Adjuntar archivo</label
-                  >
-                  <input class="form-control" type="file" id="formFile" />
-                </div>
-                <div class="modal-footer">
+        <!-- Modal que permite la subida de observaciones generales a una evaluación. -->
+        <transition name="fase" appear>
+          <div class="modal-overlay" v-if="showModalObservacion">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Observación general</h5>
                   <button
                     type="button"
-                    class="btn btn-primary"
-                    v-on:click="showModalObservacion = false"
-                  >
-                    Finalizar
-                  </button>
+                    class="btn-close"
+                    @click="showModalObservacion = false"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="contenidoObservacion"
+                      >Indique una observación general</label
+                    >
+                    <textarea
+                      name="contenidoObservacion"
+                      id="contenidoObservacion"
+                      rows="5"
+                      type="text"
+                      v-model="contenidoObservacion"
+                      class="form-control"
+                      placeholder="Contenido de la observación"
+                    ></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label"
+                      >Adjuntar archivo</label
+                    >
+                    <input
+                      class="form-control"
+                      type="file"
+                      id="formFile"
+                      @change="subirArchivoGeneral($event)"
+                    />
+                    <p v-if="archivoGeneral !== null">
+                      Archivo guardado: {{ archivoGeneral.name }}
+                    </p>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      v-on:click="showModalObservacion = false"
+                    >
+                      Finalizar
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </transition>
+        </transition>
+      </form>
     </div>
   </div>
 </template>
@@ -251,6 +283,7 @@ export default {
       showModalObservacion: false,
       showModalObservacionPrivada: false,
       modalData: null,
+      archivoGeneral: null,
     };
   },
   mounted() {
@@ -324,7 +357,7 @@ export default {
                     data[j][0] &&
                   that.calificacionesEstudiantes[i].id_estudiante
                     .dig_verificador == data[j][1] &&
-                    Number(data[j][2])
+                  Number(data[j][2])
                 ) {
                   that.calificacionesEstudiantes[i].nota = data[j][2];
                   contadorCarga++;
@@ -333,7 +366,10 @@ export default {
             }
 
             // Caso 1: Todas las filas del archivo se cargaron.
-            if (contadorCarga == data.length && contadorCarga == that.calificacionesEstudiantes.length) {
+            if (
+              contadorCarga == data.length &&
+              contadorCarga == that.calificacionesEstudiantes.length
+            ) {
               that.$swal.fire({
                 icon: "success",
                 title: "Carga de calificaciones exitosa",
@@ -358,18 +394,24 @@ export default {
                 text: "La planilla de calificaciones fue cargada satisfactoriamente, sin embargo, algunos estudiantes de la planilla no coincidian con los estudiantes matriculados en la sección actual o viceversa.",
               });
             }
-          }
-
-          else {
+          } else {
             that.$swal.fire({
-                icon: "error",
-                title: "Carga de calificaciones fallida",
-                text: "La planilla de calificaciones adjunta no corresponde al formato requerido, por lo tanto, no se realizó la carga de calificaciones correctamente.",
-              });
+              icon: "error",
+              title: "Carga de calificaciones fallida",
+              text: "La planilla de calificaciones adjunta no corresponde al formato requerido, por lo tanto, no se realizó la carga de calificaciones correctamente.",
+            });
           }
         };
         reader.readAsArrayBuffer(this.file);
       }
+    },
+
+    subirArchivoPrivado(event, index) {
+      this.calificacionesEstudiantes[index].adjunto = event.target.files[0];
+    },
+
+    subirArchivoGeneral(event) {
+      this.archivoGeneral = event.target.files[0];
     },
 
     addObsPrivada(event, index) {
@@ -378,6 +420,14 @@ export default {
     },
 
     submitCalificaciones() {
+      /* Modificación de los encabezados de los request, puesto que se envían
+      archivos. */
+      let axiosConfig = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
       let fechaActual = new Date();
       fechaActual = fechaActual.toISOString().slice(0, 10);
       let nuevaCalificacion;
@@ -389,11 +439,16 @@ export default {
           nota: this.calificacionesEstudiantes[i].nota,
           fecha_entrega: fechaActual,
           obs_privada: this.calificacionesEstudiantes[i].obs_privada,
+          adjunto: this.calificacionesEstudiantes[i].adjunto,
           id_estudiante: this.calificacionesEstudiantes[i].id_estudiante.id,
           id_evaluacion: this.idEvaluacion,
         };
         axios
-          .post("http://localhost:8000/add/calificacion", nuevaCalificacion)
+          .post(
+            "http://localhost:8000/add/calificacion",
+            nuevaCalificacion,
+            axiosConfig
+          )
           .then(function (response) {});
       }
 
@@ -404,7 +459,7 @@ export default {
         ponderacion: this.informacionEvaluacion.ponderacion,
         estado: "E",
         obs_general: this.contenidoObservacion,
-        adjunto: this.informacionEvaluacion.adjunto,
+        adjunto: this.archivoGeneral,
         id_tipoEvaluacion: this.informacionEvaluacion.id_tipoEvaluacion,
         id_docente: this.informacionEvaluacion.id_docente,
         id_coordinacion: this.informacionEvaluacion.id_coordinacion,
@@ -412,7 +467,8 @@ export default {
       axios
         .put(
           `http://localhost:8000/update/evaluacion/${this.idEvaluacion}`,
-          nuevaEvaluacion
+          nuevaEvaluacion,
+          axiosConfig
         )
         .then(function (response) {
           that.$swal

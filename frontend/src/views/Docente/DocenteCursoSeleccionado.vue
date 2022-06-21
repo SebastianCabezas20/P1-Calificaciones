@@ -18,7 +18,7 @@
           <tr>
             <th>Evaluación</th>
             <th>Tipo</th>
-            <th>Fecha de Rendición</th>
+            <th>Fecha de rendición</th>
             <th>Estado</th>
             <th class="row-Ponderacion">Pondera</th>
             <th class="row-ButtonIcon"></th>
@@ -133,7 +133,7 @@
                   v-on:submit.prevent="crearEvaluacion"
                 >
                   <div class="mb-3">
-                    <label class="form-label">Nombre de la evaluación</label>
+                    <label class="form-label">Nombre</label>
                     <input
                       v-model="nombreEvaluacion"
                       class="form-control"
@@ -163,7 +163,7 @@
 
                   <div class="mb-3">
                     <label for="fechaDeEvaluacion"
-                      >Fecha tentativa de evaluación</label
+                      >Fecha de realización</label
                     >
                     <input
                       v-model="fechaEvActual"

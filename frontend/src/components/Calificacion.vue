@@ -1,16 +1,19 @@
 <template>
   <td>{{ calificacion.id_evaluacion.nombre }}</td>
-  <td>
-    <Popper :content="calificacion.obs_privada">
-      <button class="botonObservacion">Privada</button>
-    </Popper>
-    <Popper :content="calificacion.id_evaluacion.obs_general">
-      <button class="botonObservacion">General</button>
-    </Popper>
-  </td>
   <td>{{ calificacion.nota }}</td>
   <td>{{ calificacion.id_evaluacion.ponderacion * 100}}%</td>
+  <td>{{ calificacion.id_evaluacion.fechaEvActual }}</td>
   <td>{{ calificacion.fecha_entrega }}</td>
+
+  <td>
+    <button
+      type="button"
+      class="botonTabla"
+      @click.prevent="informacionCalificacion(calificacion)"
+    >
+      Más información
+    </button>
+  </td>
 
   <td>
     <button
@@ -19,23 +22,27 @@
       @click.prevent="eventoClick(calificacion.id)"
       :disabled="!existeSolicitud(calificacion.id)"
     >
-      Solicitar revisión
+      Apelar
     </button>
   </td>
 </template>
 
 <script>
-import Popper from "vue3-popper";
 export default {
   props: {
     calificacion: Object,
     CalificacionSolicitudes: Array,
   },
-  emits: ["EventBoton"],
+  emits: ["EventBoton", "EventMostrarInformacion"],
   methods: {
     eventoClick(id) {
       this.$emit("EventBoton", id);
     },
+
+    informacionCalificacion(calificacion){
+      this.$emit("EventMostrarInformacion", calificacion);
+    },
+
     existeSolicitud(id) {
       if (this.CalificacionSolicitudes.includes(id)) {
         return false;

@@ -134,6 +134,9 @@ DATE_INPUT_FORMATS = [
     '%Y/%m/%d',
 ]
 
+# MEDIA_ROOT SE NECESITA EN CADA EQUIPO.
+MEDIA_ROOT = "/Users/Usuario/Documents/USACH/P1-Calificaciones/backend/media"
+MEDIA_URL = "media/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/

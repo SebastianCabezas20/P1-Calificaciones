@@ -387,6 +387,7 @@ export default {
           nota: this.calificacionesEstudiantes[i].nota,
           fecha_entrega: fechaActual,
           obs_privada: this.calificacionesEstudiantes[i].obs_privada,
+          adjunto: this.calificacionesEstudiantes[i].adjunto,
           id_estudiante: this.calificacionesEstudiantes[i].id_estudiante.id,
           id_evaluacion: this.idEvaluacion,
         };

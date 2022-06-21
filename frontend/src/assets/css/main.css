@@ -538,3 +538,29 @@ varias vistas. Ahora solo se deja la tabla. */
 .informacionAdicional p {
   font-size: small;
 }
+
+.componentCourse {
+  margin-bottom: 30px;
+}
+
+.stateStudent {
+  background-color: #eeeeee;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.botonDescarga {
+  background-color: #004883;
+  border: none;
+  color: white;
+  padding: 12px 15px;
+  cursor: pointer;
+  font-size: 15px;
+  display: block;
+}
+
+/* Darker background on mouse-over */
+.botonDescarga:hover {
+  background-color: RoyalBlue;
+}

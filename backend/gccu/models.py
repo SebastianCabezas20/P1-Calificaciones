@@ -165,7 +165,7 @@ class Evaluacion(models.Model):
     ponderacion = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
     estado = models.CharField(max_length = 1, choices = ESTADOS_EVALUACION_CHOICES, blank = False)
     obs_general = models.TextField(blank = True, default = '')
-    adjunto = models.FileField(blank = True, null = True)
+    adjunto = models.FileField(upload_to='observaciones/evaluacion/', blank = True, null = True)
     id_tipoEvaluacion = models.ForeignKey(Tipo_Evaluacion, null = True, on_delete = models.CASCADE)
     id_docente = models.ForeignKey(Docente, null = False, on_delete = models.CASCADE)
     id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = True, on_delete = models.CASCADE)
@@ -187,11 +187,11 @@ class Cambio_Fecha(models.Model):
     fecha_cambio = models.DateField(null = True)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
 
-
 class Calificacion(models.Model):
     nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = True, blank = True)
     fecha_entrega = models.DateField(null = True, blank = True)
     obs_privada = models.TextField(blank = True, default = '')
+    adjunto = models.FileField(upload_to='observaciones/estudiantes/', blank = True, null = True)
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
 

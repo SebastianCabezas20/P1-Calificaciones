@@ -213,6 +213,7 @@ export default {
             nota: this.notaActual,
             fecha_entrega: this.apelacion[0].id_calificacion.fecha_entrega,
             obs_privada: this.apelacion[0].id_calificacion.obs_privada,
+            adjunto: this.apelacion[0].id_calificacion.adjunto,
             id_estudiante: this.apelacion[0].id_calificacion.id_estudiante,
             id_evaluacion: this.apelacion[0].id_calificacion.id_evaluacion,
           };
@@ -292,6 +293,7 @@ export default {
               nota: this.notaActual,
               fecha_entrega: this.notaJson[0].fecha_entrega,
               obs_privada: this.notaJson[0].obs_privada,
+              adjunto: this.notaJson[0].adjunto,
               id_estudiante: this.notaJson[0].id_estudiante,
               id_evaluacion: this.notaJson[0].id_evaluacion,
             };
