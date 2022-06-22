@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from .models import *
 from .serializers import *
 from django.contrib.auth.models import User, Group
+from datetime import date
 
 @api_view(['GET'])
 def getDocente(request, idUsuario = None):
@@ -465,3 +466,33 @@ def getEntregaPendienteEvaluacion(request, idDocente = None):
     evPendientes = Evaluacion.objects.filter(id_docente__id = idDocente, estado = 'P').order_by('fechaEntrega').all()
     serializer = EvaluacionSerializer(evPendientes, many = "true")
     return Response(serializer.data)
+
+#Visualizar para autoridad asignaturas atrasadas y cantidad de atrasos
+@api_view(['GET'])
+def getAsignaturasAtrasadas(request):
+    listaAsignaturas = Asignatura.objects.all()
+    fechaActual = date.today()
+    listaAsignaturasAtrasadas = []
+    numeroAtrasosAsignaturas = []
+
+
+    for asignatura in listaAsignaturas:
+        listaEvaluacionesAsignatura = Evaluacion.objects.filter(id_coordinacion__id_asignatura__nombre = asignatura.nombre, id_coordinacion__id_asignatura__codigo = asignatura.codigo, id_coordinacion__id_asignatura__componente = asignatura.componente)
+        atrasos = 0
+
+        #por cada evaluacion de una asignatura
+        for evaluacionAsignatura in listaEvaluacionesAsignatura:
+            
+            #Si la evaluacion esta pendiente de entrega y supera la fecha de entrega que debiese
+            if evaluacionAsignatura.estado == 'P' and evaluacionAsignatura.fechaEntrega < fechaActual:
+                #se suma 1 evaluacion atrasada
+                atrasos += 1
+                continue
+        if atrasos > 0:
+            listaAsignaturasAtrasadas.append(asignatura)
+            numeroAtrasosAsignaturas.append(atrasos)
+            continue
+    
+    serializerAsignaturas = AsignaturaSerializer(listaAsignaturasAtrasadas, many = "true")
+
+    return Response([serializerAsignaturas.data,numeroAtrasosAsignaturas])

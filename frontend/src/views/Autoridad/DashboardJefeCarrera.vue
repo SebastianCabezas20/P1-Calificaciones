@@ -10,29 +10,23 @@
   <div class="contentViews">
     <div class="centralContent">
     <div class="row" style="background-color: #ffffff">
-        <div class="col-md rectanguloDashboard">
-          <h2>Cambios de Fechas</h2>
+        <div class="col-md--fluid rectanguloDashboard">
+          <h2>Asignaturas con atrasos en evaluaciones</h2>
           <table class="tableDashboard">
             <thead>
               <tr>
-              <th>Nombre Evaluación</th>
+              <th>Código</th>
               <th>Nombre Asignatura</th>
-              <th>Docente</th>
-              <th>Fecha del cambio</th>
-              <th>Fecha Anterior</th>
-              <th>Fecha Nueva</th>
-              <th>Motivo</th>
+              <th>Componente</th>
+              <th>Cantidad de Atrasos</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="cambio_fecha in cambio_fechas" :key="cambio_fecha.id">
-              <td class="text-center">{{cambio_fecha.id_evaluacion.nombre}}</td>
-              <td class="text-center">{{cambio_fecha.id_evaluacion.id_coordinacion.id_asignatura.nombre}}</td>
-              <td class="text-center">{{cambio_fecha.id_evaluacion.id_docente.id_usuario.first_name}} {{cambio_fecha.id_evaluacion.id_docente.id_usuario.last_name}}</td>
-              <td class="text-center">{{cambio_fecha.fecha_cambio}}</td>
-              <td class="text-center">{{cambio_fecha.fechaAnterior}}</td>
-              <td class="text-center">{{cambio_fecha.fechaNueva}}</td>
-              <td class="text-center">{{cambio_fecha.motivo}}</td>
+              <tr v-for="(asignatura_atrasada, indice) in asignaturas_atrasadas" :key="asignatura_atrasada.id">
+              <td class="text-center">{{asignatura_atrasada.codigo}}</td>
+              <td class="text-center">{{asignatura_atrasada.nombre}}</td>
+              <td class="text-center">{{asignatura_atrasada.componente}}</td>
+              <td class="text-center">{{numero_Atrasos[indice]}}</td>
               </tr>
             </tbody>
           </table>
@@ -71,20 +65,21 @@ export default {
   },
   data(){
       return{
-          cambio_fechas: [],
+          asignaturas_atrasadas: [],
+          numero_Atrasos: [],
       }
   },
-  created() {
-    // Forma de capturar el id del Jefe de Carrera, dado el id del usuario que inició sesión.
+  created() {},
+  mounted() {
     let ins = this;
     axios
-    .get(`http://localhost:8000/get/cambiosFecha`)
+    .get(`http://localhost:8000/get/asignaturasAtrasadas`)
     .then(function (response) {
       console.log(response.data);
-      ins.cambio_fechas = response.data;
+      ins.asignaturas_atrasadas = response.data[0];
+      ins.numero_Atrasos = response.data[1];
     });
-  },
-  mounted() {
+
     const ctx = document.getElementById('graficoBarras').getContext('2d');
     const graficoBarras = new Chart(ctx, {
     type: 'bar',
