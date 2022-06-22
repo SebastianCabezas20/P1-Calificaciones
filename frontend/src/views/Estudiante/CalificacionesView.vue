@@ -24,6 +24,10 @@
             {{ informacionTeoria[0].id_coordinacion.id_asignatura.nombre }}
           </p>
           <p class="informationCalification">
+            Código:
+            {{ informacionTeoria[0].id_coordinacion.id_asignatura.codigo + "-" + informacionTeoria[0].id_coordinacion.coordinacion + "-" + informacionTeoria[0].id_coordinacion.seccion}}
+          </p>
+          <p class="informationCalification">
             Nivel:
             {{ informacionTeoria[0].id_coordinacion.id_asignatura.nivel }}
           </p>
@@ -36,12 +40,12 @@
             :key="info.id"
           >
             <label v-if="id == 0" class="informationCalification"
-              >Docente: {{ info.id_docente.id_usuario.first_name }}
+              >Docente(s): {{ info.id_docente.id_usuario.first_name }}
               {{ info.id_docente.id_usuario.last_name }}</label
             >
             <label
               v-else
-              style="margin-left: 79px"
+              style="margin-left: 102px"
               class="informationCalification"
               >{{ info.id_docente.id_usuario.first_name }}
               {{ info.id_docente.id_usuario.last_name }}</label
@@ -197,6 +201,10 @@
               }}
             </p>
             <p class="informationCalification">
+            Código:
+            {{ informacionLaboratorio[0].id_coordinacion.id_asignatura.codigo + "-" + informacionLaboratorio[0].id_coordinacion.coordinacion + "-" + informacionLaboratorio[0].id_coordinacion.seccion}}
+          </p>
+            <p class="informationCalification">
               Nivel:
               {{
                 informacionLaboratorio[0].id_coordinacion.id_asignatura.nivel
@@ -210,12 +218,12 @@
               :key="info.id"
             >
               <label v-if="id == 0" class="informationCalification"
-                >Docente: {{ info.id_docente.id_usuario.first_name }}
+                >Docente(s): {{ info.id_docente.id_usuario.first_name }}
                 {{ info.id_docente.id_usuario.last_name }}</label
               >
               <label
                 v-else
-                style="margin-left: 79px"
+                style="margin-left: 102px"
                 class="informationCalification"
                 >{{ info.id_docente.id_usuario.first_name }}
                 {{ info.id_docente.id_usuario.last_name }}</label
@@ -333,6 +341,7 @@ export default {
         ins.idsCalificacionesSolicitudesTeoria = response.data[2];
         ins.informacionTeoria = response.data[3]
         ins.mostrarInformacionTeoria = true
+        console.log(response.data[3])
       });
 
     axios
@@ -345,6 +354,7 @@ export default {
           ins.evaluacionesSinNotaLaboratorio = response.data[1];
           ins.idsCalificacionesSolicitudesLab = response.data[2];
           ins.informacionLaboratorio = response.data[3]
+          console.log(response.data[3])
           ins.mostrar = true;
         }
       });

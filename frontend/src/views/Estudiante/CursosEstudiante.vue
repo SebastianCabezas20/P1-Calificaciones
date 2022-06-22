@@ -27,9 +27,7 @@
           <template v-for="asignatura in asignaturas" :key="asignatura.id">
             <tr>
               <td>
-                {{ asignatura.id_coordinacion.id_asignatura.codigo }}-{{
-                  asignatura.id_coordinacion.coordinacion
-                }}-{{ asignatura.id_coordinacion.seccion }}
+                {{ asignatura.id_coordinacion.id_asignatura.codigo }}
               </td>
               <td>{{ asignatura.id_coordinacion.id_asignatura.nombre }}</td>
               <td>{{ asignatura.id_coordinacion.bloques_horario }}</td>

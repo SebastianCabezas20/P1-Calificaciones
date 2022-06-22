@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import CalificacionesView from "../views/Estudiante/CalificacionesView.vue";
 import LoginView from "../views/General/LoginView.vue";
-import LogoutView from "../views/LogoutView.vue";
 import HomeView from "../views/Otros/HomeView.vue";
 import ApelacionesAutoView from "../views/Autoridad/ApelacionesAutoView.vue";
 import RespuestaApelacionView from "../views/Docente/RespuestaApelacionView.vue";
@@ -52,12 +51,6 @@ const router = createRouter({
       name: "login",
       component: LoginView,
     },
-    {
-      path: "/logout",
-      name: "logout",
-      component: LogoutView,
-    },
-
     // Vistas de Estudiantes
     {
       path: "/estudiante/home",

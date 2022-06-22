@@ -6,7 +6,7 @@
       <div id="formDeLogin">
         <div id="cabeceraLogin">
           <img
-            src="../../assets/Logo_usach.png"
+            src="../../assets/Logo_Usach.png"
             id="logoLogin"
             alt="Logo Usach"
           />

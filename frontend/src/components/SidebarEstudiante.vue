@@ -15,15 +15,9 @@
           </a>
         </li>
         <li>
-          <a href="#">
-            <span class="icon"><i class="fa-solid fa-user"></i></span>
-            <span>Mi Cuenta</span>
-          </a>
-        </li>
-        <li>
           <a href="/estudiante/cursos">
             <span class="icon"><i class="fa-solid fa-book"></i></span>
-            <span>Mis Cursos</span>
+            <span>Mis cursos</span>
           </a>
         </li>
         <li>
@@ -39,7 +33,7 @@
             <span class="icon"
               ><i class="fa-solid fa-arrow-right-from-bracket"></i
             ></span>
-            <span>Cerrar Sesión</span>
+            <span>Cerrar sesión</span>
           </a>
         </li>
       </ul>

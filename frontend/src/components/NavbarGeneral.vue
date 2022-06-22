@@ -1,7 +1,7 @@
 <template>
   <div id="navbar">
     <div>
-      <p class="textNavbar">Gestión y Control de Calificaciones USACH</p>
+      <p class="textNavbar">Gestión y Control de Calificaciones</p>
     </div>
     <div>
       <p class="textNavbar">{{ nombreUsuario }}</p>
