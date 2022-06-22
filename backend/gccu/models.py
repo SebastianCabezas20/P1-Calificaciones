@@ -188,7 +188,7 @@ class Cambio_Fecha(models.Model):
     id_evaluacion = models.ForeignKey(Evaluacion, null = False, on_delete = models.CASCADE)
 
 class Calificacion(models.Model):
-    nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = True, blank = True)
+    nota = models.DecimalField(max_digits = 2, decimal_places = 1, null = True, blank = True)
     fecha_entrega = models.DateField(null = True, blank = True)
     obs_privada = models.TextField(blank = True, default = '')
     adjunto = models.FileField(upload_to='observaciones/estudiantes/', blank = True, null = True)

@@ -94,7 +94,6 @@
                   max="7"
                   step="0.1"
                   placeholder="Calificación"
-                  required
                   v-model="calificacionesEstudiantes[index].nota"
                 />
               </td>
@@ -329,8 +328,6 @@ export default {
           let contadorCarga = 0;
           let calificacionesErroneas = 0;
 
-          console.log(data.length);
-
           // Comprobación de errores.
           for (var i = 0; i < data.length; i++) {
             // Calificación es mayor que 7 y menor que 1.
@@ -427,6 +424,23 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
+
+      /* Docente no ingresa la nota de un estudiante. En este caso se le obliga
+      al docente a ingresar una observación privada para indicar el motivo. 
+      Para esto se verifican las calificaciones no ingresadas y se comprueba si
+      tales estudiantes no recibieron una observación privada.*/
+      for(var i = 0; i < this.calificacionesEstudiantes.length; i++) {
+        if (this.calificacionesEstudiantes[i].nota === '' || this.calificacionesEstudiantes[i].nota === undefined) {
+          if (this.calificacionesEstudiantes[i].obs_privada === '' || this.calificacionesEstudiantes[i].obs_privada === undefined) {
+            this.$swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: `El(la) estudiante ${this.calificacionesEstudiantes[i].id_estudiante.id_usuario.first_name + " " + this.calificacionesEstudiantes[i].id_estudiante.id_usuario.last_name} no recibió una calificación, por lo tanto, se solicita que le proporcione una observación privada para que conozca el motivo.`
+            })
+            return;
+          }
+        }
+      }
 
       let fechaActual = new Date();
       fechaActual = fechaActual.toISOString().slice(0, 10);

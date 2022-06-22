@@ -205,7 +205,7 @@ def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None
 
     # Funcionando.
     if request.method == 'GET':
-        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all()
+        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all().order_by('fechaEvActual')
         serializer = EvaluacionSerializer(evaluacionCoordinacion, many = "true")
         return Response(serializer.data)
     

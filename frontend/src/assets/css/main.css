@@ -239,7 +239,7 @@
   height: 40px;
 }
 
-.submitButton:disabled {
+.submitButton:disabled, .buttonSecondary:disabled {
   opacity: 0.5;
   cursor: default;
 }
@@ -262,7 +262,7 @@
   opacity: 0.9;
 }
 
-.buttonSecondary:hover {
+.buttonSecondary:hover:enabled {
   transition: all 0.1s ease-in-out;
   background: #f3f3f3;
 }
