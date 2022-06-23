@@ -12,31 +12,31 @@
 
       <div class="container">
         <div class="row">
-          <h1>Información dashboard</h1>
+          <h1>Inicio</h1>
         </div>
 
         <div class="row">
           <div class="col">
-            Cursos Totales: {{nCursos}}
+            Cursos Totales: {{Number(nCursos)}}
           </div>
           <div class="col">
-            Evaluaciones Pendientes: {{nEvaluacionesP}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            Solicitudes totales: {{nSolicitudesT}}
-          </div>
-          <div class="col">
-            Solicitudes Pendientes: {{nSolicitudesP}}
+            Evaluaciones Pendientes: {{Number(nEvaluacionesP)}}
           </div>
         </div>
         <div class="row">
           <div class="col">
-            Aprobadas: {{nSolicitudesA}}
+            Solicitudes totales: {{Number(nSolicitudesT)}}
           </div>
           <div class="col">
-            Rechazadas: {{nSolicitudesR}}
+            Solicitudes Pendientes: {{Number(nSolicitudesP)}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            Aprobadas: {{Number(nSolicitudesA)}}
+          </div>
+          <div class="col">
+            Rechazadas: {{Number(nSolicitudesR)}}
           </div>
         </div>
       </div>
@@ -112,6 +112,7 @@ export default {
   data() {
     return {
       cambio_notas:[],
+      info: [],
       nCursos: [],
       nEvaluacionesP: [],
       nSolicitudesT: [],
