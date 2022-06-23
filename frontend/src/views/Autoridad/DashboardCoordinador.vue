@@ -17,26 +17,26 @@
 
         <div class="row">
           <div class="col">
-            Cursos Totales:
+            Cursos Totales: {{nCursos}}
           </div>
           <div class="col">
-            Evaluaciones Pendientes:
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            Solicitudes totales:
-          </div>
-          <div class="col">
-            Solicitudes Pendientes:
+            Evaluaciones Pendientes: {{nEvaluacionesP}}
           </div>
         </div>
         <div class="row">
           <div class="col">
-            Aprobadas:
+            Solicitudes totales: {{nSolicitudesT}}
           </div>
           <div class="col">
-            Rechazadas:
+            Solicitudes Pendientes: {{nSolicitudesP}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            Aprobadas: {{nSolicitudesA}}
+          </div>
+          <div class="col">
+            Rechazadas: {{nSolicitudesR}}
           </div>
         </div>
       </div>
@@ -112,9 +112,17 @@ export default {
   data() {
     return {
       cambio_notas:[],
+      nCursos: [],
+      nEvaluacionesP: [],
+      nSolicitudesT: [],
+      nSolicitudesP: [],
+      nSolicitudesA: [],
+      nSolicitudesR: [],
     }
   },
-  created() {},
+  created() {
+    
+  },
   mounted() {
 
     let ins = this;
@@ -125,6 +133,19 @@ export default {
         console.log(response.data);
         ins.cambio_notas = response.data;
       });
+
+  axios
+    .get(`http://localhost:8000/get/infodashboardcoordinador/${identificacionUsuario}`)
+    .then(function (response) {
+      console.log(response.data);
+      ins.nCursos = response.data[0];
+      ins.nEvaluacionesP = response.data[1];
+      ins.nSolicitudesT = response.data[2];
+      ins.nSolicitudesP = response.data[3];
+      ins.nSolicitudesA = response.data[4];
+      ins.nSolicitudesR = response.data[5];
+    });
+    
 
 
     const ctx = document.getElementById('graficoBarras').getContext('2d');

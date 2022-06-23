@@ -508,3 +508,14 @@ def getAllEvaluaciones(request):
     evaluaciones = Evaluacion.objects.all()
     serializer = EvaluacionDocenteSerializer(evaluaciones, many="true")
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getInfoDashboardCoordinador(request, idCoordinador = None):
+    numeroAsignaturas = Asignatura.objects.filter(id_coordinador = idCoordinador).count()
+    evaluacionesPendientes = Evaluacion.objects.filter(estado = 'P', id_coordinacion__id_asignatura__id_coordinador = idCoordinador, id_coordinacion__isActive = True).count()
+    solicitudesActuales = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador = idCoordinador, id_evaluacion__id_coordinacion__isActive = True).count()
+    solicitudesPendientes = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador = idCoordinador, id_evaluacion__id_coordinacion__isActive = True, estado = 'Pendiente').count()
+    solicitudesAprobadas = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador = idCoordinador, id_evaluacion__id_coordinacion__isActive = True, estado = 'Aprobado').count()
+    solicitudesRechazadas = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador = idCoordinador, id_evaluacion__id_coordinacion__isActive = True, estado = 'Rechazado').count()
+
+    return Response([numeroAsignaturas, evaluacionesPendientes, solicitudesActuales, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas])

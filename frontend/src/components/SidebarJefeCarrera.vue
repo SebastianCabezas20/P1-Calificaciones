@@ -41,6 +41,14 @@
           </a>
         </li>
         <li>
+          <a href="/jefe/asignaturasAtrasos">
+            <span class="icon"
+              ><i class="fa-solid fa-file-circle-question"></i
+            ></span>
+            <span>Atrasos</span>
+          </a>
+        </li>
+        <li>
           <a href="#" v-on:click="cerrarSesion()">
             <span class="icon"
               ><i class="fa-solid fa-arrow-right-from-bracket"></i

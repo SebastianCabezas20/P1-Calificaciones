@@ -36,6 +36,7 @@ import CambiosFechaJefeVue from "../views/Autoridad/CambiosFechaJefe.vue";
 import CoordinadorSeccionCambioNotasVue from "../views/Autoridad/CoordinadorSeccionCambioNotas.vue";
 import CambioNotasCoordinador from "../views/Autoridad/CambioNotasCoordinador.vue";
 import SubirCalificacionesCoordinador from "../views/Autoridad/SubirCalificacionesCoordinador.vue";
+import atrasosJefeVue from "../views/Autoridad/atrasosJefeCarrera.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -236,6 +237,12 @@ const router = createRouter({
       path: "/jefe/asignaturas/cambios/fecha/:idAsignatura",
       name: "cambiosFechaJefeCarrera",
       component: CambiosFechaJefeVue,
+      props: true,
+    },
+    { // Mostrar los Atrasos en entrega segun asignatura de jefe de carrera
+      path: "/jefe/asignaturasAtrasos",
+      name: "atrasosJefeCarrera",
+      component: atrasosJefeVue,
       props: true,
     },
     {
