@@ -59,7 +59,7 @@
             <td>
               <div class="text-center">
                 <button
-                  @click="(showModalFecha = true), (modalIndex = index)"
+                  @click="abrirCambioFecha(index)"
                   class="fa-solid fa-calendar botonTabla"
                   :disabled="
                     evaluacion.id_coordinacion.id_asignatura.isAutogestionada ==
@@ -110,7 +110,7 @@
         </button>
       </template>
 
-      <!-- Modal -->
+      <!-- Modal para crear una evaluación -->
       <transition name="fase" appear>
         <div class="modal-overlay" v-if="showModal">
           <div class="modal-dialog">
@@ -289,6 +289,7 @@ import Sidebar from "../../components/SidebarDocente.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from "axios";
 import emailjs from 'emailjs-com';
+import moment from 'moment';
 
 export default {
   components: {
@@ -358,6 +359,11 @@ export default {
   },
 
   methods: {
+    abrirCambioFecha(index) {
+      this.modalIndex = index;
+      this.showModalFecha = true;
+    },
+
     deleteEvaluacion: function (event, index) {
       let idEvaluacionEliminar = this.evaluacionesCurso[index].id;
       axios
@@ -369,6 +375,7 @@ export default {
           location.reload();
         });
     },
+
     crearEvaluacion: function (event) {
       // Se transforma el porcentaje 40% -> 0.4
       let porcentajeEvaluacionIngresado = this.porcentajeEvaluacion / 100;
@@ -389,8 +396,16 @@ export default {
           text: "El porcentaje ingresado sobrepasa el 100% total permitido",
         });
       }
+      // Caso 2: La fecha ingresada es igual o menor a la fecha actual.
+      else if (moment().startOf('day') >= moment(this.fechaEvActual)){
+        this.$swal.fire({
+          icon: "error",
+          title: "Fecha de evaluación no permitida.",
+          text: "La fecha de realización de la evaluación debe ser mayor a la fecha actual",
+        });
+      }
 
-      // Caso 2: No se sobrepasa.
+      // Caso 3: Es posible agregar la evaluación.
       else {
         let fecha = new Date(this.fechaEvActual);
         let fechaEntrega = new Date();
@@ -417,6 +432,7 @@ export default {
           });
       }
     },
+
     modificarFecha: function (event, index) {
       // Calcúlo de la nueva fecha de entrega.
       let fecha = new Date(this.fechaEvaluacion);
@@ -428,7 +444,28 @@ export default {
       let idFechaModificar = this.evaluacionesFull[index].id;
       let fechaOriginal = this.evaluacionesFull[index].fechaEvActual;
 
-      let nuevaEvaluacion = {
+      /* Caso 1: La nueva fecha ingresada es igual o menor a la fecha actual. */
+      if (moment().startOf('day') >= moment(this.fechaEvaluacion)){
+        this.$swal.fire({
+          icon: "error",
+          title: "Fecha de evaluación no permitida.",
+          text: "La nueva fecha de realización de la evaluación debe ser mayor a la fecha actual",
+        });
+      }
+
+      /* Caso 2: La nueva fecha de evaluación es manor o igual a la fecha 
+      original de evaluación. (Se preguntará a los clientes si esto es un error o no.)*/
+      else if (moment(fechaOriginal) >= moment(this.fechaEvaluacion)) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Fecha de evaluación no permitida.",
+          text: "La nueva fecha de realización de la evaluación debe ser mayor a la fecha original de realización",
+        });
+      }
+
+      /* Todo correcto. */
+      else {
+        let nuevaEvaluacion = {
         nombre: this.evaluacionesFull[index].nombre,
         fechaEvActual: this.fechaEvaluacion,
         fechaEntrega: fechaEntrega,
@@ -455,24 +492,27 @@ export default {
           nuevaEvaluacion
         )
         .then(function (response) {
-          console.log("ok");
         });
       axios
         .post("http://localhost:8000/add/cambioFecha", cambioFecha)
         .then(function (response) {
           location.reload();
         });
+      }
     },
+
     calificarEvaluacion: function (event, idEvaluacion) {
       this.$router.push({
         path: `/docente/curso/${this.idCurso}/add/calificacion/${idEvaluacion}`,
       });
     },
+
     modificarCalificacion: function (event, idEvaluacion) {
       this.$router.push({
         path: `/docente/curso/${this.idCurso}/evaluacion/${idEvaluacion}`,
       });
     },
+    
     sendEmail(index) {
       this.mailDocente = this.$store.getters.email;
       console.log(this.mailDocente);

@@ -297,7 +297,7 @@ def getSolicitudesAsignaturaJefeCarrera(request, idAsignatura = None):
     
 @api_view(['GET'])
 def getAllEvaluaciones(request, idCoordinacion = None):
-    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all()
+    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all().order_by('fechaEvActual')
     serializer = EvaluacionEspecificaSerializer(evaluacionCoordinacion, many = "true")
     return Response(serializer.data)
 
@@ -503,11 +503,12 @@ def getAsignaturasAtrasadas(request):
 
     return Response([serializerAsignaturas.data,numeroAtrasosAsignaturas])
 
-@api_view(['GET'])
+""" @api_view(['GET'])
 def getAllEvaluaciones(request):
     evaluaciones = Evaluacion.objects.all()
     serializer = EvaluacionDocenteSerializer(evaluaciones, many="true")
     return Response(serializer.data)
+"""
 
 @api_view(['GET'])
 def getInfoDashboardCoordinador(request, idUsuario = None):
