@@ -67,9 +67,10 @@
               <th style="width: 10%">Calificación</th>
               <th style="width: 10%">Pondera</th>
               <th style="width: 20%">Fecha de realización</th>
-              <th style="width: 20%">Fecha de entrega</th>
+              <th style="width: 20%">Fecha de calificación</th>
               <th style="width: 10%"></th>
-              <th style="width: 10%"></th>
+              <th style="width: 7%"></th>
+              <th style="width: 3%"></th>
             </tr>
           </thead>
           <tbody>
@@ -106,7 +107,7 @@
                       
                       <!-- Observación General -->
                       <div>
-                        <p>Observación general: {{modalData.id_evaluacion.obs_general}}</p>
+                        <p> <b>Observación general:</b> {{modalData.id_evaluacion.obs_general}}</p>
                         
                         <template v-if="modalData.id_evaluacion.adjunto !== null && modalData.id_evaluacion.adjunto !== ''">
                           <label for="obsGeneral">Archivo adjunto: {{modalData.id_evaluacion.adjunto.slice(32)}}</label>
@@ -125,7 +126,7 @@
                       
                       <!-- Observación Privada -->
                       <div class="mb-3">
-                        <p>Observación privada: {{modalData.obs_privada}}</p>
+                        <p><b>Observación privada:</b> {{modalData.obs_privada}}</p>
                         
                         <template v-if="modalData.adjunto !== null && modalData.adjunto !== ''">
                           <label for="obsPrivada">Archivo adjunto: {{modalData.adjunto.slice(33)}}</label>
@@ -243,9 +244,10 @@
                 <th style="width: 10%">Calificación</th>
                 <th style="width: 10%">Pondera</th>
                 <th style="width: 20%">Fecha de realización</th>
-                <th style="width: 20%">Fecha de entrega</th>
+                <th style="width: 20%">Fecha de calificación</th>
                 <th style="width: 10%"></th>
-                <th style="width: 10%"></th>
+                <th style="width: 7%"></th>
+                <th style="width: 3%"></th>
               </tr>
             </thead>
             <tbody>
@@ -341,7 +343,6 @@ export default {
         ins.idsCalificacionesSolicitudesTeoria = response.data[2];
         ins.informacionTeoria = response.data[3]
         ins.mostrarInformacionTeoria = true
-        console.log(response.data[3])
       });
 
     axios
@@ -354,7 +355,6 @@ export default {
           ins.evaluacionesSinNotaLaboratorio = response.data[1];
           ins.idsCalificacionesSolicitudesLab = response.data[2];
           ins.informacionLaboratorio = response.data[3]
-          console.log(response.data[3])
           ins.mostrar = true;
         }
       });

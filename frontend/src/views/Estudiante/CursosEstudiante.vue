@@ -10,7 +10,7 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSectionV2">
-        <h1 class="textTitleV2">Mis Cursos Inscritos</h1>
+        <h1 class="textTitleV2">Cursos inscritos</h1>
       </div>
 
       <table class="tableV2">
@@ -33,6 +33,12 @@
               <td>{{ asignatura.id_coordinacion.bloques_horario }}</td>
               <td>{{ asignatura.id_coordinacion.id_asignatura.nivel }}</td>
               <td>
+                <span 
+                  class="p-3"
+                  title="Calificaciones ingresadas los últimos tres días."
+                >
+                {{novedadesCurso(asignatura)}}
+                </span>
                 <button
                   type="button"
                   class="botonTabla"
@@ -57,6 +63,7 @@ import Navbar from "../../components/NavbarGeneral.vue";
 import Asignatura from "../../components/Asignatura.vue";
 import axios from "axios";
 import router from "../../router";
+import moment from 'moment';
 
 export default {
   components: {
@@ -67,21 +74,44 @@ export default {
   data() {
     return {
       asignaturas: [],
+      calificacionesEstudiante: [],
     };
   },
   mounted() {
     let identificacionUsuario = this.$store.getters.idUsuario;
-    console.log(identificacionUsuario);
     let ins = this;
     axios
       .get(`http://localhost:8000/cursosEstudiante/${identificacionUsuario}`)
       .then(function (response) {
         ins.asignaturas = response.data;
       });
+
+    axios
+      .get(`http://localhost:8000/get/calificaciones/estudiante/${identificacionUsuario}`)
+      .then(function (response) {
+        ins.calificacionesEstudiante = response.data;
+      });
   },
   methods: {
     ingresar(codigo) {
       router.push(`/estudiante/calificaciones/${codigo}`);
+    },
+
+    /* Se cuentan las calificaciones calificadas en los últimos tres días,
+    con el fin de indicarlas en la vista.  */
+    novedadesCurso(asignatura) {
+      let idCurso = asignatura.id_coordinacion.id_asignatura.id;
+      let fechaActual = moment().startOf('day');
+      let calificacionesNuevas = 0;
+      
+      for(var i = 0; i < this.calificacionesEstudiante.length; i++){
+        if(this.calificacionesEstudiante[i].id_evaluacion.id_coordinacion.id_asignatura.id == idCurso){
+          if(moment.duration(fechaActual.diff(this.calificacionesEstudiante[i].fecha_entrega)).asDays() <= 3){
+            calificacionesNuevas++;
+          }
+        }
+      }
+      return calificacionesNuevas;
     },
   },
 };

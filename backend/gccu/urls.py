@@ -32,6 +32,7 @@ urlpatterns = [
     path('solicitudes/<int:idUsuario>', views.dataSolicitud),
     path('calificacionesTeoria/<int:codigo>/<int:idUsuario>',views.getDataAsignatura),
     path('calificacionesLaboratorio/<int:codigo>/<int:idUsuario>',views.getDataAsignaturaLab),
+    path('get/calificaciones/estudiante/<int:idUsuario>', views.getCalificacionesEstudiante),
     path('cursosEstudiante/<int:idUsuario>', views.getCursosByEstudiante),              # Funcionando.
     path('cursosDocente/<int:idUsuario>', views.getCursosByDocente),                    # Funcionando.
     path('estudiantes', views.getEstudiante), ### SIRVE?

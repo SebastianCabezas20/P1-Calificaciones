@@ -16,18 +16,59 @@
   </td>
 
   <td>
+    <!-- Caso 1: El estudiante ya realizo la apelación de esa calificación,
+    o bien, pasaron los 5 días disponibles para solicitar la apelación. -->
     <button
       type="button"
       class="botonTabla"
       @click.prevent="eventoClick(calificacion.id)"
-      :disabled="!existeSolicitud(calificacion.id)"
+      v-if="existeSolicitud(calificacion.id) || !apelacionValida(calificacion)"
+      disabled
+    >
+      Apelar
+    </button>
+
+    <!-- Caso 2: El estudiante aún está a tiempo de apelar. -->
+    <button
+      type="button"
+      class="botonTabla"
+      @click.prevent="eventoClick(calificacion.id)"
+      v-else
     >
       Apelar
     </button>
   </td>
+
+  <!-- Marca que indica los días faltantes para solicitar la apelación. 
+  Y en otros casos indica un ticket si el estudiante realizó la apelación,
+  y una cruz en el caso de que hayan pasado los 5 días. -->
+  <td>
+    <!-- Ticket: Estudiante realizó la apelación. -->
+    <span 
+      class="fa-solid fa-check"
+      v-if="existeSolicitud(calificacion.id)"
+      title="Usted ya realizó una solicitud de revisión."
+    >
+    </span>
+    <!-- Cruz: Estudiante está fuera del plazo (Mayor a 5 días). -->
+    <span 
+      class="fa-solid fa-x"
+      v-else-if="!apelacionValida(calificacion)"
+      title="El periodo de apelación (5 días posterior a fecha de entrega de notas) ha concluido."
+    > 
+    </span>
+    <span
+      v-else
+      title="Días restantes para enviar una solicitud de revisión."
+    >
+    {{apelacionValida(calificacion)}}
+    </span>
+  </td>
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   props: {
     calificacion: Object,
@@ -43,51 +84,29 @@ export default {
       this.$emit("EventMostrarInformacion", calificacion);
     },
 
+    /* Se comprueba si el estudiante ya realizo una apelación a una nota. */
     existeSolicitud(id) {
       if (this.CalificacionSolicitudes.includes(id)) {
-        return false;
-      } else {
         return true;
-      }
+      } 
+      return false;
     },
+
+    apelacionValida(calificacion){
+      let fechaEntrega = moment(calificacion.fecha_entrega);
+      let fechaActual = moment().startOf('day');
+      let diferenciaDias = moment.duration(fechaActual.diff(fechaEntrega)).asDays();
+      
+      // Caso 1: El estudiante se encuentra fuera de la fecha de apelación.
+      if(diferenciaDias > 5) {
+        return false;
+      }
+      /*  Caso 2: El estudiante puede enviar la apelación y se indican los días
+      faltantes */
+      return 5 - diferenciaDias;
+    }
   },
 };
 </script>
 
-<style>
-/* No se agregan al main.css, dado que se espera eliminar estos botones en
-  el Sprint 3. */
-.botonObservacion {
-  background: #004883;
-  margin: 0px 5px;
-  border-radius: 100px;
-  box-shadow: #004883 0 10px 20px -10px;
-  box-sizing: border-box;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 24px;
-  outline: 0 solid transparent;
-  padding: 8px 18px;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
-  width: 120px;
-  word-break: break-word;
-  border: 0;
-}
-
-.botonObservacion:hover {
-  transform: scale(1.05);
-}
-:root {
-  --popper-theme-background-color: #333333;
-  --popper-theme-background-color-hover: #333333;
-  --popper-theme-text-color: #ffffff;
-  --popper-theme-border-width: 0px;
-  --popper-theme-border-style: solid;
-  --popper-theme-border-radius: 6px;
-  --popper-theme-padding: 32px;
-  --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
-}
-</style>
+<style> </style>

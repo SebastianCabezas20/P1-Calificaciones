@@ -35,6 +35,12 @@ def getIdEstudiante(request, idUsuario = None):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def getCalificacionesEstudiante(request, idUsuario = None):
+    calificaciones = Calificacion.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__id_semetre__isActual = True).all()
+    serializer = CalificacionSerializer(calificaciones, many = "true")
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def getDataAsignatura(request, codigo = None, idUsuario = None):
 
     ## Buscar la coordinacion del curso de teoria con el codigo y id del usuario - verificar que existe seccion del estudiante

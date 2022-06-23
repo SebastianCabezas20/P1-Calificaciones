@@ -9,30 +9,36 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSection">
-        <h3 class="textTitle">Solicitud de Apelación</h3>
+      <div class="titleSectionV2">
+        <h3 class="textTitleV2">Solicitud de apelación</h3>
       </div>
 
       <div class="formApelacion" v-for="data in dataSolicitud" :key="data.id">
-        <h5 class="textoFormulario">
-          Nombre Evaluacion: {{ data.id_evaluacion.nombre }}
-        </h5>
-        <h5 class="textoFormulario">
-          Nombre Asignatura:
+        <p class="textoFormulario">
+          <b>Código:</b> 
+          {{ data.id_evaluacion.id_coordinacion.id_asignatura.codigo }}-{{data.id_evaluacion.id_coordinacion.coordinacion}}-{{data.id_evaluacion.id_coordinacion.seccion}}
+        </p>
+        <p class="textoFormulario">
+          <b>Asignatura:</b>
           {{ data.id_evaluacion.id_coordinacion.id_asignatura.nombre }}
-        </h5>
-        <h5 class="textoFormulario">Nota: {{ data.nota }}</h5>
+        </p>
+        <p class="textoFormulario">
+          <b>Evaluación:</b> {{ data.id_evaluacion.nombre }}
+        </p>
+        <p class="textoFormulario"><b>Calificación:</b> {{ data.nota }}</p>
+        <p class="textoFormulario">
+          <b>Docente evaluador(a):</b> {{ data.id_evaluacion.id_docente.id_usuario.first_name }} {{data.id_evaluacion.id_docente.id_usuario.last_name}}</p>
 
         <div id="divMotivo">
-          <h5 class="textoFormulario">Motivo de la solicitud</h5>
+          <label class="textoFormulario"><b>Motivo</b></label>
           <textarea
-            rows="7"
-            placeholder="Escriba acá su solicitud"
+            class="cuadroTexto"
+            rows="10"
+            placeholder="Escriba acá el motivo de su solicitud de apelación"
             id="motivoSolicitud"
             v-model="motivoSolicitud"
           ></textarea>
         </div>
-
         <button v-on:click="submitApelacion" class="buttonForm">Apelar</button>
       </div>
     </div>
@@ -73,7 +79,7 @@ export default {
       .then(function (response) {
         that.idEstudiante = response.data.id;
       });
-    // Extraccion de informacion para la solicitud
+
     axios
       .get(
         `http://localhost:8000/informacion/solicitud/estudiante/${IdentificacionCalificacion}`
