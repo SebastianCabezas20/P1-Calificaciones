@@ -496,3 +496,9 @@ def getAsignaturasAtrasadas(request):
     serializerAsignaturas = AsignaturaSerializer(listaAsignaturasAtrasadas, many = "true")
 
     return Response([serializerAsignaturas.data,numeroAtrasosAsignaturas])
+
+@api_view(['GET'])
+def getAllEvaluaciones(request):
+    evaluaciones = Evaluacion.objects.all()
+    serializer = EvaluacionDocenteSerializer(evaluaciones, many="true")
+    return Response(serializer.data)

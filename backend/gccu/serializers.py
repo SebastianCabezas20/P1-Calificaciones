@@ -254,3 +254,10 @@ class CambioPonderacionesJefe(serializers.ModelSerializer):
     class Meta:
         model = Cambio_Ponderacion
         fields = '__all__'
+
+class EvaluacionDocenteSerializer(serializers.ModelSerializer):
+    id_docente = DocenteSerializer()
+    id_coordinacion = CoordinacionSeccionSerializer()
+    class Meta:
+        model = Evaluacion
+        fields = '__all__'

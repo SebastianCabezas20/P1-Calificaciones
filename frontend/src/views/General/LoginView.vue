@@ -85,6 +85,8 @@
 <script>
 import NavbarLogin from "../../components/NavbarLogin.vue";
 import axios from "axios";
+import emailjs from 'emailjs-com';
+import moment from 'moment';
 
 export default {
   components: {
@@ -98,10 +100,43 @@ export default {
       roles: [],
       incorrectAuth: false,
       tipoPassword: "password",
+      evaluaciones: [],
+      fechaEval: moment(),
+      fechaFormat: moment(),
+      hoy: moment(),
+      dif: moment(),
     };
   },
   methods: {
     login() {
+      for (var i = 0; i < this.evaluaciones.length; i++) {
+        console.log(i);
+        if (this.username == this.evaluaciones[i].id_docente.id_usuario.username) {
+          var fechaEval = this.evaluaciones[i].fechaEntrega;
+          var fechaEvalFormat = moment(fechaEval);
+          console.log(fechaEvalFormat)
+          var hoy = moment();
+          console.log(hoy)
+          var dif = fechaEvalFormat.diff(hoy, 'days');
+          console.log(dif)
+          if (dif <= 4 && dif >= 0) {
+            console.log(this.evaluaciones[i].id_docente.id_usuario.email);
+            emailjs.send('pingeso', 'template_evaluacion', {
+              mail_mail: this.evaluaciones[i].id_docente.id_usuario.email,
+              mail_evaluacion: this.evaluaciones[i].nombre,
+              mail_docente: (this.evaluaciones[i].id_docente.id_usuario.first_name)+' '+(this.evaluaciones[i].id_docente.id_usuario.last_name),
+              mail_fecha: this.evaluaciones[i].fechaEntrega,
+              mail_asignatura: this.evaluaciones[i].id_coordinacion.id_asignatura.nombre
+            },
+            'TIAwArj4Go2oOAbqv')
+            .then(function(response) {
+              console.log('SUCCESS!', response.status, response.text);
+            }, function(error) {
+              console.log('FAILED...', error);
+            });
+          }
+        }
+      }
       this.$store
         .dispatch("userLogin", {
           nombreUsuario: this.username,
@@ -135,6 +170,9 @@ export default {
     let that = this;
     axios.get("http://localhost:8000/usuario/roles").then(function (response) {
       that.roles = response.data;
+    });
+    axios.get("http://localhost:8000/get/allEvaluaciones").then(function (response) {
+      that.evaluaciones = response.data;
     });
   },
 };
