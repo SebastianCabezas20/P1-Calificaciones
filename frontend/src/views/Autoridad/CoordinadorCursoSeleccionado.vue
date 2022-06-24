@@ -18,7 +18,7 @@
           <tr>
             <th>Evaluación</th>
             <th>Tipo</th>
-            <th>Fecha de Rendición</th>
+            <th>Fecha de rendición</th>
             <th>Estado</th>
             <th class="row-Ponderacion">Pondera</th>
             <th class="row-ButtonIcon"></th>
@@ -110,7 +110,7 @@
                   v-on:submit.prevent="crearEvaluacion"
                 >
                   <div class="mb-3">
-                    <label class="form-label">Nombre de la evaluación</label>
+                    <label class="form-label">Nombre</label>
                     <input
                       v-model="nombreEvaluacion"
                       class="form-control"
@@ -140,7 +140,7 @@
 
                   <div class="mb-3">
                     <label for="fechaDeEvaluacion"
-                      >Fecha tentativa de evaluación</label
+                      >Fecha de realización</label
                     >
                     <input
                       v-model="fechaEvActual"
@@ -169,7 +169,6 @@
                       Cancelar
                     </button>
                     <button
-                      @click="showModalAdd = false"
                       type="submit"
                       class="btn btn-primary"
                     >
@@ -204,11 +203,22 @@
                   v-on:submit.prevent="modificarFecha($event, modalIndex)"
                 >
                   <div class="mb-3">
+                    <label class="form-label"
+                      >Anterior fecha de evaluación</label
+                    >
+                    <input
+                      class="form-control"
+                      type="date"
+                      :value="this.evaluacionesCurso[modalIndex].fechaEvActual"
+                      disabled
+                    />
+                  </div>
+                  <div class="mb-3">
                     <label class="form-label">Nueva fecha de evaluación</label>
                     <input
                       v-model="nuevaFechaEvaluacion"
                       class="form-control"
-                      placeholder="2022-01-01"
+                      type="date"
                       required
                     />
                   </div>
@@ -320,6 +330,7 @@
 import Sidebar from "../../components/SidebarCoordinador.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from "axios";
+import moment from 'moment';
 
 export default {
   props: ["idAsignatura", "idCurso"],
@@ -405,18 +416,49 @@ export default {
 
     // Coordinador crea una evaluación en todas las coordinaciones de su asignatura.
     crearEvaluacion: function (event) {
-      let fecha = new Date(this.fechaEvActual);
-      let fechaEntrega = new Date();
-      fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
-      fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
-      this.porcentajeEvaluacion = this.porcentajeEvaluacion / 100;
 
-      for (var i = 0; i < this.coordinacionesAsignatura.length; i++) {
+      // Se transforma el porcentaje 40% -> 0.4
+      let porcentajeEvaluacionIngresado = this.porcentajeEvaluacion / 100;
+
+      // Se comprueba que no se sobrepase el 100%.
+      let ponderacionTotal = 0;
+      for (var i = 0; i < this.evaluacionesCurso.length; i++) {
+        ponderacionTotal =
+          ponderacionTotal + parseFloat(this.evaluacionesCurso[i].ponderacion);
+      }
+      ponderacionTotal = ponderacionTotal + porcentajeEvaluacionIngresado;
+
+      // Caso 1: Con la nueva evaluación se sobrepasa el 100%
+      if (ponderacionTotal > 1) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Porcentaje de evaluación no permitido",
+          text: "El porcentaje ingresado sobrepasa el 100% total permitido",
+        });
+      }
+      
+      // Caso 2: La fecha ingresada es igual o menor a la fecha actual.
+      else if (moment().startOf('day') >= moment(this.fechaEvActual)){
+        this.$swal.fire({
+          icon: "error",
+          title: "Fecha de evaluación no permitida.",
+          text: "La fecha de realización de la evaluación debe ser mayor a la fecha actual",
+        });
+      }
+
+      // Caso 3: Es posible agregar la evaluación.
+      else {
+        let fecha = new Date(this.fechaEvActual);
+        let fechaEntrega = new Date();
+        fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
+        fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
+
+        for (var i = 0; i < this.coordinacionesAsignatura.length; i++) {
         let nuevaEvaluacion = {
           nombre: this.nombreEvaluacion,
           fechaEvActual: this.fechaEvActual,
           fechaEntrega: fechaEntrega,
-          ponderacion: this.porcentajeEvaluacion,
+          ponderacion: porcentajeEvaluacionIngresado,
           estado: "P",
           obs_general: "",
           adjunto: null,
@@ -427,8 +469,16 @@ export default {
         axios
           .post("http://localhost:8000/add/evaluacion", nuevaEvaluacion)
           .then(function (response) {});
+        }
+        this.$swal.fire({
+          icon: "success",
+          title: "Evaluación creada exitosamente",
+          text: "La evaluación fue creada satisfactoriamente",
+        })
+        .then((result) => {
+          location.reload();
+        });
       }
-      location.reload();
     },
 
     // Función para obtener las evaluaciones iguales de una asignatura.
@@ -445,17 +495,36 @@ export default {
         this.evaluacionesInformacion[indexClic].fechaEvActual;
       let idEvaluacion = this.evaluacionesInformacion[indexClic].id;
 
-      console.log(this.evaluacionesInformacion[indexClic]);
-
       // Cálculo de la nueva fecha de entrega.
       let fecha = new Date(this.nuevaFechaEvaluacion);
       let nuevaFechaEntrega = new Date();
       nuevaFechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
       nuevaFechaEntrega = nuevaFechaEntrega.toISOString().slice(0, 10);
 
-      let nombreEvaluacion = this.evaluacionesInformacion[indexClic].nombre;
-      let that = this;
-      this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
+      /* Caso 1: La nueva fecha ingresada es igual o menor a la fecha actual. */
+      if (moment().startOf('day') >= moment(this.nuevaFechaEvaluacion)){
+        this.$swal.fire({
+          icon: "error",
+          title: "Fecha de evaluación no permitida.",
+          text: "La nueva fecha de realización de la evaluación debe ser mayor a la fecha actual",
+        });
+      }
+
+      /* Caso 2: La nueva fecha de evaluación es manor o igual a la fecha 
+      original de evaluación. (Se preguntará a los clientes si esto es un error o no.)*/
+      else if (moment(fechaEvaluacionOriginal) >= moment(this.nuevaFechaEvaluacion)) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Fecha de evaluación no permitida.",
+          text: "La nueva fecha de realización de la evaluación debe ser mayor a la fecha original de realización",
+        });
+      }
+
+      /* Todo correcto. */
+      else {
+        let nombreEvaluacion = this.evaluacionesInformacion[indexClic].nombre;
+        let that = this;
+        this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
         let evaluacionesPorNombre = response;
 
         for (var i = 0; i < evaluacionesPorNombre.length; i++) {
@@ -494,8 +563,17 @@ export default {
             });
         }
       });
-      location.reload();
+        this.$swal.fire({
+          icon: "success",
+          title: "Fecha de evaluación actualizada",
+          text: "La fecha de evaluación fue modificada satisfactoriamente",
+        })
+        .then((result) => {
+          location.reload();
+        });
+      }
     },
+
     modificarPonderacion(event, indexClic) {
       // Se transforma el porcentaje 40% -> 0.4
       let ponderacionEvaluacion = this.nuevaPonderacionEv / 100;
@@ -537,7 +615,6 @@ export default {
         esa evaluación en todas las coordinaciones asociadas a esa asignatura. */
         this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
           let evaluacionesPorNombre = response;
-          console.log(evaluacionesPorNombre);
 
           /* Cada una de las evaluaciones se va modificando y además, se 
           registra el cambio de ponderación. */

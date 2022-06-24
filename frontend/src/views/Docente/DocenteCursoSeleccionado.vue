@@ -409,6 +409,7 @@ export default {
       else {
         let fecha = new Date(this.fechaEvActual);
         let fechaEntrega = new Date();
+        let that = this;
 
         // Se suman 14 dias desde la fecha tentativa de realización. Y se pasa a String del tipo YYYY-MM-DD
         fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
@@ -428,7 +429,14 @@ export default {
             id_coordinacion: this.idCurso,
           })
           .then(function (response) {
-            location.reload();
+            that.$swal.fire({
+              icon: "success",
+              title: "Evaluación creada exitosamente",
+              text: "La evaluación fue creada satisfactoriamente",
+            })
+            .then((result) => {
+              location.reload();
+            });
           });
       }
     },
@@ -465,6 +473,8 @@ export default {
 
       /* Todo correcto. */
       else {
+        let that = this;
+
         let nuevaEvaluacion = {
         nombre: this.evaluacionesFull[index].nombre,
         fechaEvActual: this.fechaEvaluacion,
@@ -496,7 +506,14 @@ export default {
       axios
         .post("http://localhost:8000/add/cambioFecha", cambioFecha)
         .then(function (response) {
-          location.reload();
+          that.$swal.fire({
+            icon: "success",
+            title: "Fecha de evaluación actualizada",
+            text: "La fecha de evaluación fue modificada satisfactoriamente",
+          })
+          .then((result) => {
+            location.reload();
+          });
         });
       }
     },
