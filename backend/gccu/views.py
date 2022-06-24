@@ -503,12 +503,11 @@ def getAsignaturasAtrasadas(request):
 
     return Response([serializerAsignaturas.data,numeroAtrasosAsignaturas])
 
-""" @api_view(['GET'])
-def getAllEvaluaciones(request):
+@api_view(['GET'])
+def getAllEvaluacionesMail(request):
     evaluaciones = Evaluacion.objects.all()
     serializer = EvaluacionDocenteSerializer(evaluaciones, many="true")
     return Response(serializer.data)
-"""
 
 @api_view(['GET'])
 def getInfoDashboardCoordinador(request, idUsuario = None):
