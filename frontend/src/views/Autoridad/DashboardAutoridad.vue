@@ -9,21 +9,156 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <p>Contenido aquí del docente...</p>
+      <div class="row" style="background-color: #ffffff">
+
+        <div class="col-md-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="chart-container" style="position: relative; height:400px; width:400px">
+          <canvas id="graficoBarras"></canvas>
+        </div>
+        <div class="chart-container" style="position: relative; margin-left:100px; height:400px; width:400px">
+          <canvas id="graficoPie" style=""></canvas>
+        </div>
+      </div>
     </div>
+
   </div>
+
+
 </template>
 
 <script>
-import Sidebar from "../../components/SidebarAutoridad.vue";
+import Sidebar from "../../components/SidebarJefeCarrera.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
+import axios from 'axios';
+import router from "../../router";
+import Chart from 'chart.js/auto';
+
+
 
 export default {
   components: {
     Sidebar,
     Navbar,
   },
+  data() {
+    return { }
+  },
+  created() { },
+  mounted() {
+    let ins = this;
+    
+
+    const ctx = document.getElementById('graficoBarras').getContext('2d');
+    const graficoBarras = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Asignatura 1', 'Asignatura 2', 'Asignatura 3', 'Asignatura 4', 'Asignatura 5', 'Asignatura 6'],
+        datasets: [{
+          label: 'Rechazadas',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: [
+            'rgba(255, 99, 132)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 3
+        },
+        {
+          label: 'Aceptadas',
+          data: [1, 1, 31, 51, 21, 31],
+          backgroundColor: [
+            'rgba(54, 162, 235)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 3
+        },
+        {
+          label: 'Pendientes',
+          data: [1, 1, 31, 51, 21, 31],
+          backgroundColor: [
+            'rgba(255, 206, 86)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 3
+        },
+        ],
+
+      },
+      options: {
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+          }
+        }
+      }
+    });
+    const ctx2 = document.getElementById('graficoPie').getContext('2d');
+    const graficoPie = new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: ['Asignatura 1', 'Asignatura 2', 'Asignatura 3', 'Asignatura 4', 'Asignatura 5', 'Asignatura 6'],
+        datasets: [{
+          label: '# de coordinaciones',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 3
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+          }
+        }
+      }
+    });
+
+  },
+  methods: {
+
+  }
 };
 </script>
 
-<style></style>
+<style>
+</style>

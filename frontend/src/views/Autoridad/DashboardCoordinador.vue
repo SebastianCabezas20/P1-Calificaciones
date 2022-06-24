@@ -17,75 +17,41 @@
 
         <div class="row">
           <div class="col">
-            Cursos Totales: {{Number(nCursos)}}
+            Cursos Totales: {{ Number(nCursos) }}
           </div>
           <div class="col">
-            Evaluaciones Pendientes: {{Number(nEvaluacionesP)}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            Solicitudes totales: {{Number(nSolicitudesT)}}
-          </div>
-          <div class="col">
-            Solicitudes Pendientes: {{Number(nSolicitudesP)}}
+            Evaluaciones Pendientes: {{ Number(nEvaluacionesP) }}
           </div>
         </div>
         <div class="row">
           <div class="col">
-            Aprobadas: {{Number(nSolicitudesA)}}
+            Solicitudes totales: {{ Number(nSolicitudesT) }}
           </div>
           <div class="col">
-            Rechazadas: {{Number(nSolicitudesR)}}
+            Solicitudes Pendientes: {{ Number(nSolicitudesP) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            Aprobadas: {{ Number(nSolicitudesA) }}
+          </div>
+          <div class="col">
+            Rechazadas: {{ Number(nSolicitudesR) }}
           </div>
         </div>
       </div>
 
       <div class="container">
         <div class="row">
-          <h1>Cambios en Calificaciones</h1>
-        </div>
-        <div class="row">
           <div class="col">
-
-            <div class="tableContent">
-              <table class="tableV2">
-                <thead>
-                  <tr>
-                    <th>Nombre Evaluación</th>
-                    <th>Nombre Asignatura</th>
-                    <th>Nombre Alumno</th>
-                    <th>Nombre profesor</th>
-                    <th>Fecha cambio</th>
-                    <th>Nota Anterior</th>
-                    <th>Nota Nueva</th>
-                    <th>Motivo</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="cambio_nota in cambio_notas" :key="cambio_nota.id">
-                    <td class="text-center">{{ cambio_nota.id_calificacion.id_evaluacion.nombre }}</td>
-                    <td class="text-center">{{ cambio_nota.id_calificacion.id_evaluacion.id_coordinacion.id_asignatura.nombre }}</td>
-                    <td class="text-center">{{ cambio_nota.id_calificacion.id_estudiante.id_usuario.first_name }}
-                      {{ cambio_nota.id_calificacion.id_estudiante.id_usuario.last_name }}</td>
-                      <td class="text-center">{{ cambio_nota.id_calificacion.id_evaluacion.id_docente.id_usuario.first_name }}
-                      {{ cambio_nota.id_calificacion.id_evaluacion.id_docente.id_usuario.last_name }}</td>
-                    <td class="text-center">{{ cambio_nota.fecha_cambio }}</td>
-                    <td class="text-center">{{ cambio_nota.anterior_nota }}</td>
-                    <td class="text-center">{{ cambio_nota.actual_nota }}</td>
-                    <td class="text-center">{{ cambio_nota.motivo }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-             <div class="row">
-                <div class="chart-container" style="position: relative; height:400px; width:400px">
+            <div class="row">
+              <div class="chart-container" style="position: relative; height:400px; width:400px">
                 <canvas id="graficoBarras"></canvas>
-                </div>
-                <div class="chart-container" style="position: relative; margin-left:100px; height:400px; width:400px">
-                <canvas id="graficoPie" style=""></canvas>
-                </div>
               </div>
+              <div class="chart-container" style="position: relative; margin-left:100px; height:400px; width:400px">
+                <canvas id="graficoPie" style=""></canvas>
+              </div>
+            </div>
 
 
           </div>
@@ -111,7 +77,7 @@ export default {
   },
   data() {
     return {
-      cambio_notas:[],
+      cambio_notas: [],
       info: [],
       nCursos: [],
       nEvaluacionesP: [],
@@ -122,7 +88,7 @@ export default {
     }
   },
   created() {
-    
+
   },
   mounted() {
 
@@ -135,95 +101,88 @@ export default {
         ins.cambio_notas = response.data;
       });
 
-  axios
-    .get(`http://localhost:8000/get/infodashboardcoordinador/${identificacionUsuario}`)
-    .then(function (response) {
-      console.log(response.data);
-      ins.nCursos = response.data[0];
-      ins.nEvaluacionesP = response.data[1];
-      ins.nSolicitudesT = response.data[2];
-      ins.nSolicitudesP = response.data[3];
-      ins.nSolicitudesA = response.data[4];
-      ins.nSolicitudesR = response.data[5];
-    });
-    
+    axios
+      .get(`http://localhost:8000/get/infodashboardcoordinador/${identificacionUsuario}`)
+      .then(function (response) {
+        console.log(response.data);
+        ins.nCursos = response.data[0];
+        ins.nEvaluacionesP = response.data[1];
+        ins.nSolicitudesT = response.data[2];
+        ins.nSolicitudesP = response.data[3];
+        ins.nSolicitudesA = response.data[4];
+        ins.nSolicitudesR = response.data[5];
+      });
+
 
 
     const ctx = document.getElementById('graficoBarras').getContext('2d');
     const graficoBarras = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels:['curso 1', 'curso 2', 'curso 3', 'curso 4', 'curso 5', 'curso 6'],  
+      type: 'bar',
+      data: {
+        labels: ['curso 1', 'curso 2', 'curso 3', 'curso 4', 'curso 5', 'curso 6'],
         datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 3
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 3
         }]
-    },
-    options: {
-        maintainAspectRatio:false,
+      },
+      options: {
+        maintainAspectRatio: false,
         scales: {
-            y: {
-                beginAtZero: true,
-            }
+          y: {
+            beginAtZero: true,
+          }
         }
-    }
+      }
     });
     const ctx2 = document.getElementById('graficoPie').getContext('2d');
     const graficoPie = new Chart(ctx2, {
-    type: 'pie',
-    data: {
-        labels: ['curso 1', 'curso 2', 'curso 3', 'curso 4', 'curso 5', 'curso 6'],
+      type: 'pie',
+      data: {
+        labels: ['Rechazadas', 'Aprobadas'],
         datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 3
+          label: '# de Solicitudes',
+          //Falta buscar una forma de agregar esos datos aca!
+          data: [this.nSolicitudesR, this.nSolicitudesA],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+          ],
+          borderWidth: 3
         }]
-    },
-    options: {
-        maintainAspectRatio:false,
+      },
+      options: {
+        maintainAspectRatio: false,
         scales: {
-            y: {
-                beginAtZero: true,
-            }
+          y: {
+            beginAtZero: true,
+          }
         }
-    }
+      }
     });
-    
+
   },
-  methods: {  }
+  methods: {}
 };
 </script>
 

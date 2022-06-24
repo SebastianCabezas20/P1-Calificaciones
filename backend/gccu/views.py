@@ -531,4 +531,13 @@ def getInfoDashboardEstudiante(request, idUsuario = None):
 
     return Response([cursosActuales, evaluacionesRealizadas, solicitudesRealizadas, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas])
 
+@api_view(['GET'])
+def getInfoDashboardJefeCarrera(request, idUsuario = None):
+    estudiantesEnCarrera = Estudiante.objects.filter(id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idUsuario).count()
+    solicitudesSemestre = Solicitud_Revision.objects.filter(id_estudiante__id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True).count()
+    solicitudesPendientes = Solicitud_Revision.objects.filter(id_estudiante__id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'P').count()
+    solicitudesAprobadas = Solicitud_Revision.objects.filter(id_estudiante__id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'A').count()
+    solicitudesRechazadas = Solicitud_Revision.objects.filter(id_estudiante__id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'R').count()
+    notasCambiadas = Cambio_nota.objects.filter(id_calificacion__id_estudiante__id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idUsuario, id_calificacion__id_evaluacion__id_coordinacion__isActive = True).count()
 
+    return Response([estudiantesEnCarrera, solicitudesSemestre, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas, notasCambiadas])

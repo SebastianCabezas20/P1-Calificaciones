@@ -76,4 +76,5 @@ urlpatterns = [
     path('get/allEvaluacionesMail', views.getAllEvaluacionesMail),
     path('get/infodashboardcoordinador/<int:idUsuario>', views.getInfoDashboardCoordinador),
     path('get/infodashboardestudiante/<int:idUsuario>', views.getInfoDashboardEstudiante),
+    path('get/infodashboardjefecarrera/<int:idUsuario>', views.getInfoDashboardJefeCarrera),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

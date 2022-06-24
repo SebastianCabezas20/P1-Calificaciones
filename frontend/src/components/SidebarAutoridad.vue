@@ -15,17 +15,37 @@
           </a>
         </li>
         <li>
-          <a href="/autoridad/asignaturas">
+          <a href="/jefe/asignaturas/general">
             <span class="icon"><i class="fa-solid fa-book"></i></span>
-            <span>Asignaturas</span>
+            <span>Cambio de notas</span>
           </a>
         </li>
         <li>
-          <a href="/autoridad/registros">
+          <a href="/jefe/asignaturas/cambio/ponderacion">
+            <span class="icon"><i class="fa-solid fa-book"></i></span>
+            <span>Cambio de ponderaciones</span>
+          </a>
+        </li>
+        <li>
+          <a href="/jefe/asignaturas/cambio/fecha">
+            <span class="icon"><i class="fa-solid fa-book"></i></span>
+            <span>Cambio de fechas</span>
+          </a>
+        </li>
+        <li>
+          <a href="/jefe/asignaturas">
             <span class="icon"
               ><i class="fa-solid fa-file-circle-question"></i
             ></span>
-            <span>Registros</span>
+            <span>Solicitudes</span>
+          </a>
+        </li>
+        <li>
+          <a href="/jefe/asignaturasAtrasos">
+            <span class="icon"
+              ><i class="fa-solid fa-file-circle-question"></i
+            ></span>
+            <span>Atrasos</span>
           </a>
         </li>
         <li>
