@@ -75,4 +75,5 @@ urlpatterns = [
     path('get/asignaturasAtrasadas', views.getAsignaturasAtrasadas),
     path('get/allEvaluacionesMail', views.getAllEvaluacionesMail),
     path('get/infodashboardcoordinador/<int:idUsuario>', views.getInfoDashboardCoordinador),
+    path('get/infodashboardestudiante/<int:idUsuario>', views.getInfoDashboardEstudiante),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

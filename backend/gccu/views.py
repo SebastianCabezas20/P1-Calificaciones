@@ -519,3 +519,16 @@ def getInfoDashboardCoordinador(request, idUsuario = None):
     solicitudesRechazadas = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'R').count()
 
     return Response([numeroAsignaturas, evaluacionesPendientes, solicitudesActuales, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas])
+
+@api_view(['GET'])
+def getInfoDashboardEstudiante(request, idUsuario = None):
+    cursosActuales = Coordinacion_Estudiante.objects.filter(id_estudiante__id_usuario = idUsuario, id_coordinacion__isActive = True).count()
+    evaluacionesRealizadas = Calificacion.objects.filter(id_estudiante__id_usuario = idUsuario).count()
+    solicitudesRealizadas = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True).count()
+    solicitudesPendientes = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'P').count()
+    solicitudesAprobadas = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'A').count()
+    solicitudesRechazadas = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'R').count()
+
+    return Response([cursosActuales, evaluacionesRealizadas, solicitudesRealizadas, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas])
+
+
