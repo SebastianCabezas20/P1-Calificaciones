@@ -44,7 +44,7 @@
               <td>
                 <button
                   @click="
-                    getAsignatura($event, coordinacion.id_coordinacion.id)
+                    getAsignatura($event, coordinacion.id_coordinacion.bloques_horario)
                   "
                   type="button"
                   class="botonTabla"
@@ -92,7 +92,7 @@
               <td>
                 <button
                   v-on:click="
-                    getAsignatura($event, coordinacion.id_coordinacion.id)
+                    getAsignatura($event, coordinacion.id_coordinacion.bloques_horario)
                   "
                   type="button"
                   class="botonTabla"
@@ -133,10 +133,13 @@ export default {
       });
   },
   methods: {
-    getAsignatura: function (event, idCoordinacion) {
-      // Pasar una variable de una vista a otra.
-      this.$router.push({ path: `/docente/curso/${idCoordinacion}` });
+    getAsignatura: function (event, bloqueHorario) {
+      // Pasar una variable de una vista a otra. En este caso para obtener los cursos espejos, se pasa el horario
+      // para asi tener los cursos que tienen el horario en comun de un usuario
+      console.log(bloqueHorario)
+      this.$router.push({ path: `/docente/curso/${bloqueHorario}` }); 
     },
+
   },
 };
 </script>

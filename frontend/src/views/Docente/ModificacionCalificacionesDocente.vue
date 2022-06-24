@@ -17,11 +17,11 @@
       <div class="row" style="background-color: #ffffff">
         <div class="col-sm-8 p-0">
           <p class="informationCalification">
-            Nombre: {{ this.informacionEvaluacion.nombre }}
+            Nombre: {{ this.informacionEvaluacion[0].nombre }}
           </p>
 
           <p
-            v-if="this.informacionEvaluacion.estado == 'P'"
+            v-if="this.informacionEvaluacion[0].estado == 'P'"
             class="informationCalification"
           >
             Estado: Pendiente
@@ -30,7 +30,7 @@
 
           <p class="informationCalification">
             Fecha de realización:
-            {{ this.informacionEvaluacion.fechaEvActual }}
+            {{ this.informacionEvaluacion[0].fechaEvActual }}
           </p>
         </div>
 
@@ -165,7 +165,7 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 
 export default {
-  props: ["idEvaluacion", "idCurso"],
+  props: ["nombreEvaluacion", "idCurso", "idDocente"],
 
   components: {
     Sidebar,
@@ -182,18 +182,20 @@ export default {
       motivoCambio: "",
     };
   },
-  mounted() {
-    let identificacionEvaluacion = this.idEvaluacion;
+  created() {
+    let identificacionEvaluacion = this.nombreEvaluacion;
+    let identificacionCurso = this.idCurso; // Horario
+    let identificacionDocente = this.idDocente;
     let ins = this;
     axios
       .get(
-        `http://localhost:8000/calificacionesDocente/${identificacionEvaluacion}`
+        `http://localhost:8000/calificacionesDocente/${identificacionEvaluacion}/${identificacionCurso}/${identificacionDocente}/CE`
       )
       .then(function (response) {
         ins.calificaciones = response.data;
       });
     axios
-      .get(`http://localhost:8000/evaluacion/${identificacionEvaluacion}`)
+      .get(`http://localhost:8000/evaluacion/${identificacionEvaluacion}/${identificacionCurso}/${identificacionDocente}/CE`)
       .then(function (response) {
         ins.informacionEvaluacion = response.data;
       });

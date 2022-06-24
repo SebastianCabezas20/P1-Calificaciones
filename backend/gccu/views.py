@@ -149,7 +149,8 @@ def getCursosByEstudiante(request, idUsuario = None):
 
 @api_view(['GET'])
 def getCursosByDocente(request, idUsuario = None):
-    cursosDocente = Coordinacion_Docente.objects.filter(id_docente__id_usuario__id = idUsuario, id_coordinacion__isActive = True).order_by('id_coordinacion__id_asignatura__codigo').all()
+    ## Se cambio de order_by a distinct por bloque de horario para cursos espejo
+    cursosDocente = Coordinacion_Docente.objects.filter(id_docente__id_usuario__id = idUsuario, id_coordinacion__isActive = True).distinct('id_coordinacion__bloques_horario')
     serializer = CoordinacionDocenteSerializer(cursosDocente, many="true")
     return Response(serializer.data)
 
@@ -541,3 +542,66 @@ def getInfoDashboardJefeCarrera(request, idUsuario = None):
     notasCambiadas = Cambio_nota.objects.filter(id_calificacion__id_estudiante__id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idUsuario, id_calificacion__id_evaluacion__id_coordinacion__isActive = True).count()
 
     return Response([estudiantesEnCarrera, solicitudesSemestre, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas, notasCambiadas])
+@api_view(['GET'])
+def evaluacionesCoordinacionCursosEspejo(request, bloqueHorario = None, idUsuario = None):
+
+    # Funcionando.
+    if request.method == 'GET':
+        # Obtener los nombres unicos en las evaluaciones
+        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id_usuario__id = idUsuario).distinct('nombre').values_list('nombre',flat=True)
+        evaluaciones = []
+        # Por cada nombre buscar segun bloque y docente, con tal de tener las dos o mas pruebas de distintas cordinacion de un curso espejo
+        # Con eso tener las evaluacion y poder modificarlas individualmente.
+        for nombre in evaluacionCoordinacion:
+            evaluacionesPorNombre = Evaluacion.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id_usuario__id = idUsuario, nombre = nombre).all()
+            evaluaciones.append(EvaluacionSerializer(evaluacionesPorNombre, many = "true").data)
+        return Response(evaluaciones)
+
+@api_view(['GET']) ## Cambio a bloque horario - antes id, se agrega distinct
+def informacionCoordinacionCursoEspejo(request, idUsuario = None ,bloqueHorario = None):
+    coordinacion = Coordinacion_Docente.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id_usuario__id = idUsuario).distinct('id_coordinacion__bloques_horario')
+    serializerUnico = CoordinacionDocenteCursoEspejoSerializer(coordinacion, many = "true")
+    coordinacion = Coordinacion_Docente.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id_usuario__id = idUsuario).all()
+    serializer = CoordinacionDocenteCursoEspejoSerializer(coordinacion, many = "true")
+    return Response([serializerUnico.data,serializer.data])
+
+# Obtiene los estudiantes que estan inscitos en una coordinacion. 
+# Se cargan en la vista de subir calificaciones.
+@api_view(['GET'])
+def getCalificacionesEstudiantesCursosEspejo(request,bloqueHorario = None, idDocente = None):
+    ## Curso en comun de los estudiantes, se asume que un estudiante no puede estar en los dos cursos inscrito
+    cursosComun = Coordinacion_Docente.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id = idDocente).values_list('id_coordinacion__id',flat=True)
+    arregloEstudiante = []
+    for id in cursosComun:
+        calificacionEstudiantes = Coordinacion_Estudiante.objects.filter(id_coordinacion = id).distinct('id_estudiante')
+        arregloEstudiante.extend(CoordinacionEstudianteSerializer(calificacionEstudiantes, many="true").data)
+
+    return Response(arregloEstudiante)   
+
+# Obtener los datos de una evaluación en particular. Cambiar el estado de una evaluacion.
+@api_view(['GET', 'PUT'])
+def crudOneEvaluacionCursosEspejo(request, bloqueHorario = None, idDocente = None, nombreEvaluacion =None):
+    
+    if request.method == 'GET':
+        ## Curso en comun de las evaluaciones, ademas se busca por el nombre en particular
+        cursosComun = Coordinacion_Docente.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id = idDocente).values_list('id_coordinacion__id',flat=True)
+        evaluacionesDevolver = []
+        #Evaluaciones a poner nota
+        for id in cursosComun:
+            evaluacionBuscada = Evaluacion.objects.filter(nombre = nombreEvaluacion, id_coordinacion = id)
+            evaluacionesDevolver.extend(PostEvaluacionSerializer(evaluacionBuscada, many ="true").data)
+        
+        return Response(evaluacionesDevolver) 
+
+## Calificiones segun una evaluacion
+@api_view(['GET'])
+def getCalificacionesByDocenteCursosEspejo(request,bloqueHorario = None, idDocente = None, nombreEvaluacion =None):
+    ## Curso en comun de las evaluaciones, ademas se busca por el nombre en particular  
+    cursosComun = Coordinacion_Docente.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id = idDocente).values_list('id_coordinacion__id',flat=True)
+    calificacionesDevolver = []
+    #Calificaciones de estudiantes segun evaluacion y cursos espejo
+    for id in cursosComun:
+        evaluacionBuscada = Evaluacion.objects.filter(nombre = nombreEvaluacion, id_coordinacion = id).values_list('id',flat=True)
+        calificaciones =  Calificacion.objects.filter(id_evaluacion__id = evaluacionBuscada[0]).all().order_by('id_estudiante__rut')
+        calificacionesDevolver.extend(CalificacionSerializer(calificaciones, many = "true").data)
+    return Response(calificacionesDevolver) 

@@ -77,4 +77,11 @@ urlpatterns = [
     path('get/infodashboardcoordinador/<int:idUsuario>', views.getInfoDashboardCoordinador),
     path('get/infodashboardestudiante/<int:idUsuario>', views.getInfoDashboardEstudiante),
     path('get/infodashboardjefecarrera/<int:idUsuario>', views.getInfoDashboardJefeCarrera),
+    ## Curso espejo
+    path('evaluaciones/<int:idUsuario>/<str:bloqueHorario>/CE', views.evaluacionesCoordinacionCursosEspejo),
+    path('get/coordinacion/<int:idUsuario>/<str:bloqueHorario>/CE', views.informacionCoordinacionCursoEspejo),
+    path('calificacion/coordinacion/<str:bloqueHorario>/<int:idDocente>/CE', views.getCalificacionesEstudiantesCursosEspejo),
+    path('evaluacion/<str:nombreEvaluacion>/<str:bloqueHorario>/<int:idDocente>/CE', views.crudOneEvaluacionCursosEspejo),
+    path('calificacionesDocente/<str:nombreEvaluacion>/<str:bloqueHorario>/<int:idDocente>/CE', views.getCalificacionesByDocenteCursosEspejo),
+    
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

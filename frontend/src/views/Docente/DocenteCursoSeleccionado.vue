@@ -29,29 +29,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(evaluacion, index) in evaluacionesCurso" :key="index">
-            <td>{{ evaluacion.nombre }}</td>
-            <td>{{ evaluacion.id_tipoEvaluacion.nombre }}</td>
-            <td>{{ evaluacion.fechaEvActual }}</td>
-            <td v-if="evaluacion.estado == 'E'">Evaluada</td>
+          <!--Evaluaciones van por grupo en arreglo [Evaluaciones PEP 1],[EControl 2],[], que son de diferente coordinacion-->
+          <tr v-for="(evaluacion, index) in evaluacionesFull" :key="index">
+            <td>{{ evaluacion[0].nombre }}</td>
+            <td>{{ evaluacion[0].id_tipoEvaluacion.nombre }}</td>
+            <td>{{ evaluacion[0].fechaEvActual }}</td>
+            <td v-if="evaluacion[0].estado == 'E'">Evaluada</td>
             <td v-else>Pendiente</td>
-            <td>{{ evaluacion.ponderacion * 100 }}%</td>
+            <td>{{ evaluacion[0].ponderacion * 100 }}%</td>
             <td>
               <div class="text-center">
-                <button
+                <!-- Pasar nombre de la evaluacion en vez de id -->
+                <button 
                   class="fa-solid fa-pencil botonTabla"
-                  v-on:click="calificarEvaluacion($event, evaluacion.id)"
-                  :disabled="evaluacion.estado == 'E'"
+                  v-on:click="calificarEvaluacion($event, evaluacion[0].nombre)" 
+                  :disabled="evaluacion[0].estado == 'E'"
                   title="Ingresar calificaciones"
-                ></button>
+                ></button> 
               </div>
             </td>
             <td>
               <div class="text-center">
                 <button
                   class="fa-solid fa-gear botonTabla"
-                  v-on:click="modificarCalificacion($event, evaluacion.id)"
-                  :disabled="evaluacion.estado == 'P'"
+                  v-on:click="modificarCalificacion($event, evaluacion[0].nombre)"
+                  :disabled="evaluacion[0].estado == 'P'"
                   title="Modificar calificaciones"
                 ></button>
               </div>
@@ -62,8 +64,8 @@
                   @click="abrirCambioFecha(index)"
                   class="fa-solid fa-calendar botonTabla"
                   :disabled="
-                    evaluacion.id_coordinacion.id_asignatura.isAutogestionada ==
-                      false || evaluacion.estado == 'E'
+                    evaluacion[0].id_coordinacion.id_asignatura.isAutogestionada ==
+                      false || evaluacion[0].estado == 'E'
                   "
                   title="Modificar fecha de evaluación"
                 ></button>
@@ -87,7 +89,7 @@
                   class="fa-solid fa-trash-can botonTabla"
                   v-on:click="deleteEvaluacion($event, index)"
                   :disabled="
-                    evaluacion.id_coordinacion.id_asignatura.isAutogestionada ==
+                    evaluacion[0].id_coordinacion.id_asignatura.isAutogestionada ==
                       false || evaluacion.estado == 'E'
                   "
                   title="Eliminar evaluación"
@@ -109,14 +111,14 @@
 
       <!-- Botón que abre el modal para agregar una evaluación. -->
       <template
-        v-for="informacion in informacionCoordinacion"
+        v-for="informacion in informacionCoordinacionUnica"
         :key="informacion.id"
       >
         <button
           @click="showModal = true"
           type="button"
           class="submitButton"
-          :disabled="informacion.id_asignatura.isAutogestionada == false"
+          :disabled="informacion.id_coordinacion.id_asignatura.isAutogestionada == false"
         >
           Agregar evaluación
         </button>
@@ -254,7 +256,7 @@
                     <input
                       class="form-control"
                       type="date"
-                      :value="this.evaluacionesFull[modalIndex].fechaEvActual"
+                      :value="this.evaluacionesFull[modalIndex][0].fechaEvActual"
                       disabled
                     />
                   </div>
@@ -334,6 +336,7 @@ export default {
       idDocente: 0,
       motivoCambio: "",
       informacionCoordinacion: [],
+      informacionCoordinacionUnica: [],
       mailDocente: "",
       nombreDocente: "",
       mail_mail: "",
@@ -352,9 +355,9 @@ export default {
     this.nombreDocente = this.$store.getters.nameUser;
     let that = this;
     axios
-      .get(`http://localhost:8000/evaluaciones/${identificacionCurso}`)
+      .get(`http://localhost:8000/evaluaciones/${identificacionUsuario}/${identificacionCurso}/CE  `)
       .then(function (response) {
-        that.evaluacionesCurso = response.data;
+        that.evaluacionesFull = response.data;
       });
 
     axios
@@ -369,16 +372,17 @@ export default {
         that.tiposEvaluaciones = response.data;
       });
 
-    axios
-      .get(`http://localhost:8000/allInfoEvaluaciones/${identificacionCurso}`)
+    /*axios
+      .get(`http://localhost:8000/allInfoEvaluaciones/${identificacionUsuario}/${identificacionCurso}/CE`)
       .then(function (response) {
         that.evaluacionesFull = response.data;
-      });
+      });*/
 
     axios
-      .get(`http://localhost:8000/get/coordinacion/${identificacionCurso}`)
+      .get(`http://localhost:8000/get/coordinacion/${identificacionUsuario}/${identificacionCurso}/CE`)
       .then(function (response) {
-        that.informacionCoordinacion = response.data;
+        that.informacionCoordinacionUnica = response.data[0]; // Para boton
+        that.informacionCoordinacion = response.data[1] // para agregar y eliminar evaluaciones
       });
   },
 
@@ -391,7 +395,7 @@ export default {
     deleteEvaluacion: function (event, index) {      
       /*  Se comprueba si la evaluación que seleccionó para eliminar ya está 
       considerada para ser eliminada. */
-      if(this.evaluacionesEliminadas.includes(this.evaluacionesCurso[index])) {
+      if(this.evaluacionesEliminadas.includes(this.evaluacionesFull[index][0])) {
         this.$swal.fire({
           icon: "error",
           title: "Evaluación eliminada",
@@ -400,7 +404,7 @@ export default {
         return;
       }
       // Sino, se agrega para posteriormente ser eliminada.
-      this.evaluacionesEliminadas.push(this.evaluacionesCurso[index]);
+      this.evaluacionesEliminadas.push(this.evaluacionesFull[index][0]);
     },
 
     crearEvaluacion: function (event) {
@@ -449,14 +453,14 @@ export default {
       
       /* Ponderaciones de las evaluaciones actuales (No se suman las 
       ponderaciones de aquellas evaluaciones que serán eliminadas). */
-      for (var i = 0; i < this.evaluacionesCurso.length; i++) {
+      for (var i = 0; i < this.evaluacionesFull.length; i++) {
         for (var j = 0; j < this.evaluacionesEliminadas.length; j++) {
-          if(this.evaluacionesEliminadas[j].id === this.evaluacionesCurso[i].id){
+          if(this.evaluacionesEliminadas[j].id === this.evaluacionesFull[i][0].id){
             coincidencia++
           }
         }
         if(coincidencia === 0){
-          ponderacionTotal = ponderacionTotal + parseFloat(this.evaluacionesCurso[i].ponderacion);
+          ponderacionTotal = ponderacionTotal + parseFloat(this.evaluacionesFull[i][0].ponderacion);
         }
         coincidencia = 0 
       }
@@ -484,8 +488,13 @@ export default {
       // Caso 2: El nuevo listado de evaluaciones da un 100%.
       else {
         for (var i = 0; i < this.evaluacionesCreadas.length; i++){
-          axios.post("http://localhost:8000/add/evaluacion", this.evaluacionesCreadas[i])
-          .then(function (response) {});
+          // Por cada coordinacion se agrega una evaluacion
+          for (let j = 0; j < this.informacionCoordinacion.length; j++) {
+            let evaluacionNueva = this.evaluacionesCreadas[i].id_coordinacion = this.informacionCoordinacion[j].id_coordinacion.id
+            axios.post("http://localhost:8000/add/evaluacion",evaluacionNueva)
+            .then(function (response) {}); 
+          }
+          
         }
 
         for (var i = 0; i < this.evaluacionesEliminadas.length; i++){
@@ -512,8 +521,8 @@ export default {
       fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
 
       // Otras variables a utilizar.
-      let idFechaModificar = this.evaluacionesFull[index].id;
-      let fechaOriginal = this.evaluacionesFull[index].fechaEvActual;
+      let idFechaModificar = this.evaluacionesFull[index][0].id; // id de evaluacion a modificar
+      let fechaOriginal = this.evaluacionesFull[index][0].fechaEvActual; // fecha original de la evaluacions
 
       /* Caso 1: La nueva fecha ingresada es igual o menor a la fecha actual. */
       if (moment().startOf('day') >= moment(this.fechaEvaluacion)){
@@ -536,60 +545,69 @@ export default {
 
       /* Todo correcto. */
       else {
-        let that = this;
+        let that = this; 
+        // Por cada evaluacion en ese conjunto de evaluaciones
+        for (let i = 0; i < this.evaluacionesFull[index].length; i++) {
+          console.log(this.evaluacionesFull[index][i])
+          console.log(this.fechaEvaluacion)
+          let nuevaEvaluacion = {
+            nombre: this.evaluacionesFull[index][i].nombre,
+            fechaEvActual: this.fechaEvaluacion,
+            fechaEntrega: fechaEntrega,
+            ponderacion: this.evaluacionesFull[index][i].ponderacion,
+            estado: this.evaluacionesFull[index][i].estado,
+            obs_general: this.evaluacionesFull[index][i].obs_general,
+            adjunto: this.evaluacionesFull[index][i].adjunto,
+            id_docente: this.evaluacionesFull[index][i].id_docente,
+            id_tipoEvaluacion: this.evaluacionesFull[index][i].id_tipoEvaluacion,
+            id_coordinacion: this.evaluacionesFull[index][i].id_coordinacion,
+          };
 
-        let nuevaEvaluacion = {
-        nombre: this.evaluacionesFull[index].nombre,
-        fechaEvActual: this.fechaEvaluacion,
-        fechaEntrega: fechaEntrega,
-        ponderacion: this.evaluacionesFull[index].ponderacion,
-        estado: this.evaluacionesFull[index].estado,
-        obs_general: this.evaluacionesFull[index].obs_general,
-        adjunto: this.evaluacionesFull[index].adjunto,
-        id_docente: this.evaluacionesFull[index].id_docente,
-        id_tipoEvaluacion: this.evaluacionesFull[index].id_tipoEvaluacion,
-        id_coordinacion: this.evaluacionesFull[index].id_coordinacion,
-      };
+          let cambioFecha = {
+            fechaAnterior: fechaOriginal,
+            fechaNueva: this.fechaEvaluacion,
+            motivo: this.motivoCambio,
+            id_evaluacion: this.evaluacionesFull[index][i].id,
+          };
+          
+          // Requests.
+          axios
+            .put(
+              `http://localhost:8000/update/evaluacion/${this.evaluacionesFull[index][i].id}`,
+              nuevaEvaluacion
+            )
+            .then(function (response) {
+            });
+          axios
+            .post("http://localhost:8000/add/cambioFecha", cambioFecha)
+            .then(function (response) {
+              that.$swal.fire({
+                icon: "success",
+                title: "Fecha de evaluación actualizada",
+                text: "La fecha de evaluación fue modificada satisfactoriamente",
+              })
+              .then((result) => {
+                location.reload();
+              });
+            });
 
-      let cambioFecha = {
-        fechaAnterior: fechaOriginal,
-        fechaNueva: this.fechaEvaluacion,
-        motivo: this.motivoCambio,
-        id_evaluacion: this.evaluacionesFull[index].id,
-      };
-
-      // Requests.
-      axios
-        .put(
-          `http://localhost:8000/update/evaluacion/${idFechaModificar}`,
-          nuevaEvaluacion
-        )
-        .then(function (response) {
-        });
-      axios
-        .post("http://localhost:8000/add/cambioFecha", cambioFecha)
-        .then(function (response) {
-          that.$swal.fire({
-            icon: "success",
-            title: "Fecha de evaluación actualizada",
-            text: "La fecha de evaluación fue modificada satisfactoriamente",
-          })
-          .then((result) => {
-            location.reload();
-          });
-        });
+        } // End for
+      
       }
     },
 
-    calificarEvaluacion: function (event, idEvaluacion) {
+    calificarEvaluacion: function (event, nombreEvaluacion) {
       this.$router.push({
-        path: `/docente/curso/${this.idCurso}/add/calificacion/${idEvaluacion}`,
+        path: `/docente/${this.idDocente}/curso/${this.idCurso}/add/calificacion/${nombreEvaluacion}`,
       });
     },
 
-    modificarCalificacion: function (event, idEvaluacion) {
+    modificarCalificacion: function (event, nombreEvaluacion) {
+      console.log(this.idDocente)
       this.$router.push({
-        path: `/docente/curso/${this.idCurso}/evaluacion/${idEvaluacion}`,
+        // idCurso = horario curso
+        path: `/docente/${this.idDocente}/curso/${this.idCurso}/evaluacion/${nombreEvaluacion}`,
+        
       });
     },
     
@@ -598,9 +616,9 @@ export default {
       console.log(this.mailDocente);
       emailjs.send('pingeso', 'template_evaluacion', {
         mail_mail: this.mailDocente,
-        mail_evaluacion: this.evaluacionesFull[index].nombre,
+        mail_evaluacion: this.evaluacionesFull[index][0].nombre,
         mail_docente: this.nombreDocente,
-        mail_fecha: this.evaluacionesFull[index].fechaEvActual
+        mail_fecha: this.evaluacionesFull[index][0].fechaEvActual
       },
       'TIAwArj4Go2oOAbqv')
       .then(function(response) {

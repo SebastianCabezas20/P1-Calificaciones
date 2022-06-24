@@ -261,3 +261,10 @@ class EvaluacionDocenteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evaluacion
         fields = '__all__'
+
+class CoordinacionDocenteCursoEspejoSerializer(serializers.ModelSerializer):
+    id_docente = DocenteSerializer()
+    id_coordinacion = CoordinacionSeccionSerializer()
+    class Meta:
+        model = Coordinacion_Docente    
+        fields = '__all__'

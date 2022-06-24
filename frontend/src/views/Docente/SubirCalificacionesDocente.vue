@@ -17,11 +17,11 @@
       <div class="row" style="background-color: #ffffff">
         <div class="col-sm-8 p-0">
           <p class="informationCalification">
-            Nombre: {{ this.informacionEvaluacion.nombre }}
+            Nombre: {{ this.informacionEvaluacion[0].nombre }}
           </p>
 
           <p
-            v-if="this.informacionEvaluacion.estado == 'P'"
+            v-if="this.informacionEvaluacion[0].estado == 'P'"
             class="informationCalification"
           >
             Estado: Pendiente
@@ -30,11 +30,11 @@
 
           <p class="informationCalification">
             Fecha de realización:
-            {{ this.informacionEvaluacion.fechaEvActual }}
+            {{ this.informacionEvaluacion[0].fechaEvActual }}
           </p>
           <p class="informationCalification">
             Fecha límite de entrega de notas:
-            {{ this.informacionEvaluacion.fechaEntrega }}
+            {{ this.informacionEvaluacion[0].fechaEntrega }}
           </p>
         </div>
 
@@ -267,7 +267,7 @@ import * as XLSX from "xlsx";
 import axios from "axios";
 
 export default {
-  props: ["idEvaluacion", "idCurso"],
+  props: ["nombreEvaluacion", "idCurso","idDocente"],
   components: {
     Sidebar,
     Navbar,
@@ -285,21 +285,23 @@ export default {
       archivoGeneral: null,
     };
   },
-  mounted() {
-    let identificacionEvaluacion = this.idEvaluacion;
-    let identificacionCurso = this.idCurso;
+  created() {
+    let identificacionEvaluacion = this.nombreEvaluacion;
+    let identificacionCurso = this.idCurso; // Horario
+    let identificacionDocente = this.idDocente;
     let ins = this;
     axios
       .get(
-        `http://localhost:8000/calificacion/coordinacion/${identificacionCurso}`
+        `http://localhost:8000/calificacion/coordinacion/${identificacionCurso}/${identificacionDocente}/CE`
       )
       .then(function (response) {
         ins.calificacionesEstudiantes = response.data;
       });
     axios
-      .get(`http://localhost:8000/evaluacion/${identificacionEvaluacion}`)
+      .get(`http://localhost:8000/evaluacion/${identificacionEvaluacion}/${identificacionCurso}/${identificacionDocente}/CE`)
       .then(function (response) {
         ins.informacionEvaluacion = response.data;
+        console.log(ins.informacionEvaluacion)
       });
   },
 
@@ -448,6 +450,13 @@ export default {
       let that = this;
 
       for (var i = 0; i < this.calificacionesEstudiantes.length; i++) {
+        // Buscar el id_evaluacion correspondiente a ese estudiante segun el curso en que este inscrito
+        let idEvaluacionEstudiante = 0
+        for(var j = 0; j < this.informacionEvaluacion.length; j++){
+          if(this.calificacionesEstudiantes[i].id_coordinacion.id == this.informacionEvaluacion[j].id_coordinacion){
+            idEvaluacionEstudiante = this.informacionEvaluacion[j].id
+          }
+        }
         nuevaCalificacion = {
           nombre: this.calificacionesEstudiantes[i].id_estudiante.rut,
           nota: this.calificacionesEstudiantes[i].nota,
@@ -455,7 +464,7 @@ export default {
           obs_privada: this.calificacionesEstudiantes[i].obs_privada,
           adjunto: this.calificacionesEstudiantes[i].adjunto,
           id_estudiante: this.calificacionesEstudiantes[i].id_estudiante.id,
-          id_evaluacion: this.idEvaluacion,
+          id_evaluacion: idEvaluacionEstudiante,
         };
         axios
           .post(
@@ -466,35 +475,38 @@ export default {
           .then(function (response) {});
       }
 
-      let nuevaEvaluacion = {
-        nombre: this.informacionEvaluacion.nombre,
-        fechaEvActual: this.informacionEvaluacion.fechaEvActual,
-        fechaEntrega: this.informacionEvaluacion.fechaEntrega,
-        ponderacion: this.informacionEvaluacion.ponderacion,
+      for (var i = 0; i < this.informacionEvaluacion.length; i++){
+        // Creacion de una evaluacion de una coordinacion en especifico
+        let nuevaEvaluacion = {
+        nombre: this.informacionEvaluacion[i].nombre,
+        fechaEvActual: this.informacionEvaluacion[i].fechaEvActual,
+        fechaEntrega: this.informacionEvaluacion[i].fechaEntrega,
+        ponderacion: this.informacionEvaluacion[i].ponderacion,
         estado: "E",
         obs_general: this.contenidoObservacion,
         adjunto: this.archivoGeneral,
-        id_tipoEvaluacion: this.informacionEvaluacion.id_tipoEvaluacion,
-        id_docente: this.informacionEvaluacion.id_docente,
-        id_coordinacion: this.informacionEvaluacion.id_coordinacion,
-      };
-      axios
+        id_tipoEvaluacion: this.informacionEvaluacion[i].id_tipoEvaluacion,
+        id_docente: this.informacionEvaluacion[i].id_docente,
+        id_coordinacion: this.informacionEvaluacion[i].id_coordinacion,
+        };
+        axios
         .put(
-          `http://localhost:8000/update/evaluacion/${this.idEvaluacion}`,
+          `http://localhost:8000/update/evaluacion/${this.informacionEvaluacion[i].id}`,
           nuevaEvaluacion,
           axiosConfig
         )
-        .then(function (response) {
-          that.$swal
-            .fire({
-              icon: "success",
-              title: "Calificación exitosa",
-              text: "Los estudiantes fueron calificados satisfactoriamente",
-            })
-            .then((result) => {
-              that.$router.push({ path: `/docente/curso/${that.idCurso}` });
-            });
+      }
+      // revisar si aun funciona
+      that.$swal
+        .fire({
+          icon: "success",
+          title: "Calificación exitosa",
+          text: "Los estudiantes fueron calificados satisfactoriamente",
+        })
+        .then((result) => {
+          that.$router.push({ path: `/docente/curso/${that.idCurso}` });
         });
+        
     },
   },
 };
