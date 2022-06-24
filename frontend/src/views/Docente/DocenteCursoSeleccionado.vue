@@ -72,6 +72,18 @@
             <td>
               <div class="text-center">
                 <button
+                  v-if="this.evaluacionesEliminadas.includes(evaluacion)"
+                  class="fa-solid fa-trash-can botonTabla"
+                  style="background-color: red;"
+                  v-on:click="deleteEvaluacion($event, index)"
+                  :disabled="
+                    evaluacion.id_coordinacion.id_asignatura.isAutogestionada ==
+                      false || evaluacion.estado == 'E'
+                  "
+                  title="Eliminar evaluación"
+                ></button>
+                <button
+                  v-else
                   class="fa-solid fa-trash-can botonTabla"
                   v-on:click="deleteEvaluacion($event, index)"
                   :disabled="
@@ -109,6 +121,13 @@
           Agregar evaluación
         </button>
       </template>
+
+      <EvaluacionesProvisorias
+        v-if = "evaluacionesCreadas.length !== 0 || evaluacionesEliminadas.length !== 0"
+        :evaluacionesCreadas = 'this.evaluacionesCreadas'
+        :evaluacionesEliminadas = 'this.evaluacionesEliminadas'
+        @EventGuardarCambios = "() => guardarCambios()"
+      />
 
       <!-- Modal para crear una evaluación -->
       <transition name="fase" appear>
@@ -193,10 +212,10 @@
                       class="btn btn-secondary"
                       v-on:click="showModal = false"
                     >
-                      Cancelar
+                      Cerrar
                     </button>
                     <button type="submit" class="btn btn-primary">
-                      Guardar cambios
+                      Crear
                     </button>
                   </div>
                 </form>
@@ -287,6 +306,7 @@
 <script>
 import Sidebar from "../../components/SidebarDocente.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
+import EvaluacionesProvisorias from "../../components/EvaluacionesProvisorias.vue";
 import axios from "axios";
 import emailjs from 'emailjs-com';
 import moment from 'moment';
@@ -295,6 +315,7 @@ export default {
   components: {
     Sidebar,
     Navbar,
+    EvaluacionesProvisorias,
   },
   props: ["idCurso"],
   data() {
@@ -319,6 +340,9 @@ export default {
       mail_evaluacion: "",
       mail_docente: "",
       mail_fecha: "",
+
+      evaluacionesCreadas: [],
+      evaluacionesEliminadas: [],
     };
   },
 
@@ -364,40 +388,27 @@ export default {
       this.showModalFecha = true;
     },
 
-    deleteEvaluacion: function (event, index) {
-      let idEvaluacionEliminar = this.evaluacionesCurso[index].id;
-      axios
-        .delete(
-          `http://localhost:8000/delete/evaluacion/${idEvaluacionEliminar}`
-        )
-        .then(function (response) {
-          // Funcionando pero quizas falta agregar una alerta emergente que diga que se elimino.
-          location.reload();
+    deleteEvaluacion: function (event, index) {      
+      /*  Se comprueba si la evaluación que seleccionó para eliminar ya está 
+      considerada para ser eliminada. */
+      if(this.evaluacionesEliminadas.includes(this.evaluacionesCurso[index])) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Evaluación eliminada",
+          text: "La evaluación ya está considerada para ser eliminada.",
         });
+        return;
+      }
+      // Sino, se agrega para posteriormente ser eliminada.
+      this.evaluacionesEliminadas.push(this.evaluacionesCurso[index]);
     },
 
     crearEvaluacion: function (event) {
       // Se transforma el porcentaje 40% -> 0.4
       let porcentajeEvaluacionIngresado = this.porcentajeEvaluacion / 100;
 
-      // Se comprueba que no se sobrepase el 100%.
-      let ponderacionTotal = 0;
-      for (var i = 0; i < this.evaluacionesCurso.length; i++) {
-        ponderacionTotal =
-          ponderacionTotal + parseFloat(this.evaluacionesCurso[i].ponderacion);
-      }
-      ponderacionTotal = ponderacionTotal + porcentajeEvaluacionIngresado;
-
-      // Caso 1: Con la nueva evaluación se sobrepasa el 100%
-      if (ponderacionTotal > 1) {
-        this.$swal.fire({
-          icon: "error",
-          title: "Porcentaje de evaluación no permitido",
-          text: "El porcentaje ingresado sobrepasa el 100% total permitido",
-        });
-      }
-      // Caso 2: La fecha ingresada es igual o menor a la fecha actual.
-      else if (moment().startOf('day') >= moment(this.fechaEvActual)){
+      // Caso 1: La fecha ingresada es igual o menor a la fecha actual.
+      if (moment().startOf('day') >= moment(this.fechaEvActual)){
         this.$swal.fire({
           icon: "error",
           title: "Fecha de evaluación no permitida.",
@@ -405,7 +416,7 @@ export default {
         });
       }
 
-      // Caso 3: Es posible agregar la evaluación.
+      // Caso 2: Es posible agregar la evaluación.
       else {
         let fecha = new Date(this.fechaEvActual);
         let fechaEntrega = new Date();
@@ -415,34 +426,86 @@ export default {
         fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
         fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
 
-        axios
-          .post("http://localhost:8000/add/evaluacion", {
-            nombre: this.nombreEvaluacion,
-            fechaEvActual: this.fechaEvActual,
-            fechaEntrega: fechaEntrega,
-            ponderacion: porcentajeEvaluacionIngresado,
-            estado: "P",
-            obs_general: "",
-            adjunto: null,
-            id_tipoEvaluacion: this.tipoEvaluacion,
-            id_docente: this.idDocente,
-            id_coordinacion: this.idCurso,
-          })
-          .then(function (response) {
-            that.$swal.fire({
-              icon: "success",
-              title: "Evaluación creada exitosamente",
-              text: "La evaluación fue creada satisfactoriamente",
-            })
-            .then((result) => {
-              location.reload();
-            });
-          });
+        // Metodo 2: Considera validación de ponderaciones.
+        let nuevaEvaluacion = {
+          nombre: this.nombreEvaluacion,
+          fechaEvActual: this.fechaEvActual,
+          fechaEntrega: fechaEntrega,
+          ponderacion: porcentajeEvaluacionIngresado,
+          estado: "P",
+          obs_general: "",
+          adjunto: null,
+          id_tipoEvaluacion: this.tipoEvaluacion,
+          id_docente: this.idDocente,
+          id_coordinacion: this.idCurso,
+        }
+        this.evaluacionesCreadas.push(nuevaEvaluacion);
       }
     },
 
+    guardarCambios() {
+      let ponderacionTotal = 0;
+      let coincidencia = 0;
+      
+      /* Ponderaciones de las evaluaciones actuales (No se suman las 
+      ponderaciones de aquellas evaluaciones que serán eliminadas). */
+      for (var i = 0; i < this.evaluacionesCurso.length; i++) {
+        for (var j = 0; j < this.evaluacionesEliminadas.length; j++) {
+          if(this.evaluacionesEliminadas[j].id === this.evaluacionesCurso[i].id){
+            coincidencia++
+          }
+        }
+        if(coincidencia === 0){
+          ponderacionTotal = ponderacionTotal + parseFloat(this.evaluacionesCurso[i].ponderacion);
+        }
+        coincidencia = 0 
+      }
+
+      /* Ponderacion de las nuevas evaluaciones (Se suman las 
+      ponderaciones de las evaluaciones que se agregarán) */
+      for (var i = 0; i < this.evaluacionesCreadas.length; i++) {
+        ponderacionTotal = ponderacionTotal + parseFloat(this.evaluacionesCreadas[i].ponderacion);
+      }
+
+      /* La ponderación se formatea para que de un valor que tenga 
+      maximo 3 decimales. */
+      ponderacionTotal = parseFloat((ponderacionTotal * 100).toFixed(3));
+      
+      // Caso 1: Con las nuevas evaluaciones se sobrepasa el 100%.
+      if (ponderacionTotal !== 100) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Suma de porcentajes de evaluación no permitidos",
+          text: `La suma de ponderaciones del nuevo listado de evaluaciones da como resultado ${ponderacionTotal}%. Se espera que este valor sea 100%`,
+        });
+        return ;
+      }
+      
+      // Caso 2: El nuevo listado de evaluaciones da un 100%.
+      else {
+        for (var i = 0; i < this.evaluacionesCreadas.length; i++){
+          axios.post("http://localhost:8000/add/evaluacion", this.evaluacionesCreadas[i])
+          .then(function (response) {});
+        }
+
+        for (var i = 0; i < this.evaluacionesEliminadas.length; i++){
+          axios.delete(`http://localhost:8000/delete/evaluacion/${this.evaluacionesEliminadas[i].id}`)
+          .then(function (response) {});
+        }
+        
+        this.$swal.fire({
+          icon: "success",
+          title: "Listado de evaluaciones modificado exitosamente",
+          text: "Las evaluaciones de la actual coordinación fueron actualizadas satisfactoriamente",
+        })
+        .then((result) => {
+          location.reload();
+        });
+    }
+    },
+
     modificarFecha: function (event, index) {
-      // Calcúlo de la nueva fecha de entrega.
+      // Cálculo de la nueva fecha de entrega.
       let fecha = new Date(this.fechaEvaluacion);
       let fechaEntrega = new Date();
       fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);

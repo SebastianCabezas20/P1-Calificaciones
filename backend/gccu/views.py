@@ -211,7 +211,7 @@ def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None
 
     # Funcionando.
     if request.method == 'GET':
-        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all().order_by('fechaEvActual')
+        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all().order_by('nombre')
         serializer = EvaluacionSerializer(evaluacionCoordinacion, many = "true")
         return Response(serializer.data)
     
@@ -297,7 +297,7 @@ def getSolicitudesAsignaturaJefeCarrera(request, idAsignatura = None):
     
 @api_view(['GET'])
 def getAllEvaluaciones(request, idCoordinacion = None):
-    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all().order_by('fechaEvActual')
+    evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = idCoordinacion).all().order_by('nombre')
     serializer = EvaluacionEspecificaSerializer(evaluacionCoordinacion, many = "true")
     return Response(serializer.data)
 
