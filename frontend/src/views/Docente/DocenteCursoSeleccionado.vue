@@ -519,6 +519,8 @@ export default {
       let fechaEntrega = new Date();
       fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
       fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
+      console.log(fechaEntrega + "Nueva fecha de entrega")
+      console.log(fecha.toISOString().slice(0,10) + "Nueva fecha")
 
       // Otras variables a utilizar.
       let idFechaModificar = this.evaluacionesFull[index][0].id; // id de evaluacion a modificar
@@ -548,27 +550,30 @@ export default {
         let that = this; 
         // Por cada evaluacion en ese conjunto de evaluaciones
         for (let i = 0; i < this.evaluacionesFull[index].length; i++) {
-          console.log(this.evaluacionesFull[index][i])
-          console.log(this.fechaEvaluacion)
+          
           let nuevaEvaluacion = {
             nombre: this.evaluacionesFull[index][i].nombre,
-            fechaEvActual: this.fechaEvaluacion,
             fechaEntrega: fechaEntrega,
+            fechaEvActual:fecha.toISOString().slice(0,10),
             ponderacion: this.evaluacionesFull[index][i].ponderacion,
             estado: this.evaluacionesFull[index][i].estado,
             obs_general: this.evaluacionesFull[index][i].obs_general,
             adjunto: this.evaluacionesFull[index][i].adjunto,
-            id_docente: this.evaluacionesFull[index][i].id_docente,
-            id_tipoEvaluacion: this.evaluacionesFull[index][i].id_tipoEvaluacion,
-            id_coordinacion: this.evaluacionesFull[index][i].id_coordinacion,
+            id_docente: this.evaluacionesFull[index][i].id_docente.id,
+            id_tipoEvaluacion: this.evaluacionesFull[index][i].id_tipoEvaluacion.id,
+            id_coordinacion: this.evaluacionesFull[index][i].id_coordinacion.id,
           };
-
+          let fechaActual = new Date();
+          fechaActual = fechaActual.toISOString().slice(0, 10);
           let cambioFecha = {
             fechaAnterior: fechaOriginal,
             fechaNueva: this.fechaEvaluacion,
             motivo: this.motivoCambio,
+            fecha_cambio: fechaActual,
             id_evaluacion: this.evaluacionesFull[index][i].id,
           };
+          console.log(nuevaEvaluacion)
+          console.log(cambioFecha)
           
           // Requests.
           axios

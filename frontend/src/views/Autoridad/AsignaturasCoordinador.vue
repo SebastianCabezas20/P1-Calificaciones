@@ -76,7 +76,9 @@ export default {
     axios
     .get(`http://localhost:8000/api/coordinador/${identificacionUsuario}`)
     .then(function (response) {
+
       ins.idCoordinador = response.data.id;
+
       axios.get(`http://localhost:8000/coordinador/coordinacion/${ins.idCoordinador}`).then(function (response) {
         ins.secciones = response.data;
       });

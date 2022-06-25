@@ -540,11 +540,13 @@ export default {
             id_tipoEvaluacion: evaluacionesPorNombre[i].id_tipoEvaluacion,
             id_coordinacion: evaluacionesPorNombre[i].id_coordinacion,
           };
-
+          let fechaActual = new Date();
+          fechaActual = fechaActual.toISOString().slice(0, 10);
           let tuplaCambioFecha = {
             fechaAnterior: fechaEvaluacionOriginal,
             fechaNueva: that.nuevaFechaEvaluacion,
             motivo: that.motivoCambioFecha,
+            fecha_cambio: fechaActual,
             id_evaluacion: evaluacionesPorNombre[i].id,
           };
 
