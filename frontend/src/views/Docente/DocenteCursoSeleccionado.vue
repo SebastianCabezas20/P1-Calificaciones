@@ -490,16 +490,29 @@ export default {
         for (var i = 0; i < this.evaluacionesCreadas.length; i++){
           // Por cada coordinacion se agrega una evaluacion
           for (let j = 0; j < this.informacionCoordinacion.length; j++) {
-            let evaluacionNueva = this.evaluacionesCreadas[i].id_coordinacion = this.informacionCoordinacion[j].id_coordinacion.id
-            axios.post("http://localhost:8000/add/evaluacion",evaluacionNueva)
+            this.evaluacionesCreadas[i].id_coordinacion = this.informacionCoordinacion[j].id_coordinacion.id
+            axios.post("http://localhost:8000/add/evaluacion",this.evaluacionesCreadas[i])
             .then(function (response) {}); 
           }
           
         }
 
         for (var i = 0; i < this.evaluacionesEliminadas.length; i++){
-          axios.delete(`http://localhost:8000/delete/evaluacion/${this.evaluacionesEliminadas[i].id}`)
-          .then(function (response) {});
+          // Buscar las evaluaciones a ser eliminadas
+          // Misma evaluacion distinta seccion
+          for (let j = 0; j < this.evaluacionesFull.length; j++) {
+            // Buscar el grupo por el nombre de la evaluacion a eliminar
+            if(this.evaluacionesFull[j][0].nombre == this.evaluacionesEliminadas[i].nombre){
+              console.log(this.evaluacionesEliminadas[i].nombre)
+              // Si es el nombre correcto, se elimina cada una de las evaluaciones de ese grupo
+              for (let k = 0; k < this.evaluacionesFull[j].length; k++) {
+                axios.delete(`http://localhost:8000/delete/evaluacion/${this.evaluacionesFull[j][k].id}`)
+                .then(function (response) {});
+              }
+
+            }
+          }
+          
         }
         
         this.$swal.fire({
@@ -571,10 +584,7 @@ export default {
             motivo: this.motivoCambio,
             fecha_cambio: fechaActual,
             id_evaluacion: this.evaluacionesFull[index][i].id,
-          };
-          console.log(nuevaEvaluacion)
-          console.log(cambioFecha)
-          
+          };          
           // Requests.
           axios
             .put(
