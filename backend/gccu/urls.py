@@ -73,6 +73,7 @@ urlpatterns = [
     path('get/cambio/calificacion/curso/<int:idCurso>',views.getCambioNotaCurso),
     path('get/evPendientesEntrega/<int:idDocente>', views.getEntregaPendienteEvaluacion),
     path('get/asignaturasAtrasadas', views.getAsignaturasAtrasadas),
+    path('get/seccionesAsignaturaAtrasadas/<int:idAsignatura>', views.getSeccionesAsignaturaAtrasadas),
     path('get/allEvaluacionesMail', views.getAllEvaluacionesMail),
     path('get/infodashboardcoordinador/<int:idUsuario>', views.getInfoDashboardCoordinador),
     path('get/infodashboardestudiante/<int:idUsuario>', views.getInfoDashboardEstudiante),

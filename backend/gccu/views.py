@@ -504,6 +504,32 @@ def getAsignaturasAtrasadas(request):
 
     return Response([serializerAsignaturas.data,numeroAtrasosAsignaturas])
 
+#Visualizar Secciones de una asignatura con atrasos y su numero
+@api_view(['GET'])
+def getSeccionesAsignaturaAtrasadas(request, idAsignatura = None):
+    fechaActual = date.today()
+    listaSecciones = Coordinacion_Seccion.objects.filter(id_asignatura = idAsignatura, isActive = True)
+    listaEvaluacionesPendientes = Evaluacion.objects.filter(id_coordinacion__id_asignatura = idAsignatura, estado = 'P')
+    listaSeccionesAtrasadas = []
+    listaNumeroAtrasos = []
+
+    for seccion in listaSecciones:
+        posiblesAtrasos = Evaluacion.objects.filter(id_coordinacion__id_asignatura = idAsignatura, estado = 'P', id_coordinacion__seccion = seccion.seccion, id_coordinacion__coordinacion = seccion.coordinacion)
+        atrasos = 0
+        for posibleAtraso in posiblesAtrasos:
+            if posibleAtraso.fechaEntrega < fechaActual:
+                atrasos += 1
+                continue
+        if atrasos > 0:
+            listaSeccionesAtrasadas.append(seccion)
+            listaNumeroAtrasos.append(atrasos)
+            continue
+
+    serializerSeccionesAtrasadas = CoordinacionSeccionSerializer(listaSeccionesAtrasadas, many = "true")
+
+    return Response([serializerSeccionesAtrasadas.data, listaNumeroAtrasos])
+
+
 @api_view(['GET'])
 def getAllEvaluacionesMail(request):
     evaluaciones = Evaluacion.objects.all()

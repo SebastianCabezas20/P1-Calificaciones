@@ -18,7 +18,8 @@
               <th>Código</th>
               <th>Nombre Asignatura</th>
               <th>Componente</th>
-              <th>Cantidad de Atrasos</th>
+              <th>Total de Atrasos</th>
+              <th>Detalles</th>
               </tr>
             </thead>
             <tbody>
@@ -27,6 +28,11 @@
               <td class="text-center">{{asignatura_atrasada.nombre}}</td>
               <td class="text-center">{{asignatura_atrasada.componente}}</td>
               <td class="text-center">{{numero_Atrasos[indice]}}</td>
+              <td>
+                <button type="button" class="botonTabla" @click="ingresar(asignatura_atrasada.id)">
+                  Seleccionar
+                </button>
+              </td>
               </tr>
             </tbody>
           </table>
@@ -70,6 +76,12 @@ export default {
       ins.numero_Atrasos = response.data[1];
     });
 
+
+  },
+  methods:{
+    ingresar(key){
+      router.push(`/jefe/asignaturasAtrasos/secciones/${key}`)
+    }
 
   }
 };
