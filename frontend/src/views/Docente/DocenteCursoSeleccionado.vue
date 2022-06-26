@@ -25,7 +25,6 @@
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
-            <th class="row-ButtonIcon"></th>
           </tr>
         </thead>
         <tbody>
@@ -93,15 +92,6 @@
                       false || evaluacion.estado == 'E'
                   "
                   title="Eliminar evaluación"
-                ></button>
-              </div>
-            </td>
-            <td>
-              <div class="text-center">
-                <button
-                  class="fa-solid fa-pencil-can botonTabla"
-                  v-on:click="sendEmail(index)"
-                  title="Prueba mail"
                 ></button>
               </div>
             </td>
@@ -625,7 +615,7 @@ export default {
         
       });
     },
-    
+    /*
     sendEmail(index) {
       this.mailDocente = this.$store.getters.email;
       console.log(this.mailDocente);
@@ -642,6 +632,7 @@ export default {
         console.log('FAILED...', error);
       });
     },
+    */
   },
 };
 </script>

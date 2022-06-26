@@ -110,7 +110,6 @@ export default {
   methods: {
     login() {
       for (var i = 0; i < this.evaluaciones.length; i++) {
-        console.log(i);
         if (this.username == this.evaluaciones[i].id_docente.id_usuario.username) {
           var fechaEval = this.evaluaciones[i].fechaEntrega;
           var fechaEvalFormat = moment(fechaEval);
