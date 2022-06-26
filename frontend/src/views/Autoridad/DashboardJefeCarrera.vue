@@ -49,6 +49,7 @@
           <canvas id="graficoPie" style=""></canvas>
         </div>
       </div>
+      
     </div>
 
   </div>
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import Sidebar from "../../components/SidebarAutoridad.vue";
+import Sidebar from "../../components/SidebarJefeCarrera.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from 'axios';
 import router from "../../router";
@@ -78,10 +79,13 @@ export default {
       nSolicitudesA: [],
       nSolicitudesR: [],
       nNotasCambiadas: [],
+      etiquetas:[],
+      dataRechazados:[],
+      dataPendientes:[],
+      dataAceptados:[],
     }
   },
-  created() { },
-  mounted() {
+  created() {
     let ins = this;
     let identificacionUsuario = this.$store.getters.idUsuario;
 
@@ -96,73 +100,86 @@ export default {
         ins.nSolicitudesR = response.data[4];
         ins.nNotasCambiadas = response.data[5];
       });
-
-
-    const ctx = document.getElementById('graficoBarras').getContext('2d');
-    const graficoBarras = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Asignatura 1', 'Asignatura 2', 'Asignatura 3', 'Asignatura 4', 'Asignatura 5', 'Asignatura 6'],
-        datasets: [{
-          label: 'Rechazadas',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            'rgba(255, 99, 132)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 3
-        },
-        {
-          label: 'Aceptadas',
-          data: [1, 1, 31, 51, 21, 31],
-          backgroundColor: [
-            'rgba(54, 162, 235)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 3
-        },
-        {
-          label: 'Pendientes',
-          data: [1, 1, 31, 51, 21, 31],
-          backgroundColor: [
-            'rgba(255, 206, 86)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 3
-        },
-        ],
-
+    
       },
-      options: {
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
+    mounted(){
+      let ins = this;
+      let identificacionUsuario = this.$store.getters.idUsuario;
+    axios
+    .get(`http://localhost:8000/get/dash/solicitudes/${identificacionUsuario}`)
+    .then(function (response) {      
+      //////////////////////////////////////////////////
+      const ctx = document.getElementById('graficoBarras').getContext('2d');
+      const graficoBarras = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: response.data[0],
+          datasets: [{
+            label: 'Rechazadas',
+            data: response.data[1],
+            backgroundColor: [
+              'rgba(255, 99, 132)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 0
+          },
+          {
+            label: 'Aceptadas',
+            data: response.data[3],
+            backgroundColor: [
+              'rgba(54, 162, 235)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 0
+          },
+          {
+            label: 'Pendientes',
+            data: response.data[2],
+            backgroundColor: [
+              'rgba(255, 206, 86)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 0
+          },
+          ],
+
+        },
+        options: {
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+            }
           }
         }
-      }
+      });
+
+
     });
+    
+    
+    
     const ctx2 = document.getElementById('graficoPie').getContext('2d');
     const graficoPie = new Chart(ctx2, {
       type: 'pie',

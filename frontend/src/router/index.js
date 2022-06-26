@@ -38,6 +38,10 @@ import CambioNotasCoordinador from "../views/Autoridad/CambioNotasCoordinador.vu
 import SubirCalificacionesCoordinador from "../views/Autoridad/SubirCalificacionesCoordinador.vue";
 import atrasosJefeVue from "../views/Autoridad/atrasosJefeCarrera.vue";
 import atrasosSeccionJefeVue from "../views/Autoridad/atrasosSeccionJefeCarrera.vue";
+import JefeAsignaturaVisualizacionVue from "../views/Autoridad/JefeAsignaturaVisualizacion.vue";
+import SeccionesAsignaturaJefeVisualiza from "../views/Autoridad/SeccionesAsignaturaJefeVisualiza.vue";
+import EvaluacionesJefe from "../views/Autoridad/EvaluacionesJefe.vue";
+
 
 
 const router = createRouter({
@@ -251,6 +255,23 @@ const router = createRouter({
       path: "/jefe/asignaturasAtrasos/secciones/:idAsignatura",
       name: "atrasosSeccionJefeCarrera",
       component: atrasosSeccionJefeVue,
+      props: true,
+    },
+    { // Mostrar los asignaturas a jefe de carrera para mostrar respecto a las  evaluaciones
+      path: "/jefe/visualizacion",
+      name: "AsignaturasVisualizacionEvaluaciones",
+      component: JefeAsignaturaVisualizacionVue,
+    },
+    { // Mostrar las secciones de la asignatura a jefe de carrera para mostrar respecto a las  evaluaciones
+      path: "/jefe/visualizacion/secciones/:idAsignatura",
+      name: "SeccionesVisualizacionEvaluaciones",
+      component: SeccionesAsignaturaJefeVisualiza,
+      props: true,
+    },
+    { // Mostrar las evaluaciones de una seccion a jefe de carrera para mostrar informacion de ella.
+      path: "/jefe/visualizacion/secciones/evaluaciones/:idSeccion/:idAsignatura",
+      name: "VisualizacionEvaluaciones",
+      component: EvaluacionesJefe,
       props: true,
     },
     {

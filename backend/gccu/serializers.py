@@ -135,7 +135,7 @@ class SolicitudRespuestaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 ######################################################################################33
-## Saber las secciones de un coordinador con su asignatura - 2
+## Saber las secciones de un coordinador con su asignatura - 2 - Ademas de mostrar las secciones para un Jefe de carrera
 class CoordinacionCoordinadorSerializer(serializers.ModelSerializer):
     id_asignatura = AsignaturaSerializer()
     class Meta:

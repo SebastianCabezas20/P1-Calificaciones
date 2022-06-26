@@ -207,7 +207,7 @@ def getCalifiacionesEstudiantes(request, idCoordinacion = None):
     serializer = CoordinacionEstudianteSerializer(calificacionEstudiantes, many="true")
     return Response(serializer.data)    
 
-@api_view(['GET', 'DELETE', 'POST', 'PUT'])
+@api_view(['GET', 'DELETE', 'POST', 'PUT']) ## Mostrar evaluaciones a jefe de carrera
 def evaluacionesCoordinacion(request, idEvaluacion = None, idCoordinacion = None):
 
     # Funcionando.
@@ -631,3 +631,37 @@ def getCalificacionesByDocenteCursosEspejo(request,bloqueHorario = None, idDocen
         calificaciones =  Calificacion.objects.filter(id_evaluacion__id = evaluacionBuscada[0]).all().order_by('id_estudiante__rut')
         calificacionesDevolver.extend(CalificacionSerializer(calificaciones, many = "true").data)
     return Response(calificacionesDevolver) 
+
+## secciones de una asignatura
+@api_view(['GET'])
+def getSeccionesAsignaturaJefeCarrera(request, idAsignatura = None):    
+    
+    idsCoordinacion = Coordinacion_Docente.objects.filter(id_coordinacion__id_asignatura = idAsignatura).distinct('id_coordinacion__id').values_list('id_coordinacion__id', flat=True)
+    #Arreglo donde cada espacio es una seccion de una asignatura
+    arregloInformacion = []
+    for id in idsCoordinacion:
+        coordinacion_docentes = Coordinacion_Docente.objects.filter(id_coordinacion__id = id)
+        arregloInformacion.append(DocenteCursoSerializer(coordinacion_docentes, many="true").data)
+
+    return Response(arregloInformacion)
+
+## Solicitudes para el jefe de carrera dash
+@api_view(['GET'])
+def getSolicitudesDashboardJefeCarrera(request, idJefeCarrera = None):    
+    
+    idsAsignatura = Asignaturas_PlanEstudio.objects.filter(id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idJefeCarrera).distinct('id_asignatura').values_list('id_asignatura', flat= True)
+    nombreAsignaturas = []
+    dataRechazados = []
+    dataPendientes = []
+    dataAceptados = []
+    #SolicitudSerializer
+    for id in idsAsignatura:
+        nombre = Asignatura.objects.filter(id = id).values_list('nombre',flat= True)
+        #nombre = solicitud.values_list('id_evaluacion__id_coordinacion__id_asignatura__nombre')
+        # Se agrega nombre de la asignatura
+        nombreAsignaturas.extend(nombre)
+        # Se cuentan las solicitudes pendientes de esa asignatura
+        dataPendientes.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'P').count())
+        dataRechazados.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'R').count())
+        dataAceptados.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'A').count())
+    return Response([nombreAsignaturas,dataRechazados,dataPendientes,dataAceptados])

@@ -48,7 +48,7 @@ urlpatterns = [
     path('add/calificacion', views.calificacionesEstudiantes),                          
     path('evaluacion/tipos', views.getTiposEvaluaciones),
     path('coordinador/coordinacion/<int:idCoordinador>', views.getCoordinacionesCoordinador), # Saber la coordinacion que quiere revisar segun coordinador
-    path('coordinaciones/asignatura/<int:idAsignatura>', views.getCoordinacionesAsignatura),
+    path('coordinaciones/asignatura/<int:idAsignatura>', views.getCoordinacionesAsignatura),  ## Creo que NO se UTILIZA
     path('coordinacion/solicitudes/<int:idCoordinacion>', views.getSolicitudesCurso), # Dada la coordinacion (seccion) mostrar sus solicitudes
     path('jefe/<int:idJefe>/asignaturas', views.getAsignaturasJefeCarrera), # Asignaturas segun jefe
     path('jefe/asignatura/solicitudes/<int:idAsignatura>', views.getSolicitudesAsignaturaJefeCarrera), # Apelaciones segun asignatura seleccionada por un jefe de carrera
@@ -84,5 +84,8 @@ urlpatterns = [
     path('calificacion/coordinacion/<str:bloqueHorario>/<int:idDocente>/CE', views.getCalificacionesEstudiantesCursosEspejo),
     path('evaluacion/<str:nombreEvaluacion>/<str:bloqueHorario>/<int:idDocente>/CE', views.crudOneEvaluacionCursosEspejo),
     path('calificacionesDocente/<str:nombreEvaluacion>/<str:bloqueHorario>/<int:idDocente>/CE', views.getCalificacionesByDocenteCursosEspejo),
+    ###
+    path('get/secciones/asignatura/<int:idAsignatura>', views.getSeccionesAsignaturaJefeCarrera),
+    path('get/dash/solicitudes/<int:idJefeCarrera>', views.getSolicitudesDashboardJefeCarrera),
     
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
