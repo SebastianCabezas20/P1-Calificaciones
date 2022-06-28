@@ -60,7 +60,7 @@
   <button
     id="botonGuardar"
     type="button"
-    class="submitButton"
+    class="submitButton mb-5"
     @click="guardarCambios()"
   >
     Guardar cambios

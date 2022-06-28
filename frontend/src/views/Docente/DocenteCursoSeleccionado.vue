@@ -64,7 +64,7 @@
                   class="fa-solid fa-calendar botonTabla"
                   :disabled="
                     evaluacion[0].id_coordinacion.id_asignatura.isAutogestionada ==
-                      false || evaluacion[0].estado == 'E'
+                      false || !esPosibleModificarFecha(index)
                   "
                   title="Modificar fecha de evaluación"
                 ></button>
@@ -78,8 +78,8 @@
                   style="background-color: red;"
                   v-on:click="deleteEvaluacion($event, index)"
                   :disabled="
-                    evaluacion.id_coordinacion.id_asignatura.isAutogestionada ==
-                      false || evaluacion.estado == 'E'
+                    evaluacion[0].id_coordinacion.id_asignatura.isAutogestionada ==
+                      false || evaluacion[0].estado == 'E'
                   "
                   title="Eliminar evaluación"
                 ></button>
@@ -89,7 +89,7 @@
                   v-on:click="deleteEvaluacion($event, index)"
                   :disabled="
                     evaluacion[0].id_coordinacion.id_asignatura.isAutogestionada ==
-                      false || evaluacion.estado == 'E'
+                      false || evaluacion[0].estado == 'E'
                   "
                   title="Eliminar evaluación"
                 ></button>
@@ -478,13 +478,13 @@ export default {
       // Caso 2: El nuevo listado de evaluaciones da un 100%.
       else {
         for (var i = 0; i < this.evaluacionesCreadas.length; i++){
-          // Por cada coordinacion se agrega una evaluacion
+          
+          // En cada coordinación se agrega la evaluación.
           for (let j = 0; j < this.informacionCoordinacion.length; j++) {
             this.evaluacionesCreadas[i].id_coordinacion = this.informacionCoordinacion[j].id_coordinacion.id
             axios.post("http://localhost:8000/add/evaluacion",this.evaluacionesCreadas[i])
             .then(function (response) {}); 
           }
-          
         }
 
         for (var i = 0; i < this.evaluacionesEliminadas.length; i++){
@@ -499,10 +499,8 @@ export default {
                 axios.delete(`http://localhost:8000/delete/evaluacion/${this.evaluacionesFull[j][k].id}`)
                 .then(function (response) {});
               }
-
             }
           }
-          
         }
         
         this.$swal.fire({
@@ -516,35 +514,36 @@ export default {
     }
     },
 
+    /* Función que comprueba si se da la posibilidad de modificar la fecha de una evaluación.
+    Se permite solo sí la fecha de realización aún no ha ocurrido, o bien, fue hace 
+    máximo dos días atrás. */ 
+    esPosibleModificarFecha(index) {
+      let fechaEvaluacion = moment(this.evaluacionesFull[index][0].fechaEvActual);
+      let fechaActual = moment().startOf('day');
+      let diferenciaDias = moment.duration(fechaActual.diff(fechaEvaluacion)).asDays();
+      if (diferenciaDias > 2){
+        return false;
+      }
+      return true;
+    },
+
     modificarFecha: function (event, index) {
       // Cálculo de la nueva fecha de entrega.
       let fecha = new Date(this.fechaEvaluacion);
       let fechaEntrega = new Date();
       fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
       fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
-      console.log(fechaEntrega + "Nueva fecha de entrega")
-      console.log(fecha.toISOString().slice(0,10) + "Nueva fecha")
 
       // Otras variables a utilizar.
-      let idFechaModificar = this.evaluacionesFull[index][0].id; // id de evaluacion a modificar
-      let fechaOriginal = this.evaluacionesFull[index][0].fechaEvActual; // fecha original de la evaluacions
+      let idFechaModificar = this.evaluacionesFull[index][0].id; 
+      let fechaOriginal = this.evaluacionesFull[index][0].fechaEvActual;
 
-      /* Caso 1: La nueva fecha ingresada es igual o menor a la fecha actual. */
-      if (moment().startOf('day') >= moment(this.fechaEvaluacion)){
+      /* Caso 1: La nueva fecha ingresada es menor a la fecha actual. */
+      if (moment().startOf('day') > moment(this.fechaEvaluacion)){
         this.$swal.fire({
           icon: "error",
           title: "Fecha de evaluación no permitida.",
           text: "La nueva fecha de realización de la evaluación debe ser mayor a la fecha actual",
-        });
-      }
-
-      /* Caso 2: La nueva fecha de evaluación es manor o igual a la fecha 
-      original de evaluación. (Se preguntará a los clientes si esto es un error o no.)*/
-      else if (moment(fechaOriginal) >= moment(this.fechaEvaluacion)) {
-        this.$swal.fire({
-          icon: "error",
-          title: "Fecha de evaluación no permitida.",
-          text: "La nueva fecha de realización de la evaluación debe ser mayor a la fecha original de realización",
         });
       }
 
@@ -557,7 +556,7 @@ export default {
           let nuevaEvaluacion = {
             nombre: this.evaluacionesFull[index][i].nombre,
             fechaEntrega: fechaEntrega,
-            fechaEvActual:fecha.toISOString().slice(0,10),
+            fechaEvActual: fecha.toISOString().slice(0,10),
             ponderacion: this.evaluacionesFull[index][i].ponderacion,
             estado: this.evaluacionesFull[index][i].estado,
             obs_general: this.evaluacionesFull[index][i].obs_general,
@@ -608,7 +607,6 @@ export default {
     },
 
     modificarCalificacion: function (event, nombreEvaluacion) {
-      console.log(this.idDocente)
       this.$router.push({
         // idCurso = horario curso
         path: `/docente/${this.idDocente}/curso/${this.idCurso}/evaluacion/${nombreEvaluacion}`,
