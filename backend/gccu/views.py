@@ -665,3 +665,9 @@ def getSolicitudesDashboardJefeCarrera(request, idJefeCarrera = None):
         dataRechazados.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'R').count())
         dataAceptados.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'A').count())
     return Response([nombreAsignaturas,dataRechazados,dataPendientes,dataAceptados])
+
+@api_view(['GET'])
+def getAllCalificacionesByCurso(request, codigoAsig = None):
+    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigoAsig).all()
+    serializer = CalificacionSerializer(calificaciones, many="true")
+    return Response(serializer.data)

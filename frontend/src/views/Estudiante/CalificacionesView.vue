@@ -68,6 +68,7 @@
               <th style="width: 10%">Pondera</th>
               <th style="width: 20%">Fecha de realización</th>
               <th style="width: 20%">Fecha de calificación</th>
+              <th style="width: 10%">Promedio Curso</th>
               <th style="width: 10%"></th>
               <th style="width: 7%"></th>
               <th style="width: 3%"></th>
@@ -81,6 +82,7 @@
               <CalificacionInfo
                 :calificacion = "calificacion"
                 :CalificacionSolicitudes = "this.idsCalificacionesSolicitudesTeoria"
+                :allCalificaciones = "this.allCalificaciones"
                 @EventBoton = "(id) => ingresar(id)"
                 @EventMostrarInformacion = "(calificacion) => mostrarInformacion(calificacion)"
                 
@@ -245,6 +247,7 @@
                 <th style="width: 10%">Pondera</th>
                 <th style="width: 20%">Fecha de realización</th>
                 <th style="width: 20%">Fecha de calificación</th>
+                <th style="width: 10%">Promedio Curso</th>
                 <th style="width: 10%"></th>
                 <th style="width: 7%"></th>
                 <th style="width: 3%"></th>
@@ -258,6 +261,7 @@
                 <CalificacionInfo
                   :calificacion = "calificacion"
                   :CalificacionSolicitudes = "this.idsCalificacionesSolicitudesLab"
+                  :allCalificaciones = "this.allCalificaciones"
                   @EventBoton = "(id) => ingresar(id)" 
                   @EventMostrarInformacion = "(calificacion) => mostrarInformacion(calificacion)"
                 />
@@ -319,6 +323,7 @@ export default {
       idsCalificacionesSolicitudesLab: [],
       modalData: null,
       showModalObservaciones: false,
+      allCalificaciones: [],
     };
   },
   props: ["codigoAsignatura"],
@@ -357,6 +362,14 @@ export default {
           ins.informacionLaboratorio = response.data[3]
           ins.mostrar = true;
         }
+      });
+
+    axios
+      .get(
+        `http://localhost:8000/get/calificaciones/${codigoAsig}/all`
+      )
+      .then(function (response) {
+        ins.allCalificaciones = response.data;
       });
 
   },

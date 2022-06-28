@@ -4,6 +4,7 @@
   <td>{{ calificacion.id_evaluacion.ponderacion * 100}}%</td>
   <td>{{ calificacion.id_evaluacion.fechaEvActual }}</td>
   <td>{{ calificacion.fecha_entrega }}</td>
+  <td>{{ calcularPromedio(this.allCalificaciones, calificacion.id_evaluacion.nombre)}}</td>
 
   <td>
     <button
@@ -73,6 +74,7 @@ export default {
   props: {
     calificacion: Object,
     CalificacionSolicitudes: Array,
+    allCalificaciones: Array,
   },
   emits: ["EventBoton", "EventMostrarInformacion"],
   methods: {
@@ -104,6 +106,28 @@ export default {
       /*  Caso 2: El estudiante puede enviar la apelación y se indican los días
       faltantes */
       return 5 - diferenciaDias;
+    },
+
+    calcularPromedio(calificaciones, nombreEvaluacion) {
+      var acum = 0;
+      var cantNotas = 0;
+      for(var i = 0; i < calificaciones.length; i++) {
+        if(calificaciones[i].id_evaluacion.nombre == nombreEvaluacion && calificaciones[i].id_evaluacion.estado == "E") {
+          acum = acum + parseInt(calificaciones[i].nota);
+          cantNotas++;
+          console.log("acum va en ", acum);
+          console.log("cantNotas va en ", cantNotas);
+        }
+      }
+      if(acum != 0) {
+        const promedio = acum/cantNotas;
+        const promedioDecimal = promedio.toFixed(1);
+        console.log("el promedio es ", promedioDecimal);
+        return promedioDecimal
+      }
+      else{
+        return "P"
+      }
     }
   },
 };
