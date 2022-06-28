@@ -4,7 +4,9 @@
   <td>{{ calificacion.id_evaluacion.ponderacion * 100}}%</td>
   <td>{{ calificacion.id_evaluacion.fechaEvActual }}</td>
   <td>{{ calificacion.fecha_entrega }}</td>
-  <td>{{ calcularPromedio(this.allCalificaciones, calificacion.id_evaluacion.nombre)}}</td>
+  <td>{{ calcularPromedio(this.allCalificaciones, calificacion.id_evaluacion.nombre) }}</td>
+  <td>{{ obtenerMaxNota(this.allCalificaciones, calificacion.id_evaluacion.nombre) }}</td>
+  <td>{{ obtenerMinNota(this.allCalificaciones, calificacion.id_evaluacion.nombre) }}</td>
 
   <td>
     <button
@@ -108,10 +110,12 @@ export default {
       return 5 - diferenciaDias;
     },
 
+    //Función que calcula el promedio de una evaluación que ya fue evaluada.
     calcularPromedio(calificaciones, nombreEvaluacion) {
       var acum = 0;
       var cantNotas = 0;
       for(var i = 0; i < calificaciones.length; i++) {
+        //Acá se verifica que la evaluación ya fue evaluada y coincide con la que se está escribiendo en la tabla.
         if(calificaciones[i].id_evaluacion.nombre == nombreEvaluacion && calificaciones[i].id_evaluacion.estado == "E") {
           acum = acum + parseInt(calificaciones[i].nota);
           cantNotas++;
@@ -128,6 +132,32 @@ export default {
       else{
         return "P"
       }
+    },
+
+    obtenerMaxNota(calificaciones, nombreEvaluacion) {
+      var acum = 0;
+      for(var i = 0; i < calificaciones.length; i++) {
+        //Acá se verifica que la evaluación ya fue evaluada y coincide con la que se está escribiendo en la tabla.
+        if(calificaciones[i].id_evaluacion.nombre == nombreEvaluacion && calificaciones[i].id_evaluacion.estado == "E") {
+          if(parseInt(calificaciones[i].nota) > acum) {
+            acum = parseInt(calificaciones[i].nota);
+          }
+        }
+      }
+      return acum.toFixed(1)
+    },
+
+    obtenerMinNota(calificaciones, nombreEvaluacion) {
+      var acum = 7;
+      for(var i = 0; i < calificaciones.length; i++) {
+        //Acá se verifica que la evaluación ya fue evaluada y coincide con la que se está escribiendo en la tabla.
+        if(calificaciones[i].id_evaluacion.nombre == nombreEvaluacion && calificaciones[i].id_evaluacion.estado == "E") {
+          if(parseInt(calificaciones[i].nota) < acum) {
+            acum = parseInt(calificaciones[i].nota);
+          }
+        }
+      }
+      return acum.toFixed(1)
     }
   },
 };

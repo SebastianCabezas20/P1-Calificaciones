@@ -63,14 +63,16 @@
         <table class="tableV2">
           <thead>
             <tr>
-              <th style="width: 20%">Evaluación</th>
+              <th style="width: 10%">Evaluación</th>
               <th style="width: 10%">Calificación</th>
               <th style="width: 10%">Pondera</th>
-              <th style="width: 20%">Fecha de realización</th>
-              <th style="width: 20%">Fecha de calificación</th>
-              <th style="width: 10%">Promedio Curso</th>
+              <th style="width: 10%">Fecha de realización</th>
+              <th style="width: 10%">Fecha de calificación</th>
+              <th style="width: 5%">Promedio Curso</th>
+              <th style="width: 5%">Nota Máxima</th>
+              <th style="width: 5%">Nota Mínima</th>
               <th style="width: 10%"></th>
-              <th style="width: 7%"></th>
+              <th style="width: 8%"></th>
               <th style="width: 3%"></th>
             </tr>
           </thead>
@@ -242,14 +244,16 @@
           <table class="tableV2">
             <thead>
               <tr>
-                <th style="width: 20%">Evaluación</th>
+                <th style="width: 10%">Evaluación</th>
                 <th style="width: 10%">Calificación</th>
                 <th style="width: 10%">Pondera</th>
-                <th style="width: 20%">Fecha de realización</th>
-                <th style="width: 20%">Fecha de calificación</th>
-                <th style="width: 10%">Promedio Curso</th>
+                <th style="width: 10%">Fecha de realización</th>
+                <th style="width: 10%">Fecha de calificación</th>
+                <th style="width: 5%">Promedio Curso</th>
+                <th style="width: 5%">Nota Máxima</th>
+                <th style="width: 5%">Nota Mínima</th>
                 <th style="width: 10%"></th>
-                <th style="width: 7%"></th>
+                <th style="width: 8%"></th>
                 <th style="width: 3%"></th>
               </tr>
             </thead>
