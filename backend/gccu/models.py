@@ -91,7 +91,7 @@ class Tipo_Asignatura(Tipos):
         return self.nombre
 
 class Asignatura(models.Model):
-    nombre = models.CharField(max_length = 40, blank = False)
+    nombre = models.CharField(max_length = 80, blank = False)
     codigo = models.CharField(max_length = 20, blank = False)
     nivel = models.PositiveSmallIntegerField(blank = True, null = True)
     componente = models.CharField(max_length = 1, choices = COMPONENTES_CHOICES, blank = False)

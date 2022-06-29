@@ -99,7 +99,7 @@
             <td>
               <div class="text-center">
                 <button
-                  v-if="this.evaluacionesEliminadas.includes(evaluacion)"
+                  v-if="this.evaluacionesEliminadas.includes(evaluacion[0])"
                   class="fa-solid fa-trash-can botonTabla"
                   style="background-color: red;"
                   v-on:click="deleteEvaluacion($event, index)"
@@ -141,9 +141,11 @@
       </template>
 
       <EvaluacionesProvisorias
-        v-if = "evaluacionesCreadas.length !== 0 || evaluacionesEliminadas.length !== 0"
+        v-if = "evaluacionesCreadas.length !== 0 || evaluacionesEliminadas.length !== 0 || evaluacionesPonderacion.length !== 0"
         :evaluacionesCreadas = 'this.evaluacionesCreadas'
         :evaluacionesEliminadas = 'this.evaluacionesEliminadas'
+        :evaluacionesPonderacion = 'this.evaluacionesPonderacion'
+        :cambiosPonderacion = 'this.cambiosPonderacion'
         @EventGuardarCambios = "() => guardarCambios()"
       />
 
@@ -514,6 +516,14 @@ export default {
     },
 
     modificarPonderacion: function (event, index) {
+
+      // Se verifica si la evaluación ya está considerada para ser modificada.
+      let modificada = 0;
+      for (var i = 0; i < this.evaluacionesPonderacion.length; i++) {        
+        if(this.evaluacionesPonderacion[i].nombre === this.evaluacionesFull[index][0].nombre){
+          modificada++;
+        }
+      }
       
       // Caso 1: La evaluación está considerada para ser eliminada.
       if(this.evaluacionesEliminadas.includes(this.evaluacionesFull[index][0])) {
@@ -526,7 +536,7 @@ export default {
       }
       
       // Caso 2: La evaluación ya recibió el cambio de ponderación.
-      else if(this.evaluacionesPonderacion.includes(this.evaluacionesFull[index][0])) {
+      else if(modificada !== 0) {
         this.$swal.fire({
           icon: "error",
           title: "Evaluación modificada",
@@ -555,18 +565,17 @@ export default {
           id_docente: this.evaluacionesFull[index][0].id_docente.id,
           id_tipoEvaluacion: this.evaluacionesFull[index][0].id_tipoEvaluacion.id,
           id_coordinacion: this.evaluacionesFull[index][0].id_coordinacion.id,
-        }
+        };
         
         let tuplaCambioPonderacion = {
           ponderacionAnterior: ponderacionAnterior,
           ponderacionNueva: ponderacionEvaluacion,
           motivo: this.motivoCambioPonderacion,
           fecha_cambio: fechaActual,
-          id_evaluacion: this.evaluacionesFull[index][0].id,
+          id_evaluacion: '',
         };
 
-        // Queda pendiente recibir esto en el archivo evaluacionesprovicorias.
-        this.evaluacionesPonderacion.push(this.evaluacionesFull[index][0]);
+        this.evaluacionesPonderacion.push(nuevaEvaluacion);
         this.cambiosPonderacion.push(tuplaCambioPonderacion);
       }
     },
@@ -594,7 +603,6 @@ export default {
         fechaEntrega = new Date(fecha.getTime() + 14 * 24 * 60 * 60 * 1000);
         fechaEntrega = fechaEntrega.toISOString().slice(0, 10);
 
-        // Metodo 2: Considera validación de ponderaciones.
         let nuevaEvaluacion = {
           nombre: this.nombreEvaluacion,
           fechaEvActual: this.fechaEvActual,
@@ -614,6 +622,7 @@ export default {
     guardarCambios() {
       let ponderacionTotal = 0;
       let coincidencia = 0;
+      let modificada = 0;
       
       /* Ponderaciones de las evaluaciones actuales (No se suman las 
       ponderaciones de aquellas evaluaciones que serán eliminadas). */
@@ -623,10 +632,18 @@ export default {
             coincidencia++
           }
         }
-        if(coincidencia === 0){
+        for (var j = 0; j < this.evaluacionesPonderacion.length; j++) {
+          if(this.evaluacionesPonderacion[j].nombre === this.evaluacionesFull[i][0].nombre){
+           ponderacionTotal = ponderacionTotal + parseFloat(this.evaluacionesPonderacion[j].ponderacion);
+           modificada++
+          }
+        }
+        
+        if(coincidencia === 0 && modificada === 0){
           ponderacionTotal = ponderacionTotal + parseFloat(this.evaluacionesFull[i][0].ponderacion);
         }
-        coincidencia = 0 
+        coincidencia = 0
+        modificada = 0
       }
 
       /* Ponderacion de las nuevas evaluaciones (Se suman las 
@@ -648,7 +665,7 @@ export default {
         });
         return ;
       }
-      
+    
       // Caso 2: El nuevo listado de evaluaciones da un 100%.
       else {
         for (var i = 0; i < this.evaluacionesCreadas.length; i++){
@@ -670,6 +687,21 @@ export default {
               // Si es el nombre correcto, se elimina cada una de las evaluaciones de ese grupo
               for (let k = 0; k < this.evaluacionesFull[j].length; k++) {
                 axios.delete(`http://localhost:8000/delete/evaluacion/${this.evaluacionesFull[j][k].id}`)
+                .then(function (response) {});
+              }
+            }
+          }
+        }
+
+        for (var i = 0; i < this.evaluacionesPonderacion.length; i++){
+          for (var j = 0; j < this.evaluacionesFull.length; j++) {
+            if(this.evaluacionesFull[j][0].nombre == this.evaluacionesPonderacion[i].nombre){
+              for (var k = 0; k < this.evaluacionesFull[j].length; k++) {
+                axios.put(`http://localhost:8000/update/evaluacion/${this.evaluacionesFull[j][k].id}`, this.evaluacionesPonderacion[i])
+                .then(function (response) {});
+
+                this.cambiosPonderacion[i].id_evaluacion = this.evaluacionesFull[j][k].id;
+                axios.post("http://localhost:8000/add/cambioPonderacion", this.cambiosPonderacion[i])
                 .then(function (response) {});
               }
             }

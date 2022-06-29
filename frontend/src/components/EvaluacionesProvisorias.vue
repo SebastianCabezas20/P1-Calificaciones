@@ -34,6 +34,26 @@
           </div>
         </td>
       </tr>
+      <!-- Evaluaciones modificadas (ponderación) momentáneamente. -->
+      <tr
+        v-for="(evaluacion, index) in evaluacionesPonderacion"
+        style="background-color: #ecb176"
+      >
+        <td>{{ evaluacion.nombre }}</td>
+        <td>{{ evaluacion.fechaEvActual }}</td>
+        <td v-if="evaluacion.estado === 'P'">Pendiente</td>
+        <td v-else>Evaluada</td>
+        <td>{{ evaluacion.ponderacion * 100 }}%</td>
+        <td>Modificar</td>
+        <td>
+          <div class="text-center">
+            <button
+              class="fa-solid fa-trash-can botonTabla"
+              @click="deshacerAccion(2, index)"
+            ></button>
+          </div>
+        </td>
+      </tr>
       <!-- Evaluaciones elimindas momentáneamente. -->
       <tr
         v-for="(evaluacion, index) in evaluacionesEliminadas"
@@ -49,7 +69,7 @@
           <div class="text-center">
             <button
               class="fa-solid fa-trash-can botonTabla"
-              @click="deshacerAccion(2, index)"
+              @click="deshacerAccion(3, index)"
             ></button>
           </div>
         </td>
@@ -72,6 +92,8 @@ export default {
   props: {
     evaluacionesCreadas: Array,
     evaluacionesEliminadas: Array,
+    evaluacionesPonderacion: Array,
+    cambiosPonderacion: Array,
   },
   emits: ["EventGuardarCambios"],
   methods: {
@@ -80,13 +102,15 @@ export default {
       if (numArray === 1) {
         this.evaluacionesCreadas.splice(index, 1);
       }
-      // Arreglo de evaluaciones eliminadas.
+      // Arreglo de evaluaciones modificadas.
       else if (numArray === 2) {
+        this.evaluacionesPonderacion.splice(index, 1);
+        this.cambiosPonderacion.splice(index, 1);
+      }
+      // Arreglo de evaluaciones eliminadas.
+      else {
         this.evaluacionesEliminadas.splice(index, 1);
       } 
-      // Posibilidad para agregar la modificación de ponderaciones.
-      else {
-      }
     },
     guardarCambios() {
       this.$emit("EventGuardarCambios");
