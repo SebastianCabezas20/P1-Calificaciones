@@ -613,8 +613,24 @@ def getCalificacionesEstudiantesCursosEspejo(request,bloqueHorario = None, idDoc
         calificacionEstudiantes = Coordinacion_Estudiante.objects.filter(id_coordinacion = id).distinct('id_estudiante')
         arregloEstudiante.extend(CoordinacionEstudianteSerializer(calificacionEstudiantes, many="true").data)
 
-    return Response(arregloEstudiante)   
+    return Response(arregloEstudiante)
 
+""" Función para obtener la coordinación (Laboratorio o Teoría) inscrita por un estudiante. 
+Útil para visualizar las calificaciones y evaluaciones de un estudiante en el componente opuesto,
+es decir, los docentes de Teoría pueden acceder a esta información del componene Laboratorio, y viceversa.
+En el caso de que el estudiante esté inscrito en un único componente, la función retorna False.
+Mencionar además que se consideran los cursos espejos, ya que la función se utiliza en Docente. """ 
+@api_view(['GET'])
+def estudiantePertenece(request, bloqueHorario = None, idDocente = None, componente = None, idEstudiante = None):
+    asignaturasComun = Coordinacion_Docente.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id = idDocente, id_coordinacion__isActive = True).values_list('id_coordinacion__id_asignatura__codigo', flat=True)
+    for codigoAsignatura in asignaturasComun:
+        consult = Coordinacion_Estudiante.objects.filter(id_coordinacion__id_asignatura__codigo = codigoAsignatura, id_coordinacion__id_asignatura__componente = componente, id_estudiante__id = idEstudiante, id_coordinacion__isActive = True)
+        if consult:
+            serializer = CoordinacionEstudianteSerializer(consult, many = "true")
+            return Response(serializer.data)
+
+    return Response(False)
+    
 # Obtener los datos de una evaluación en particular. Cambiar el estado de una evaluacion.
 @api_view(['GET', 'PUT'])
 def crudOneEvaluacionCursosEspejo(request, bloqueHorario = None, idDocente = None, nombreEvaluacion =None):

@@ -136,7 +136,6 @@ export default {
     getAsignatura: function (event, bloqueHorario) {
       // Pasar una variable de una vista a otra. En este caso para obtener los cursos espejos, se pasa el horario
       // para asi tener los cursos que tienen el horario en comun de un usuario
-      console.log(bloqueHorario)
       this.$router.push({ path: `/docente/curso/${bloqueHorario}` }); 
     },
 

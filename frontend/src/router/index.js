@@ -41,8 +41,8 @@ import atrasosSeccionJefeVue from "../views/Autoridad/atrasosSeccionJefeCarrera.
 import JefeAsignaturaVisualizacionVue from "../views/Autoridad/JefeAsignaturaVisualizacion.vue";
 import SeccionesAsignaturaJefeVisualiza from "../views/Autoridad/SeccionesAsignaturaJefeVisualiza.vue";
 import EvaluacionesJefe from "../views/Autoridad/EvaluacionesJefe.vue";
-
-
+import EstudiantesCurso from "../views/Docente/EstudiantesCurso.vue";
+import CalificacionesEstudiante from "../views/Docente/CalificacionesEstudiante.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -107,6 +107,18 @@ const router = createRouter({
       path: "/docente/curso/:idCurso",
       name: "cursoSeleccionadoDocente",
       component: DocenteCursoSeleccionado,
+      props: true,
+    },
+    {
+      path: "/docente/:idDocente/curso/:idCurso/estudiantes",
+      name: "estudiantesCurso",
+      component: EstudiantesCurso,
+      props: true,
+    },
+    {
+      path: "/docente/asignatura/:codigoAsig/:componente/estudiante/:idUsuario",
+      name: "calificacionesEstudiante",
+      component: CalificacionesEstudiante,
       props: true,
     },
     {

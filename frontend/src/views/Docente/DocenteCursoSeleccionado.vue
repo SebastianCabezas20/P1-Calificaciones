@@ -9,9 +9,22 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="titleSectionV2">
-        <h3 class="textTitleV2">Evaluaciones</h3>
+      
+      <div class="d-flex justify-content-between">
+        <div class="titleSectionV2">
+          <h3 class="textTitleV2">Evaluaciones</h3>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="botonTabla"
+            @click="mostrarEstudiantes()"
+          >
+            Estudiantes
+          </button>
+        </div>
       </div>
+      
 
       <table class="tableV2">
         <thead>
@@ -21,6 +34,7 @@
             <th>Fecha de rendición</th>
             <th>Estado</th>
             <th class="row-Ponderacion">Pondera</th>
+            <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
             <th class="row-ButtonIcon"></th>
@@ -67,6 +81,18 @@
                       false || !esPosibleModificarFecha(index)
                   "
                   title="Modificar fecha de evaluación"
+                ></button>
+              </div>
+            </td>
+            <!-- Cambio de Ponderación. -->
+            <td>
+              <div class="text-center">
+                <button
+                  @click="abrirCambioPonderacion(index)"
+                  class="fa-solid fa-percent botonTabla"
+                  :disabled="evaluacion[0].id_coordinacion.id_asignatura.isAutogestionada ==
+                  false"
+                  title="Modificar la ponderación de la evaluación."
                 ></button>
               </div>
             </td>
@@ -217,6 +243,84 @@
         </div>
       </transition>
 
+      <!-- Modal para modificar la ponderación de una evaluación. -->
+      <transition name="fase" appear>
+        <div class="modal-overlay" v-if="showModalPonderacion">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">
+                  Modificar ponderación de la evaluación
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  @click="showModalPonderacion = false"
+                ></button>
+              </div>
+
+              <div class="modal-body">
+                <form
+                  action="#"
+                  method="PUT"
+                  v-on:submit.prevent="modificarPonderacion($event, modalIndex)"
+                >
+                  <div class="mb-3">
+                    <label class="form-label">Ponderación actual</label>
+                      <input
+                        :value="this.evaluacionesFull[modalIndex][0].ponderacion * 100"
+                        class="form-control"
+                        disabled
+                      />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Nueva ponderación</label>
+                    <input
+                      v-model="nuevaPonderacionEv"
+                      class="form-control"
+                      placeholder="15"
+                      type="number"
+                      min="1"
+                      max="100"
+                      step="0.1"
+                      required
+                    />
+                  </div>
+
+                  <div id="divMotivo">
+                    <h5 class="textoFormulario">
+                      Motivo del cambio de ponderación.
+                    </h5>
+                    <textarea
+                      rows="9"
+                      placeholder="Escriba acá el motivo del cambio de ponderación."
+                      id="motivoCambioPonderacion"
+                      required
+                      v-model="motivoCambioPonderacion"
+                      style="width: 450px"
+                    ></textarea>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      v-on:click="showModalPonderacion = false"
+                    >
+                      Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      Guardar cambios
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+
       <!-- Modal Modificar Fecha-->
       <transition name="fase" appear>
         <div class="modal-overlay" v-if="showModalFecha">
@@ -315,16 +419,21 @@ export default {
       evaluacionesCurso: [],
       tiposEvaluaciones: [],
       evaluacionesFull: [],
+
       showModal: false,
       showModalFecha: false,
+      showModalPonderacion: false,
+      
       nombreEvaluacion: "",
       tipoEvaluacion: "",
       porcentajeEvaluacion: "",
       fechaEvActual: null,
       fechaEvaluacion: "",
+      nuevaPonderacionEv: "",
       modalIndex: "",
       idDocente: 0,
       motivoCambio: "",
+      motivoCambioPonderacion: "",
       informacionCoordinacion: [],
       informacionCoordinacionUnica: [],
       mailDocente: "",
@@ -336,6 +445,8 @@ export default {
 
       evaluacionesCreadas: [],
       evaluacionesEliminadas: [],
+      evaluacionesPonderacion: [],
+      cambiosPonderacion: [],
     };
   },
 
@@ -382,6 +493,11 @@ export default {
       this.showModalFecha = true;
     },
 
+    abrirCambioPonderacion(index) {
+      this.modalIndex = index;
+      this.showModalPonderacion = true;
+    },
+
     deleteEvaluacion: function (event, index) {      
       /*  Se comprueba si la evaluación que seleccionó para eliminar ya está 
       considerada para ser eliminada. */
@@ -395,6 +511,64 @@ export default {
       }
       // Sino, se agrega para posteriormente ser eliminada.
       this.evaluacionesEliminadas.push(this.evaluacionesFull[index][0]);
+    },
+
+    modificarPonderacion: function (event, index) {
+      
+      // Caso 1: La evaluación está considerada para ser eliminada.
+      if(this.evaluacionesEliminadas.includes(this.evaluacionesFull[index][0])) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Evaluación eliminada",
+          text: "La evaluación ya está considerada para ser eliminada.",
+        });
+        return;
+      }
+      
+      // Caso 2: La evaluación ya recibió el cambio de ponderación.
+      else if(this.evaluacionesPonderacion.includes(this.evaluacionesFull[index][0])) {
+        this.$swal.fire({
+          icon: "error",
+          title: "Evaluación modificada",
+          text: "La evaluación ya está considerada para ser modificada.",
+        });
+        return;
+      }
+
+      // Caso 3: Es posible modificar la ponderación.
+      else{
+        let ponderacionEvaluacion = this.nuevaPonderacionEv / 100;
+        let ponderacionAnterior = this.evaluacionesFull[index][0].ponderacion;
+        let fechaActual = new Date();
+        fechaActual = fechaActual.toISOString().slice(0, 10);
+
+        /* Se agrega solo la evaluación de la coordinación actual. Al guardar
+        los cambios se debe cambiar en todas las coordinaciones espejos si existen */
+        let nuevaEvaluacion = {
+          nombre: this.evaluacionesFull[index][0].nombre,
+          fechaEntrega: this.evaluacionesFull[index][0].fechaEntrega,
+          fechaEvActual: this.evaluacionesFull[index][0].fechaEvActual,
+          ponderacion: ponderacionEvaluacion,
+          estado: this.evaluacionesFull[index][0].estado,
+          obs_general: this.evaluacionesFull[index][0].obs_general,
+          adjunto: this.evaluacionesFull[index][0].adjunto,
+          id_docente: this.evaluacionesFull[index][0].id_docente.id,
+          id_tipoEvaluacion: this.evaluacionesFull[index][0].id_tipoEvaluacion.id,
+          id_coordinacion: this.evaluacionesFull[index][0].id_coordinacion.id,
+        }
+        
+        let tuplaCambioPonderacion = {
+          ponderacionAnterior: ponderacionAnterior,
+          ponderacionNueva: ponderacionEvaluacion,
+          motivo: this.motivoCambioPonderacion,
+          fecha_cambio: fechaActual,
+          id_evaluacion: this.evaluacionesFull[index][0].id,
+        };
+
+        // Queda pendiente recibir esto en el archivo evaluacionesprovicorias.
+        this.evaluacionesPonderacion.push(this.evaluacionesFull[index][0]);
+        this.cambiosPonderacion.push(tuplaCambioPonderacion);
+      }
     },
 
     crearEvaluacion: function (event) {
@@ -493,7 +667,6 @@ export default {
           for (let j = 0; j < this.evaluacionesFull.length; j++) {
             // Buscar el grupo por el nombre de la evaluacion a eliminar
             if(this.evaluacionesFull[j][0].nombre == this.evaluacionesEliminadas[i].nombre){
-              console.log(this.evaluacionesEliminadas[i].nombre)
               // Si es el nombre correcto, se elimina cada una de las evaluaciones de ese grupo
               for (let k = 0; k < this.evaluacionesFull[j].length; k++) {
                 axios.delete(`http://localhost:8000/delete/evaluacion/${this.evaluacionesFull[j][k].id}`)
@@ -610,7 +783,12 @@ export default {
       this.$router.push({
         // idCurso = horario curso
         path: `/docente/${this.idDocente}/curso/${this.idCurso}/evaluacion/${nombreEvaluacion}`,
-        
+      });
+    },
+
+    mostrarEstudiantes: function (event) {
+      this.$router.push({
+        path: `/docente/${this.idDocente}/curso/${this.idCurso}/estudiantes`,
       });
     },
     /*
