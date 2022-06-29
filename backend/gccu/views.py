@@ -570,18 +570,29 @@ def getInfoDashboardJefeCarrera(request, idUsuario = None):
     return Response([estudiantesEnCarrera, solicitudesSemestre, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas, notasCambiadas])
 @api_view(['GET'])
 def evaluacionesCoordinacionCursosEspejo(request, bloqueHorario = None, idUsuario = None):
-
     # Funcionando.
     if request.method == 'GET':
-        # Obtener los nombres unicos en las evaluaciones
-        evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id_usuario__id = idUsuario).distinct('nombre').values_list('nombre',flat=True)
+        ## Lista con los cursos asociados a ese horario y al id del docente
+        cursos = Coordinacion_Docente.objects.filter(id_docente__id_usuario__id = idUsuario, id_coordinacion__bloques_horario = bloqueHorario).values_list('id_coordinacion__id', flat= True)
+        ##evaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = cursos).distinct('nombre').all()
         evaluaciones = []
-        # Por cada nombre buscar segun bloque y docente, con tal de tener las dos o mas pruebas de distintas cordinacion de un curso espejo
-        # Con eso tener las evaluacion y poder modificarlas individualmente.
-        for nombre in evaluacionCoordinacion:
-            evaluacionesPorNombre = Evaluacion.objects.filter(id_coordinacion__bloques_horario = bloqueHorario, id_docente__id_usuario__id = idUsuario, nombre = nombre).all()
-            evaluaciones.append(EvaluacionSerializer(evaluacionesPorNombre, many = "true").data)
+        ## Significa que existe por lo menos un curso
+        if cursos.count() != 0:
+            ## Obtenemos los nombres de las evaluaciones de un curso
+            ## En teoria si son las mismas evaluaciones para todos los cursos, solo con un curso tendriamos todas las evaluaciones
+            ## En caso de ser un curso, se obtiene solo las de ese curso
+            nombresEvaluacionCoordinacion = Evaluacion.objects.filter(id_coordinacion__id = cursos[0]).distinct('nombre').values_list('nombre',flat=True)
+            for nombre in nombresEvaluacionCoordinacion:
+                evaluaciones.append([])
+            for id in cursos:
+                for index ,nombre in enumerate(nombresEvaluacionCoordinacion):
+                    ## Buscamos las evaluaciones por nombre y el id del curso
+                    ## evaluaciones = [Evaluaciones 1],[Evaluaciones 2],[...],[...], una evaluacion por cada curso, 
+                    ## en el caso de que solo haya un curso solo sera una evaluacion por index
+                    evaluacionesPorNombre = Evaluacion.objects.filter(id_coordinacion__id = id, nombre = nombre).all()
+                    evaluaciones[index].extend(EvaluacionSerializer(evaluacionesPorNombre, many = "true").data)
         return Response(evaluaciones)
+
 
 @api_view(['GET']) ## Cambio a bloque horario - antes id, se agrega distinct
 def informacionCoordinacionCursoEspejo(request, idUsuario = None ,bloqueHorario = None):
