@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     login() {
-      for (var i = 0; i < this.evaluaciones.length; i++) {
+      /*for (var i = 0; i < this.evaluaciones.length; i++) {
         if (this.username == this.evaluaciones[i].id_docente.id_usuario.username) {
           var fechaEval = this.evaluaciones[i].fechaEntrega;
           var fechaEvalFormat = moment(fechaEval);
@@ -135,7 +135,7 @@ export default {
             });
           }
         }
-      }
+      }*/
       this.$store
         .dispatch("userLogin", {
           nombreUsuario: this.username,
