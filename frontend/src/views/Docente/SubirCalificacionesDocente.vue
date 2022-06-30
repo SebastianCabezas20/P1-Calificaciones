@@ -494,7 +494,7 @@ export default {
       }
 
       for (var i = 0; i < this.informacionEvaluacion.length; i++){
-        // Creacion de una evaluacion de una coordinacion en especifico
+        // Creacion de una evaluacion de una coordinacion en especifico para cursos espejo
         let nuevaEvaluacion = {
         nombre: this.informacionEvaluacion[i].nombre,
         fechaEvActual: this.informacionEvaluacion[i].fechaEvActual,

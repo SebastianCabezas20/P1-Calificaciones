@@ -111,7 +111,8 @@ export default {
     },
     methods:{
         filterSecciones(coordinacion,seccion){
-        if(this.secciones.includes(seccion) && this.coordinaciones.includes(coordinacion)){
+        if((this.secciones.includes(seccion) && this.coordinaciones.includes(coordinacion)) || 
+        (this.coordinaciones == "" && this.secciones == "")){
             return true
         }
         else{
