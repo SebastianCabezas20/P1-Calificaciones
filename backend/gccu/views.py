@@ -693,6 +693,21 @@ def getSolicitudesDashboardJefeCarrera(request, idJefeCarrera = None):
         dataAceptados.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'A').count())
     return Response([nombreAsignaturas,dataRechazados,dataPendientes,dataAceptados])
 
+## Solicitudes para el jefe de carrera dash
+@api_view(['GET'])
+def getCambioNotasDashboardJefeCarrera(request, idJefeCarrera = None):    
+    
+    idsAsignatura = Asignaturas_PlanEstudio.objects.filter(id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idJefeCarrera).distinct('id_asignatura').values_list('id_asignatura', flat= True)
+    cambios = []
+    asignaturas = []
+    for id in idsAsignatura:
+        cantidad = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion__id_asignatura__id = id).count()
+        if cantidad != 0:
+            nombre = Asignatura.objects.filter(id = id).values_list('nombre',flat= True)
+            asignaturas.append(nombre[0])
+            cambios.append(cantidad)
+    return Response([cambios,asignaturas])
+
 @api_view(['GET'])
 def getAllCalificacionesByCurso(request, codigoAsig = None):
     calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigoAsig).all()
