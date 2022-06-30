@@ -15,10 +15,10 @@
         <table class="tableV2">
           <thead>
             <tr>
-              <th>Código</th>
-              <th>Asignatura</th>
+              <th class="row-Codigo">Código</th>
+              <th class="row-Nombre">Asignatura</th>
               <th>Componente</th>
-              <th>Profesor</th>
+              <th>Docente</th>
               <th>Horario</th>
               <th>Acción</th>
             </tr>

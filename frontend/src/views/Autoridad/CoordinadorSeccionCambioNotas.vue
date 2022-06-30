@@ -17,7 +17,7 @@
         <thead>
           <tr>
             <th class="row-Codigo">Sección</th>
-            <th>Profesor</th>
+            <th>Docente</th>
             <th class="row-Horario">Horario</th>
             <th class="row-Nombre">Asignatura</th>
             <th>Componente</th>

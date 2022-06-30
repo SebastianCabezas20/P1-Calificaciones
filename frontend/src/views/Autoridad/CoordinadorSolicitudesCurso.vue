@@ -13,7 +13,7 @@
         <h4 class="textTitleV2">Solicitudes de revisión</h4>
       </div>
       <!--Filtros-->
-      <div class="row">
+      <div class="row" style="background-color: #ffffff">
         <div class="col-6">
           <div class="input-group row">
             <span class="input-group-text">Evaluación</span>
@@ -23,7 +23,7 @@
               v-model="evaluacionFiltro"
               placeholder="Evaluación a buscar"
             />
-            <span class="input-group-text">Docente</span>
+            <span class="input-group-text mt-4">Docente</span>
             <input
               type="text"
               class="form-control"
@@ -43,7 +43,7 @@
             />
           </div>
           <div class="input-group row">
-            <h6>Tipo de apelaciones</h6>
+            <h6>Estados posibles</h6>
             <!-- Botones para la seleccion de estados -->
             <div>
               <div
@@ -109,10 +109,10 @@
           <tr>
             <th>Evaluación</th>
             <th>Docente</th>
-            <th>Estado</th>
             <th>Fecha de creación</th>
             <th>Estudiante</th>
             <th>Detalle</th>
+            <th>Estado</th>
           </tr>
         </thead>
         <tbody v-for="solicitud in solicitudes" :key="solicitud.id">

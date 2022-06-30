@@ -5,18 +5,20 @@
     && filtroEstudiante(solicitud.id_estudiante.id_usuario.first_name,solicitud.id_estudiante.id_usuario.last_name)">
         <td>{{solicitud.id_evaluacion.nombre}}</td>
         <td>{{solicitud.id_docente.id_usuario.first_name}} {{solicitud.id_docente.id_usuario.last_name}}</td>
+        
+        <td>{{solicitud.fecha_creacion}}</td>
+        <td>{{solicitud.id_estudiante.id_usuario.first_name}} {{solicitud.id_estudiante.id_usuario.last_name}}</td>
         <td v-if="solicitud.estado == 'A'">Aprobada</td>
         <td v-else-if="solicitud.estado == 'R'" >Rechazado</td>
         <td v-else >Pendiente</td>
-        <td>{{solicitud.fecha_creacion}}</td>
-        <td>{{solicitud.id_estudiante.id_usuario.first_name}} {{solicitud.id_estudiante.id_usuario.last_name}}</td>
         <td>
         <button type="button" @click="showModal = !showModal" class="btn btn-success">
             Detalles
         </button>
         </td>
     </tr>
-    <transition name="fase" appear >
+    
+    <transition name="fase" appear>
             <div class="modal-overlay" v-if="showModal">
                 <div class="modal-dialog" >
                 <div class="modal-content" style="width:1000px">
@@ -34,51 +36,51 @@
                     <div class="modal-body">
                     <div class="container">
                         <div class="row">
-                            <div class="col-5">Estudiante solicitante</div>
-                            <div class="col-5">{{solicitud.id_estudiante.id_usuario.username}}</div>
+                            <div class="col">Estudiante solicitante</div>
+                            <div class="col">{{solicitud.id_estudiante.id_usuario.username}}</div>
                         </div>
                         <div class="row">
-                            <div class="col-5">Profesor responsable</div>
-                            <div class="col-5">{{solicitud.id_docente.id_usuario.username}}</div>
+                            <div class="col">Profesor responsable</div>
+                            <div class="col">{{solicitud.id_docente.id_usuario.username}}</div>
                         </div>
                         <div class="row">
-                            <div class="col-5">Estado</div>
-                            <div class="col-5" v-if="solicitud.estado == 'A'" >Aprobada</div>
-                            <div class="col-5" v-else-if="solicitud.estado == 'R'" >Rechazado</div>
-                            <div class="col-5" v-else>Pendiente</div>
+                            <div class="col">Estado</div>
+                            <div class="col" v-if="solicitud.estado == 'A'" >Aprobada</div>
+                            <div class="col" v-else-if="solicitud.estado == 'R'" >Rechazado</div>
+                            <div class="col" v-else>Pendiente</div>
                         </div>
                         <div class="row">
-                            <div class="col-5">Motivo</div>
-                            <div class="col-5">{{solicitud.motivo}}</div>
+                            <div class="col">Motivo</div>
+                            <div class="col">{{solicitud.motivo}}</div>
                         </div>
                         <div class="row">
-                            <div class="col-5">Fecha creacion</div>
-                            <div class="col-5">{{solicitud.fecha_creacion}}</div>
+                            <div class="col">Fecha de creación</div>
+                            <div class="col">{{solicitud.fecha_creacion}}</div>
                         </div>
                         <div class="row" v-if="solicitud.estado != 'P'">
-                            <div class="col-5">Respuesta</div>
-                            <div class="col-5">{{solicitud.respuesta}}</div>
+                            <div class="col">Respuesta</div>
+                            <div class="col">{{solicitud.respuesta}}</div>
                         </div>
                         <div class="row" v-if="solicitud.estado != 'P'">
-                            <div class="col-5">Fecha Respuesta</div>
-                            <div class="col-5">{{solicitud.fecha_respuesta}}</div>
+                            <div class="col">Fecha de respuesta</div>
+                            <div class="col">{{solicitud.fecha_respuesta}}</div>
                         </div>
                         <div class="row" v-if="solicitud.estado == 'P' || solicitud.estado == 'R'">
-                            <div class="col-3">Nota actual</div>
+                            <div class="col-3">Calificación actual</div>
                             <div class="col-3">{{solicitud.actual_nota}}</div>
-                            <div class="col-3">Fecha Publicacion</div>
+                            <div class="col-3">Fecha de publicación</div>
                             <div class="col-3">{{solicitud.id_calificacion.fecha_entrega}}</div>
                         </div>
                         <div class="row" v-if="solicitud.estado == 'A'">
-                            <div class="col-3">Nota modificada</div>
+                            <div class="col-3">Nueva calificación</div>
                             <div class="col-3">{{solicitud.actual_nota}}</div>
-                            <div class="col-3">Fecha publicacion</div>
+                            <div class="col-3">Fecha de publicación</div>
                             <div class="col-3">{{solicitud.fecha_respuesta}}</div>
                         </div>
                         <div class="row" v-if="solicitud.estado == 'A'">
-                            <div class="col-3">Nota anterior</div>
+                            <div class="col-3">Calificación anterior</div>
                             <div class="col-3">{{solicitud.anterior_nota}}</div>
-                            <div class="col-3">Fecha publicacion</div>
+                            <div class="col-3">Fecha de publicación</div>
                             <div class="col-3">{{solicitud.id_calificacion.fecha_entrega}}</div>
                         </div>
                     </div>

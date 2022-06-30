@@ -10,34 +10,35 @@
   <div class="contentViews">
     <div class="centralContent">
 
-      <div class="container">
-        <div class="row">
-          <h1>Inicio</h1>
+      <div class="row" style="background-color: #ffffff">
+        <!-- Cuadro con las coordinaciones inscritas por el coordinador. -->
+        <div
+          class="col cuadradoDashboard"
+          style="margin-right: 20px"
+          @click="coordinaciones()"
+        >
+          <div class="iconoDashboard">
+            <span class="fa-solid fa-book fa-3x"></span>
+          </div>
+          <h2>Coordinaciones a cargo este semestre</h2>
+          <p>Totales (teoría - laboratorio)</p>
+          <h3>
+            {{ Number(nCursos) }}
+          </h3>
         </div>
 
-        <div class="row">
-          <div class="col">
-            Cursos Totales: {{ Number(nCursos) }}
+        <!-- Cuadro con solicitudes totales, pendientes y recibidas. -->
+        <div
+          class="col cuadradoDashboard"
+          style="margin-left: 20px"
+          @click="solicitudes()"
+        >
+          <div class="iconoDashboard">
+            <span class="fa-solid fa-file-circle-exclamation fa-3x"></span>
           </div>
-          <div class="col">
-            Evaluaciones Pendientes: {{ Number(nEvaluacionesP) }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            Solicitudes totales: {{ Number(nSolicitudesT) }}
-          </div>
-          <div class="col">
-            Solicitudes Pendientes: {{ Number(nSolicitudesP) }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            Aprobadas: {{ Number(nSolicitudesA) }}
-          </div>
-          <div class="col">
-            Rechazadas: {{ Number(nSolicitudesR) }}
-          </div>
+          <h2>Solicitudes de revisión recibidas en mis coordinaciones</h2>
+          <p>Totales (pendientes - aprobadas - rechazadas)</p>
+          <h3>{{ nSolicitudesT }} ({{nSolicitudesP}} - {{ nSolicitudesA }} - {{ nSolicitudesR }})</h3>
         </div>
       </div>
 
@@ -52,8 +53,6 @@
                 <canvas id="graficoPie" style=""></canvas>
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -97,14 +96,12 @@ export default {
     axios
       .get(`http://localhost:8000/get/cambiosNota/${identificacionUsuario}`)
       .then(function (response) {
-        console.log(response.data);
         ins.cambio_notas = response.data;
       });
 
     axios
       .get(`http://localhost:8000/get/infodashboardcoordinador/${identificacionUsuario}`)
       .then(function (response) {
-        console.log(response.data);
         ins.nCursos = response.data[0];
         ins.nEvaluacionesP = response.data[1];
         ins.nSolicitudesT = response.data[2];
@@ -182,7 +179,15 @@ export default {
     });
 
   },
-  methods: {}
+  methods: {
+    solicitudes(){
+      this.$router.push({ name: "seccionesCoordinador" });
+    },
+
+    coordinaciones() {
+      this.$router.push({ name: "asignaturasCoordinador" });
+    }
+  },
 };
 </script>
 

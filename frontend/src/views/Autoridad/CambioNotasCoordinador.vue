@@ -13,7 +13,7 @@
         <h4 class="textTitleV2">Modificaciones de calificaciones</h4>
       </div>
       <!--Filtros-->
-      <div class="row">
+      <div class="row" style="background-color: #ffffff">
         <div class="col-6">
           <div class="input-group row">
             <span class="input-group-text">Evaluación</span>
@@ -23,7 +23,7 @@
               v-model="evaluacionFiltro"
               placeholder="Evaluación a buscar"
             />
-            <span class="input-group-text">Docente</span>
+            <span class="input-group-text mt-4">Docente</span>
             <input
               type="text"
               class="form-control"

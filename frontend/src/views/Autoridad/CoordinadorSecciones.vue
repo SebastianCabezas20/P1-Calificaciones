@@ -10,21 +10,22 @@
   <div class="contentViews">
     <div class="centralContent">
       <div class="titleSectionV2">
-        <h4 class="textTitleV2">Apelaciones</h4>
+        <h4 class="textTitleV2">Solicitudes de revisión por coordinación</h4>
       </div>
         <table class="tableV2">
           <thead>
             <tr>
-              <th>Seccion</th>
-              <th>Profesor</th>
+              <th class="row-Codigo">Sección</th>
+              <th class="row-Asignatura">Asignatura</th>
+              <th>Docente</th>
               <th>Horario</th>
-              <th>Asignatura</th>
               <th>Seleccionar</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="seccion in secciones" :key="seccion.id">
                 <td>{{seccion[0].id_coordinacion.coordinacion}}-{{seccion[0].id_coordinacion.seccion}}</td>
+                <td>{{seccion[0].id_coordinacion.id_asignatura.nombre}}</td> 
                 <!--V-for para obtener todas las tuplas con los distintos profesores-->
                 <td> 
                   <label class="row" v-for="s in seccion" :key="s.index" >
@@ -32,7 +33,6 @@
                   </label>
                 </td>
                 <td>{{seccion[0].id_coordinacion.bloques_horario}}</td>
-                <td>{{seccion[0].id_coordinacion.id_asignatura.nombre}}</td>    
                 <td>
                   <button type="button" class="botonTabla" @click.prevent="Ingresar(seccion[0].id_coordinacion.id)">
                     Seleccionar

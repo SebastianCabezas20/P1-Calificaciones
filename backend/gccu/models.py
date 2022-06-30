@@ -200,8 +200,8 @@ class Calificacion(models.Model):
 
 class Solicitud_Revision(models.Model):
     motivo = models.TextField(blank = False)
-    anterior_nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = True, blank=True)
-    actual_nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = True)
+    anterior_nota = models.DecimalField(max_digits = 2, decimal_places = 1, null = True, blank=True)
+    actual_nota = models.DecimalField(max_digits = 2, decimal_places = 1, null = True)
     fecha_creacion = models.DateField(null = False)
     archivoAdjunto = models.FileField(blank = True, null = True)
     respuesta = models.TextField(blank = True, null = True, default = '')
@@ -216,8 +216,8 @@ class Solicitud_Revision(models.Model):
         return 'Solicitud de %s en la evaluacion %s' % (self.id_estudiante, self.id_evaluacion)
 
 class Cambio_nota(models.Model):
-    anterior_nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
-    actual_nota = models.DecimalField(max_digits = 4, decimal_places = 3, null = False)
+    anterior_nota = models.DecimalField(max_digits = 2, decimal_places = 1, null = False)
+    actual_nota = models.DecimalField(max_digits = 2, decimal_places = 1, null = False)
     fecha_cambio = models.DateField(null = True)
     motivo = models.TextField(blank = False)
     id_calificacion = models.ForeignKey(Calificacion, null = False, on_delete = models.CASCADE)
