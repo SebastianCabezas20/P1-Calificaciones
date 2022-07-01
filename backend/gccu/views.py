@@ -713,3 +713,64 @@ def getAllCalificacionesByCurso(request, codigoAsig = None):
     calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__codigo = codigoAsig).all()
     serializer = CalificacionSerializer(calificaciones, many="true")
     return Response(serializer.data)
+
+##Todas los cambios de nota en un semestre activo de un departamento correspondiente
+@api_view(['GET'])
+def getInfoDashboardAutoridadSub(request, idAutoridad = None):
+    info = []
+    ## n cambios notas en semestre
+    info.append(Cambio_nota.objects.filter(id_calificacion__id_estudiante__id_planEstudio__id_carrera__id_departamento__id_subdirector__id_usuario = idAutoridad, id_calificacion__id_evaluacion__id_coordinacion__isActive = True).count())
+    ## n cambios notas a azules
+    info.append(Cambio_nota.objects.filter(id_calificacion__id_estudiante__id_planEstudio__id_carrera__id_departamento__id_subdirector__id_usuario = idAutoridad, id_calificacion__id_evaluacion__id_coordinacion__isActive = True, anterior_nota__lt = 4, actual_nota__gte = 4).count())
+    ## n cambios notas a rojos
+    info.append(Cambio_nota.objects.filter(id_calificacion__id_estudiante__id_planEstudio__id_carrera__id_departamento__id_subdirector__id_usuario = idAutoridad, id_calificacion__id_evaluacion__id_coordinacion__isActive = True, anterior_nota__gte = 4, actual_nota__lt = 4).count())
+    
+    ##obtengo asignaturas correspondientes autoridad
+    relacionAsignaturaPlanEstudio = Asignaturas_PlanEstudio.objects.filter(id_planEstudio__id_carrera__id_departamento__id_subdirector__id_usuario = idAutoridad)
+    asignaturas = Asignatura.objects.all()
+    asignaturasAutoridad = []
+    for relacion in relacionAsignaturaPlanEstudio:
+        for asignatura in asignaturas:
+            if relacion.id_asignatura.id == asignatura.id:
+                asignaturasAutoridad.append(asignatura)
+                continue
+    
+    ##n cambios en ponderaciones
+    nCambiosPonderaciones = 0
+    for asignatura in asignaturasAutoridad:
+        nCambiosPonderaciones += Cambio_Ponderacion.objects.filter(id_evaluacion__id_coordinacion__isActive = True, id_evaluacion__id_coordinacion__id_asignatura = asignatura.id).count()
+    
+    info.append(nCambiosPonderaciones)
+
+    #n cambio fechas
+    nCambiosFecha = 0
+    for asignatura in asignaturasAutoridad:
+        nCambiosFecha += Cambio_Fecha.objects.filter(id_evaluacion__id_coordinacion__isActive = True, id_evaluacion__id_coordinacion__id_asignatura = asignatura.id).count()
+    info.append(nCambiosFecha)
+
+    ## n Solicitudes
+    info.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__isActive = True, id_estudiante__id_planEstudio__id_carrera__id_departamento__id_subdirector__id_usuario = idAutoridad).count())
+    ## n Solicitudes P
+    info.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__isActive = True, id_estudiante__id_planEstudio__id_carrera__id_departamento__id_subdirector__id_usuario = idAutoridad, estado = 'P').count())
+    ## n solicitudes A
+    info.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__isActive = True, id_estudiante__id_planEstudio__id_carrera__id_departamento__id_subdirector__id_usuario = idAutoridad, estado = 'A').count())
+    ## n Solicitudes R
+    info.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__isActive = True, id_estudiante__id_planEstudio__id_carrera__id_departamento__id_subdirector__id_usuario = idAutoridad, estado = 'R').count())
+
+    ## Retorno
+    # ## n cambios notas en semestre
+    # ## n cambios notas a azules
+    #  n cambios notas a rojos
+    # ##n cambios en ponderaciones
+    # #n cambio fechas
+    # n Solicitudes
+    # n Solicitudes P
+    # n Solicitudes A
+    # n Solicitudes R
+    
+    return Response(info)
+    
+
+
+
+

@@ -91,5 +91,7 @@ urlpatterns = [
     path('get/dash/solicitudes/<int:idJefeCarrera>', views.getSolicitudesDashboardJefeCarrera),
     path('get/dash/cambioNotas/<int:idJefeCarrera>', views.getCambioNotasDashboardJefeCarrera),
     path('get/calificaciones/<int:codigoAsig>/all', views.getAllCalificacionesByCurso),
+    ### Autoridad (Vicedecano - SubDirector)
+    path('get/infodashboardautoridadsub/<int:idAutoridad>', views.getInfoDashboardAutoridadSub),
     
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

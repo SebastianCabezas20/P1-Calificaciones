@@ -9,19 +9,51 @@
 
   <div class="contentViews">
     <div class="centralContent">
-      <div class="row" style="background-color: #ffffff">
 
-        <div class="col-md-3"></div>
-      </div>
+      <div class="container">
+        <div class="row">
+          <h1>Datos generales Departamento</h1>
+        </div>
 
-      <div class="row">
-        <div class="chart-container" style="position: relative; height:400px; width:400px">
-          <canvas id="graficoBarras"></canvas>
+        <div class="row">
+          <div class="col">
+            Cambios notas en semestre: {{ Number(Info[0]) }}
+          </div>
+          <div class="col">
+            Cambios notas a azules en semestre: {{ Number(Info[1]) }}
+          </div>
         </div>
-        <div class="chart-container" style="position: relative; margin-left:100px; height:400px; width:400px">
-          <canvas id="graficoPie" style=""></canvas>
+        <div class="row">
+          <div class="col">
+            Cambios notas a rojos en semestre: {{ Number(Info[2]) }}
+          </div>
+          <div class="col">
+            Cambios en ponderaciones: {{ Number(Info[3]) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            Cambio fechas: {{ Number(Info[4]) }}
+          </div>
+          <div class="col">
+            Solicitudes: {{ Number(Info[5]) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            Solicitudes pendientes: {{ Number(Info[6]) }}
+          </div>
+          <div class="col">
+            Solicitudes aprobadas: {{ Number(Info[7]) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            Solicitudes rechazadas: {{ Number(Info[8]) }}
+          </div>
         </div>
       </div>
+      
     </div>
 
   </div>
@@ -30,7 +62,7 @@
 </template>
 
 <script>
-import Sidebar from "../../components/SidebarJefeCarrera.vue";
+import Sidebar from "../../components/SidebarAutoridad.vue";
 import Navbar from "../../components/NavbarGeneral.vue";
 import axios from 'axios';
 import router from "../../router";
@@ -44,116 +76,24 @@ export default {
     Navbar,
   },
   data() {
-    return { }
+    return {
+      Info: []
+    }
   },
-  created() { },
-  mounted() {
+  created() {
     let ins = this;
+    let identificacionUsuario = this.$store.getters.idUsuario;
+
+    axios
+      .get(`http://localhost:8000/get/infodashboardautoridadsub/${identificacionUsuario}`)
+      .then(function (response) {
+        console.log(response.data);
+        ins.Info = response.data;
+
+      });
     
-
-    const ctx = document.getElementById('graficoBarras').getContext('2d');
-    const graficoBarras = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Asignatura 1', 'Asignatura 2', 'Asignatura 3', 'Asignatura 4', 'Asignatura 5', 'Asignatura 6'],
-        datasets: [{
-          label: 'Rechazadas',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            'rgba(255, 99, 132)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 3
-        },
-        {
-          label: 'Aceptadas',
-          data: [1, 1, 31, 51, 21, 31],
-          backgroundColor: [
-            'rgba(54, 162, 235)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 3
-        },
-        {
-          label: 'Pendientes',
-          data: [1, 1, 31, 51, 21, 31],
-          backgroundColor: [
-            'rgba(255, 206, 86)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 3
-        },
-        ],
-
       },
-      options: {
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-          }
-        }
-      }
-    });
-    const ctx2 = document.getElementById('graficoPie').getContext('2d');
-    const graficoPie = new Chart(ctx2, {
-      type: 'pie',
-      data: {
-        labels: ['Asignatura 1', 'Asignatura 2', 'Asignatura 3', 'Asignatura 4', 'Asignatura 5', 'Asignatura 6'],
-        datasets: [{
-          label: '# de coordinaciones',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 3
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-          }
-        }
-      }
-    });
-
-  },
+    
   methods: {
 
   }
