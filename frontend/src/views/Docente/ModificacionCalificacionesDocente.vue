@@ -320,7 +320,7 @@ export default {
             };
 
             //Envío de mail a todos los estudiantes que fueron calificados.
-            /*
+            
             emailjs.send('pingeso', 'template_nota', {
               nombre_curso: this.calificaciones[index].id_evaluacion.id_coordinacion.id_asignatura.nombre,
               nombre_estudiante: this.calificaciones[index].id_estudiante.id_usuario.first_name+" "+this.calificaciones[index].id_estudiante.id_usuario.last_name,
@@ -332,7 +332,7 @@ export default {
               console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
               console.log('FAILED...', error);
-            });*/
+            });
             
 
             axios

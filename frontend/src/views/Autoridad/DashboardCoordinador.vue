@@ -21,7 +21,7 @@
             <span class="fa-solid fa-book fa-3x"></span>
           </div>
           <h2>Coordinaciones a cargo este semestre</h2>
-          <p>Totales (teoría - laboratorio)</p>
+          <p>Totales</p>
           <h3>
             {{ Number(nCursos) }}
           </h3>

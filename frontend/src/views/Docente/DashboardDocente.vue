@@ -125,10 +125,10 @@ export default {
             that.evPendientesEntrega = responseThree.data;
             for (var i = 0; i < responseThree.data.length; i++) {
               if (
-                moment().startOf("day") >
+                moment() >
                 moment(responseThree.data[i].fechaEntrega)
               ) {
-                that.evFueraEntrega.push(responseThree[i]);
+                that.evFueraEntrega.push(responseThree.data[i]);
               }
             }
           });
