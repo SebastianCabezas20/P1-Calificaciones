@@ -41,14 +41,33 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="chart-container" style="position: relative; height:400px; width:550px">
+      <div class="container" style="margin-left:50px; ">
+      <h3>Información solicitudes</h3>
+        <div class="chart-container" style="position: relative; height:400px; width:auto">
           <canvas id="graficoBarras"></canvas>
         </div>
-        <div class="chart-container" style="position: relative; margin-left:100px; height:400px; width:400px">
-          <canvas id="graficoPie" style=""></canvas>
+      </div>
+      <div class="container" style="margin-left:50px;">
+        <div style=" width: 33.3%; float: left; ">
+          <h3>Info. Cambio de notas</h3>
+            <div class="chart-container" style="position: relative; height:350px; width:350px;">
+              <canvas id="graficoPie-notas" style=""></canvas>
+            </div>
+        </div>
+        <div style=" width: 33.3%; float:left;">
+          <h3>Info. Cambio de fechas</h3>
+            <div class="chart-container" style="position: relative; height:350px; width:350px">
+              <canvas id="graficoPie-fecha" style=""></canvas>
+            </div>
+        </div>
+        <div style=" width: 33.3%; float:left;">
+          <h3>Info. Atraso de entrga de notas</h3>
+            <div class="chart-container" style="position: relative; height:350px; width:350px">
+              <canvas id="graficoPie-atrasos" style=""></canvas>
+            </div>
         </div>
       </div>
+        
       
     </div>
 
@@ -190,15 +209,13 @@ export default {
           }
         }
       });
-
-
     });
     
     axios
     .get(`http://localhost:8000/get/dash/cambioNotas/${identificacionUsuario}`)
     .then(function (response){  
-      const ctx2 = document.getElementById('graficoPie').getContext('2d');
-    const graficoPie = new Chart(ctx2, {
+      const ctx2 = document.getElementById('graficoPie-notas').getContext('2d');
+    const graficoPieNotas = new Chart(ctx2, {
       type: 'pie',
       data: {
         labels: response.data[1],
@@ -239,7 +256,103 @@ export default {
         }
       }
     });
+    });
 
+    // Grafico para fechas
+    axios
+    .get(`http://localhost:8000/get/dash/cambioFecha/${identificacionUsuario}`)
+    .then(function (response){  
+      const ctx3 = document.getElementById('graficoPie-fecha').getContext('2d');
+    const graficoPieFechas = new Chart(ctx3, {
+      type: 'doughnut',
+      data: {
+        labels: response.data[1],
+        datasets: [{
+          label: '# cambio fecha',
+          data: response.data[0],
+          backgroundColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+          }
+        }
+      }
+    });
+    });
+
+    // Grafico Atraso de entrega de evaluaciones
+    axios
+    .get(`http://localhost:8000/get/dash/atrasos/${identificacionUsuario}`)
+    .then(function (response){  
+      // Posibles validaciones
+      const ctx4 = document.getElementById('graficoPie-atrasos').getContext('2d');
+    const graficoPieAtrasos = new Chart(ctx4, {
+      type: 'doughnut',
+      data: {
+        labels: response.data[1],
+        datasets: [{
+          label: '# cambio fecha',
+          data: response.data[0],
+          backgroundColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+          }
+        }
+      }
+    });
     });
     
     

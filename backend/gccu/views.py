@@ -1,3 +1,4 @@
+import datetime
 from distutils.log import error
 from rest_framework import status
 from rest_framework.response import Response
@@ -772,7 +773,36 @@ def getInfoDashboardAutoridadSub(request, idAutoridad = None):
     
     return Response(info)
     
+## Cambio fecha para el jefe de carrera dash
+@api_view(['GET'])
+def getCambioFechaDashboardJefeCarrera(request, idJefeCarrera = None):    
+    
+    idsAsignatura = Asignaturas_PlanEstudio.objects.filter(id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idJefeCarrera).distinct('id_asignatura').values_list('id_asignatura', flat= True)
+    cambios = []
+    asignaturas = []
+    for id in idsAsignatura:
+        cantidad = Cambio_Fecha.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id).count()
+        if cantidad != 0:
+            nombre = Asignatura.objects.filter(id = id).values_list('nombre',flat= True)
+            asignaturas.append(nombre[0])
+            cambios.append(cantidad)
+    return Response([cambios,asignaturas])
 
+## Atrasos segun asignatura para el jefe de carrera dash
+@api_view(['GET'])
+def getAtrasosDashboardJefeCarrera(request, idJefeCarrera = None):    
+    
+    idsAsignatura = Asignaturas_PlanEstudio.objects.filter(id_planEstudio__id_carrera__id_jefeCarrera__id_usuario = idJefeCarrera).distinct('id_asignatura').values_list('id_asignatura', flat= True)
+    atrasos = []
+    asignaturas = []
+    for id in idsAsignatura:
+        ## Fecha entrega < Fecha de hoy
+        cantidad = Evaluacion.objects.filter(id_coordinacion__id_asignatura__id = id, estado = 'P', fechaEntrega__lt=datetime.date.today()).count()
+        if cantidad != 0:
+            nombre = Asignatura.objects.filter(id = id).values_list('nombre',flat= True)
+            asignaturas.append(nombre[0])
+            atrasos.append(cantidad)
+    return Response([atrasos,asignaturas])
 
 
 

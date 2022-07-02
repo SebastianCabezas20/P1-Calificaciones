@@ -42,7 +42,7 @@
                 <td>{{evaluacion.fechaEntrega}}</td>
                 <td>{{evaluacion.ponderacion * 100}}% </td>    
                 <td v-if="evaluacion.estado == 'P' "> Pendiente </td>
-                <td v-else > Pendiente </td>                       
+                <td v-else > Evaluada </td>                       
                 <td> {{evaluacion.observacion}} </td>
             </tr>
           </tbody>

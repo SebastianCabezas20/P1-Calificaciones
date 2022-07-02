@@ -90,6 +90,8 @@ urlpatterns = [
     path('get/secciones/asignatura/<int:idAsignatura>', views.getSeccionesAsignaturaJefeCarrera),
     path('get/dash/solicitudes/<int:idJefeCarrera>', views.getSolicitudesDashboardJefeCarrera),
     path('get/dash/cambioNotas/<int:idJefeCarrera>', views.getCambioNotasDashboardJefeCarrera),
+    path('get/dash/cambioFecha/<int:idJefeCarrera>', views.getCambioFechaDashboardJefeCarrera),
+    path('get/dash/atrasos/<int:idJefeCarrera>', views.getAtrasosDashboardJefeCarrera),
     path('get/calificaciones/<int:codigoAsig>/all', views.getAllCalificacionesByCurso),
     ### Autoridad (Vicedecano - SubDirector)
     path('get/infodashboardautoridadsub/<int:idAutoridad>', views.getInfoDashboardAutoridadSub),
