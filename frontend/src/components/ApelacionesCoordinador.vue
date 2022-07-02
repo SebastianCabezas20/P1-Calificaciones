@@ -1,5 +1,5 @@
 <template>
-    <tr  :style="[solicitud.estado == 'A' ? {'background-color':'#90EE90'} : solicitud.estado == 'R' ? {'background-color': '#ffbfaa'} : {'background-color':'null'}]"
+    <tr  :style="[solicitud.estado == 'A' ? {'background-color':'#90EE90'} : solicitud.estado == 'R' ? {'background-color': '#ffbfaa'} : solicitud.estado == 'E' ? {'background-color':'#86aad3'} : {'background-color':'null'}]"
     v-show="filtroEstado(solicitud.estado) && filtroEvaluacion(solicitud.id_evaluacion.nombre)
     && filtroDocente(solicitud.id_docente.id_usuario.first_name,solicitud.id_docente.id_usuario.last_name)
     && filtroEstudiante(solicitud.id_estudiante.id_usuario.first_name,solicitud.id_estudiante.id_usuario.last_name)">
@@ -10,6 +10,7 @@
         <td>{{solicitud.id_estudiante.id_usuario.first_name}} {{solicitud.id_estudiante.id_usuario.last_name}}</td>
         <td v-if="solicitud.estado == 'A'">Aprobada</td>
         <td v-else-if="solicitud.estado == 'R'" >Rechazado</td>
+        <td v-else-if="solicitud.estado == 'E'" >En revision</td>
         <td v-else >Pendiente</td>
         <td>
         <button type="button" @click="showModal = !showModal" class="btn btn-success">
@@ -47,6 +48,7 @@
                             <div class="col">Estado</div>
                             <div class="col" v-if="solicitud.estado == 'A'" >Aprobada</div>
                             <div class="col" v-else-if="solicitud.estado == 'R'" >Rechazado</div>
+                            <div class="col" v-else-if="solicitud.estado == 'E'" >En revision</div>
                             <div class="col" v-else>Pendiente</div>
                         </div>
                         <div class="row">
@@ -57,15 +59,15 @@
                             <div class="col">Fecha de creación</div>
                             <div class="col">{{solicitud.fecha_creacion}}</div>
                         </div>
-                        <div class="row" v-if="solicitud.estado != 'P'">
+                        <div class="row" v-if="solicitud.estado != 'P' && solicitud.estado != 'E'">
                             <div class="col">Respuesta</div>
                             <div class="col">{{solicitud.respuesta}}</div>
                         </div>
-                        <div class="row" v-if="solicitud.estado != 'P'">
+                        <div class="row" v-if="solicitud.estado != 'P' && solicitud.estado != 'E'">
                             <div class="col">Fecha de respuesta</div>
                             <div class="col">{{solicitud.fecha_respuesta}}</div>
                         </div>
-                        <div class="row" v-if="solicitud.estado == 'P' || solicitud.estado == 'R'">
+                        <div class="row" v-if="solicitud.estado == 'P' || solicitud.estado == 'R' ||  solicitud.estado == 'E'">
                             <div class="col-3">Calificación actual</div>
                             <div class="col-3">{{solicitud.actual_nota}}</div>
                             <div class="col-3">Fecha de publicación</div>
@@ -106,7 +108,8 @@ export default {
         docente: String,
         aprobada: Boolean,
         rechazada: Boolean,
-        pendiente: Boolean
+        pendiente: Boolean,
+        revision: Boolean,
     },
     methods:{
         filtroEstado(estado){
@@ -118,6 +121,9 @@ export default {
             }
             else if(estado == 'P'){
                 return this.pendiente
+            }
+            else if(estado == 'E'){
+                return this.revision
             }
             else{
                 return false

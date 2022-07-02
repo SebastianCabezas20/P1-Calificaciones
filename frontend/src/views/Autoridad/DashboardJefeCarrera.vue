@@ -42,7 +42,7 @@
       </div>
 
       <div class="row">
-        <div class="chart-container" style="position: relative; height:400px; width:400px">
+        <div class="chart-container" style="position: relative; height:400px; width:550px">
           <canvas id="graficoBarras"></canvas>
         </div>
         <div class="chart-container" style="position: relative; margin-left:100px; height:400px; width:400px">
@@ -151,6 +151,22 @@ export default {
             data: response.data[2],
             backgroundColor: [
               'rgba(255, 206, 86)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 0
+          },
+          {
+            label: 'En revision',
+            data: response.data[4],
+            backgroundColor: [
+              'rgba(150, 206, 86)',
             ],
             borderColor: [
               'rgba(255, 99, 132, 1)',

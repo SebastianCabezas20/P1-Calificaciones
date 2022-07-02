@@ -60,6 +60,10 @@
               <input type="checkbox" class="btn-check" v-model="pendientes" value="P" id="pendiente" autocomplete="off">
               <label class="btn btn-outline-primary" for="pendiente"> Pendientes</label>
             </div>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" style="margin-left:30px">
+              <input type="checkbox" class="btn-check" v-model="revisions" value="E" id="revision" autocomplete="off">
+              <label class="btn btn-outline-primary" for="revision"> En revision</label>
+            </div>
           </div>
         </div>
         </div>
@@ -82,7 +86,7 @@
           <tbody v-for="solicitud in solicitudes" :key="solicitud.id">
             <ApelacionesAsignaJefe :solicitud="solicitud" :coordinaciones="this.coordinacionesChecked" :secciones="this.seccionesChecked"
             :nombreEvaluacion="this.evaluacionFiltro"
-            :pendiente="this.pendientes" :aprobada="this.aprobadas" :rechazada="this.rechazadas" :nombreDocente="this.docenteFiltro"/>
+            :pendiente="this.pendientes" :revision="this.revisions" :aprobada="this.aprobadas" :rechazada="this.rechazadas" :nombreDocente="this.docenteFiltro"/>
           </tbody>
         </table>
       </div>
@@ -115,7 +119,8 @@ props:['idAsignatura'],
           docenteFiltro:'',
           aprobadas: true,
           rechazadas: true,
-          pendientes: true
+          pendientes: true,
+          revisions:true,
       }
   },
   created() {

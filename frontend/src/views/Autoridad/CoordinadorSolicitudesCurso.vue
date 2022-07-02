@@ -99,6 +99,10 @@
                   Pendientes</label
                 >
               </div>
+              <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" style="margin-left:30px">
+              <input type="checkbox" class="btn-check" v-model="revisions" value="E" id="revision" autocomplete="off">
+              <label class="btn btn-outline-primary" for="revision"> En revision</label>
+            </div>
             </div>
           </div>
         </div>
@@ -124,6 +128,7 @@
             :evaluacionFiltro="this.evaluacionFiltro"
             :docente="this.docenteFiltro"
             :estudiante="this.estudianteFiltro"
+            :revision="this.revisions"
           />
         </tbody>
       </table>
@@ -154,6 +159,7 @@ export default {
       aprobadas: true,
       rechazadas: true,
       pendientes: true,
+      revisions: true,
     };
   },
   created() {

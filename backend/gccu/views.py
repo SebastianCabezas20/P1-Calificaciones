@@ -681,6 +681,7 @@ def getSolicitudesDashboardJefeCarrera(request, idJefeCarrera = None):
     dataRechazados = []
     dataPendientes = []
     dataAceptados = []
+    dataRevision = []
     #SolicitudSerializer
     for id in idsAsignatura:
         nombre = Asignatura.objects.filter(id = id).values_list('nombre',flat= True)
@@ -691,7 +692,8 @@ def getSolicitudesDashboardJefeCarrera(request, idJefeCarrera = None):
         dataPendientes.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'P').count())
         dataRechazados.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'R').count())
         dataAceptados.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'A').count())
-    return Response([nombreAsignaturas,dataRechazados,dataPendientes,dataAceptados])
+        dataRevision.append(Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id = id, estado = 'E').count())
+    return Response([nombreAsignaturas,dataRechazados,dataPendientes,dataAceptados,dataRevision])
 
 ## Solicitudes para el jefe de carrera dash
 @api_view(['GET'])
