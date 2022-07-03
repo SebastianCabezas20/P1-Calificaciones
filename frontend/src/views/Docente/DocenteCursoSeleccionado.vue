@@ -668,16 +668,8 @@ export default {
     
       // Caso 2: El nuevo listado de evaluaciones da un 100%.
       else {
-        for (var i = 0; i < this.evaluacionesCreadas.length; i++){
-          
-          // En cada coordinación se agrega la evaluación.
-          for (let j = 0; j < this.informacionCoordinacion.length; j++) {
-            this.evaluacionesCreadas[i].id_coordinacion = this.informacionCoordinacion[j].id_coordinacion.id
-            axios.post("http://localhost:8000/add/evaluacion",this.evaluacionesCreadas[i])
-            .then(function (response) {}); 
-          }
-        }
-
+        /* Docente elimina una evaluación de su coordinación y de los
+        cursos espejos (si existiesen). */
         for (var i = 0; i < this.evaluacionesEliminadas.length; i++){
           // Buscar las evaluaciones a ser eliminadas
           // Misma evaluacion distinta seccion
@@ -693,6 +685,18 @@ export default {
           }
         }
 
+        /* Docente crea una nueva evaluación en su coordinación y en los 
+        cursos espejos (si existiesen). */
+        for (var i = 0; i < this.evaluacionesCreadas.length; i++){  
+          for (let j = 0; j < this.informacionCoordinacion.length; j++) {
+            this.evaluacionesCreadas[i].id_coordinacion = this.informacionCoordinacion[j].id_coordinacion.id
+            axios.post("http://localhost:8000/add/evaluacion",this.evaluacionesCreadas[i])
+            .then(function (response) {}); 
+          }
+        }
+
+        /* Docente modifica la ponderación de una evaluación en su coordinación
+        y en los cursos espejos (si existiesen). */
         for (var i = 0; i < this.evaluacionesPonderacion.length; i++){
           for (var j = 0; j < this.evaluacionesFull.length; j++) {
             if(this.evaluacionesFull[j][0].nombre == this.evaluacionesPonderacion[i].nombre){
