@@ -80,6 +80,8 @@ urlpatterns = [
     path('get/dash/cambioFecha/<int:idJefeCarrera>', views.getCambioFechaDashboardJefeCarrera),
     path('get/dash/atrasos/<int:idJefeCarrera>', views.getAtrasosDashboardJefeCarrera),
     path('get/calificaciones/<int:codigoAsig>/all', views.getAllCalificacionesByCurso),
+    path('get/dash/atrasos/coordinador/<int:idCoordinador>', views.getAtrasosDashboardCoordinador),
+    path('get/dash/cambioNotas/coordinador/<int:idCoordinador>', views.getCambioNotasDashboardCoordinador),
     
     # URLs para cursos espejos (Docente).
     path('evaluaciones/<int:idUsuario>/<str:bloqueHorario>/CE', views.evaluacionesCoordinacionCursosEspejo),

@@ -515,8 +515,9 @@ def getInfoDashboardCoordinador(request, idUsuario = None):
     solicitudesPendientes = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'P').count()
     solicitudesAprobadas = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'A').count()
     solicitudesRechazadas = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'R').count()
+    solicitudesRevision = Solicitud_Revision.objects.filter(id_evaluacion__id_coordinacion__id_asignatura__id_coordinador__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'E').count()
 
-    return Response([numeroAsignaturas, evaluacionesPendientes, solicitudesActuales, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas])
+    return Response([numeroAsignaturas, evaluacionesPendientes, solicitudesActuales, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas,solicitudesRevision])
 
 @api_view(['GET'])
 def getInfoDashboardEstudiante(request, idUsuario = None):
@@ -778,5 +779,37 @@ def getAtrasosDashboardJefeCarrera(request, idJefeCarrera = None):
             atrasos.append(cantidad)
     return Response([atrasos,asignaturas])
 
+## Atrasos segun coordinaciones del coordinador dash
+@api_view(['GET'])                                                                                                                                                                                          
+def getAtrasosDashboardCoordinador(request, idCoordinador = None):    
+    
+    idsCoordinaciones = Coordinacion_Seccion.objects.filter(id_asignatura__id_coordinador__id_usuario__id = idCoordinador).distinct('id').values_list('id', flat= True)
+    atrasos = []    
+    secciones = []
+    for id in idsCoordinaciones:
+        ## Fecha entrega < Fecha de hoy
+        cantidad = Evaluacion.objects.filter(id_coordinacion__id = id, estado = 'P', fechaEntrega__lt=datetime.date.today()).count()
+        if cantidad != 0:
+            seccion = Coordinacion_Seccion.objects.filter(id = id).values_list('seccion','coordinacion')
 
+            
+            secciones.append([str(seccion[0][1])+"-"+str(seccion[0][0])])
+            atrasos.append(cantidad)
+    return Response([atrasos,secciones])
+
+## cambio de fecha segun coordinaciones del coordinador dash
+@api_view(['GET'])                                                                                                                                                                                          
+def getCambioNotasDashboardCoordinador(request, idCoordinador = None):    
+    
+    idsCoordinaciones = Coordinacion_Seccion.objects.filter(id_asignatura__id_coordinador__id_usuario__id = idCoordinador).distinct('id').values_list('id', flat= True)
+    cambios = []    
+    secciones = []
+    for id in idsCoordinaciones:
+        ## Cambios de fecha de esa coordinacion
+        cantidad = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion__id = id).count()
+        if cantidad != 0:
+            seccion = Coordinacion_Seccion.objects.filter(id = id).values_list('seccion','coordinacion')
+            secciones.append([str(seccion[0][1])+"-"+str(seccion[0][0])])
+            cambios.append(cantidad)
+    return Response([cambios,secciones])
 
