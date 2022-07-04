@@ -111,7 +111,6 @@ export default {
     axios
       .get(`http://localhost:8000/get/infodashboardjefecarrera/${identificacionUsuario}`)
       .then(function (response) {
-        console.log(response.data);
         ins.nEstudiantes = response.data[0];
         ins.nSolicitudesS = response.data[1];
         ins.nSolicitudesP = response.data[2];

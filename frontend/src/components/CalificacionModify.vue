@@ -20,8 +20,5 @@ export default {
     props:{ 
         calificacion: Array,
     },
-    created(){
-        console.log(this.calificacion)
-    }
 }
 </script>

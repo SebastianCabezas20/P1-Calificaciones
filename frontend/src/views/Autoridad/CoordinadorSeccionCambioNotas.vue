@@ -82,13 +82,11 @@ export default {
       .get(`http://localhost:8000/api/coordinador/${identificacionUsuario}`)
       .then(function (response) {
         ins.idCoordinador = response.data.id;
-        console.log(ins.idCoordinador);
         axios
           .get(
             `http://localhost:8000/coordinador/coordinacion/${ins.idCoordinador}`
           )
           .then(function (response) {
-            console.log(response.data);
             // Se obtienen las coordinaciones en un arreglo [[Co1],[Co2],[Co3]]
             ins.secciones = response.data;
           });
@@ -96,7 +94,6 @@ export default {
   },
   methods: {
     Ingresar(key) {
-      console.log(key);
       router.push(`/coordinador/curso/${key}/cambio/calificacion`);
     },
   },

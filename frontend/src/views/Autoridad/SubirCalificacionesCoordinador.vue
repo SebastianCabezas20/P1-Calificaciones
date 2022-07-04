@@ -204,7 +204,7 @@
                   ></textarea>
                 </div>
 
-                <!-- Subir un archivo adjunto a una evaluación (Sprint 3). -->
+                <!-- Subir un archivo adjunto a una evaluación -->
                 <div class="mb-3">
                   <label for="formFile" class="form-label"
                     >Adjuntar archivo</label

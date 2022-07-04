@@ -78,11 +78,9 @@ export default {
       .get(`http://localhost:8000/api/jefeCarrera/${identificacionUsuario}`)
       .then(function (response) {
         ins.idJefeCarrera = response.data.id;
-        console.log(ins.idJefeCarrera);
         axios
           .get(`http://localhost:8000/jefe/${ins.idJefeCarrera}/asignaturas`)
           .then(function (response) {
-            console.log(response.data);
             ins.asignaturas = response.data;
           });
       });

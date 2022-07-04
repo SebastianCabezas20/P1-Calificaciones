@@ -35,7 +35,7 @@
             <td>{{ evaluacion.fechaEvActual }}</td>
             <td v-if="evaluacion.estado == 'E'">Evaluada</td>
             <td v-else>Pendiente</td>
-            <td>{{ evaluacion.ponderacion * 100 }}%</td>
+            <td>{{ parseFloat(evaluacion.ponderacion * 100).toFixed(1) }}%</td>
             <!-- Calificacion de Evaluacion-->
             <td>
               <div class="text-center">
@@ -167,6 +167,10 @@
                       v-model="porcentajeEvaluacion"
                       class="form-control"
                       placeholder="50"
+                      type="number"
+                      min="1"
+                      max="100"
+                      step="0.1"
                       required
                     />
                   </div>
@@ -286,7 +290,7 @@
                   <div class="mb-3">
                     <label class="form-label">Ponderación actual</label>
                       <input
-                        :value="this.evaluacionesInformacion[modalIndex].ponderacion * 100"
+                        :value="parseFloat(this.evaluacionesInformacion[modalIndex].ponderacion * 100).toFixed(1)"
                         class="form-control"
                         disabled
                       />
@@ -492,8 +496,8 @@ export default {
           let nombreEvaluacion = this.evaluacionesEliminadas[i].nombre;
           this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
             let evaluacionesPorNombre = response;
-            for (var i = 0; i < evaluacionesPorNombre.length; i++) {
-              let idEvaluacionEliminar = evaluacionesPorNombre[i].id;
+            for (var j = 0; j < evaluacionesPorNombre.length; j++) {
+              let idEvaluacionEliminar = evaluacionesPorNombre[j].id;
               axios.delete(`http://localhost:8000/delete/evaluacion/${idEvaluacionEliminar}`).then(function (response) {});
             }
           });
@@ -536,18 +540,18 @@ export default {
           this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
             let evaluacionesPorNombre = response;
 
-            for (var i = 0; i < evaluacionesPorNombre.length; i++) {
+            for (var j = 0; j < evaluacionesPorNombre.length; j++) {
               let nuevaEvaluacion = {
-                nombre: evaluacionesPorNombre[i].nombre,
-                fechaEvActual: evaluacionesPorNombre[i].fechaEvActual,
-                fechaEntrega: evaluacionesPorNombre[i].fechaEntrega,
+                nombre: evaluacionesPorNombre[j].nombre,
+                fechaEvActual: evaluacionesPorNombre[j].fechaEvActual,
+                fechaEntrega: evaluacionesPorNombre[j].fechaEntrega,
                 ponderacion: ponderacionEvaluacion,
-                estado: evaluacionesPorNombre[i].estado,
-                obs_general: evaluacionesPorNombre[i].obs_general,
-                adjunto: evaluacionesPorNombre[i].adjunto,
-                id_docente: evaluacionesPorNombre[i].id_docente,
-                id_tipoEvaluacion: evaluacionesPorNombre[i].id_tipoEvaluacion,
-                id_coordinacion: evaluacionesPorNombre[i].id_coordinacion,
+                estado: evaluacionesPorNombre[j].estado,
+                obs_general: evaluacionesPorNombre[j].obs_general,
+                adjunto: evaluacionesPorNombre[j].adjunto,
+                id_docente: evaluacionesPorNombre[j].id_docente,
+                id_tipoEvaluacion: evaluacionesPorNombre[j].id_tipoEvaluacion,
+                id_coordinacion: evaluacionesPorNombre[j].id_coordinacion,
               };
 
               let tuplaCambioPonderacion = {
@@ -555,10 +559,10 @@ export default {
                 ponderacionNueva: tuplaCambio.ponderacionNueva,
                 motivo: tuplaCambio.motivo,
                 fecha_cambio: tuplaCambio.fecha_cambio,
-                id_evaluacion: evaluacionesPorNombre[i].id,
+                id_evaluacion: evaluacionesPorNombre[j].id,
               };
 
-              let idEvaluacionCambio = evaluacionesPorNombre[i].id;
+              let idEvaluacionCambio = evaluacionesPorNombre[j].id;
 
               // Requests
               axios.put(`http://localhost:8000/update/evaluacion/${idEvaluacionCambio}`, nuevaEvaluacion).then(function (response) {});
@@ -595,35 +599,12 @@ export default {
       }
       // Sino, se agrega para posteriormente ser eliminada.
       this.evaluacionesEliminadas.push(this.evaluacionesInformacion[index]);
-
-      // Método anterior.
-
-      /* let idEvaluacionEliminar = 0;
-
-      let nombreEvaluacion = this.evaluacionesInformacion[index].nombre;
-      let that = this;
-      this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
-        let evaluacionesPorNombre = response;
-        console.log(evaluacionesPorNombre);
-
-        for (var i = 0; i < evaluacionesPorNombre.length; i++) {
-          idEvaluacionEliminar = evaluacionesPorNombre[i].id;
-
-          axios
-            .delete(
-              `http://localhost:8000/delete/evaluacion/${idEvaluacionEliminar}`
-            )
-            .then(function (response) {});
-        }
-
-        location.reload();
-      });  */
     },
 
     // Coordinador crea una evaluación en todas las coordinaciones de su asignatura.
     crearEvaluacion: function (event) {
       // Se transforma el porcentaje 40% -> 0.4
-      let porcentajeEvaluacionIngresado = this.porcentajeEvaluacion / 100;
+      let porcentajeEvaluacionIngresado = parseFloat((this.porcentajeEvaluacion / 100).toFixed(3));
 
       // Caso 1: La fecha ingresada es igual o menor a la fecha actual.
       if (moment().startOf("day") >= moment(this.fechaEvActual)) {
@@ -798,7 +779,7 @@ export default {
 
       // Caso 3: Es posible modificar la ponderación.
       else {
-        let ponderacionEvaluacion = this.nuevaPonderacionEv / 100;
+        let ponderacionEvaluacion =  parseFloat((this.nuevaPonderacionEv / 100).toFixed(3));
         let ponderacionAnterior =
           this.evaluacionesInformacion[indexClic].ponderacion;
         let fechaActual = new Date();
@@ -828,105 +809,6 @@ export default {
         this.evaluacionesPonderacion.push(nuevaEvaluacion);
         this.cambiosPonderacion.push(tuplaCambioPonderacion);
       }
-
-      // Método anterior.
-      /*
-      // Se transforma el porcentaje 40% -> 0.4
-      let ponderacionEvaluacion = this.nuevaPonderacionEv / 100;
-
-      // Se comprueba que no se sobrepase el 100% (Incluyendo las evaluaciones evaluadas).
-      let ponderacionTotal = 0;
-      for (var i = 0; i < this.evaluacionesInformacion.length; i++) {
-        if (i == indexClic) {
-          ponderacionTotal = ponderacionTotal + ponderacionEvaluacion;
-        } else {
-          ponderacionTotal =
-            ponderacionTotal +
-            parseFloat(this.evaluacionesInformacion[i].ponderacion);
-        }
-      }
-
-      // Caso 1: Con la nueva ponderación se sobrepasa el 100%
-      if (ponderacionTotal > 1) {
-        this.$swal.fire({
-          icon: "error",
-          title: "Porcentaje de evaluación no permitido",
-          text: "El porcentaje ingresado sobrepasa el 100% total permitido",
-        });
-      }
-
-      // Caso 2: No se sobrepasa.
-      else {
-        // Datos para el registro.
-        let ponderacionAnterior =
-          this.evaluacionesInformacion[indexClic].ponderacion;
-        let idEvaluacion = this.evaluacionesInformacion[indexClic].id;
-        let nombreEvaluacion = this.evaluacionesInformacion[indexClic].nombre;
-        let fechaActual = new Date();
-        fechaActual = fechaActual.toISOString().slice(0, 10);
-        let that = this;
-
-        // En la tabla Evaluación, se buscan las evaluaciones con un nombre especifico
-        // y que pertenezcan a una misma asignatura, lo que provoca que se actualice
-        // esa evaluación en todas las coordinaciones asociadas a esa asignatura.
-        this.getEvaluacionesNombre(nombreEvaluacion).then(function (response) {
-          let evaluacionesPorNombre = response;
-
-          // Cada una de las evaluaciones se va modificando y además, se
-          // registra el cambio de ponderación.
-          for (var i = 0; i < evaluacionesPorNombre.length; i++) {
-            let nuevaEvaluacion = {
-              nombre: evaluacionesPorNombre[i].nombre,
-              fechaEvActual: evaluacionesPorNombre[i].fechaEvActual,
-              fechaEntrega: evaluacionesPorNombre[i].fechaEntrega,
-              ponderacion: ponderacionEvaluacion,
-              estado: evaluacionesPorNombre[i].estado,
-              obs_general: evaluacionesPorNombre[i].obs_general,
-              adjunto: evaluacionesPorNombre[i].adjunto,
-              id_docente: evaluacionesPorNombre[i].id_docente,
-              id_tipoEvaluacion: evaluacionesPorNombre[i].id_tipoEvaluacion,
-              id_coordinacion: evaluacionesPorNombre[i].id_coordinacion,
-            };
-
-            let tuplaCambioPonderacion = {
-              ponderacionAnterior: ponderacionAnterior,
-              ponderacionNueva: ponderacionEvaluacion,
-              motivo: that.motivoCambioPonderacion,
-              fecha_cambio: fechaActual,
-              id_evaluacion: evaluacionesPorNombre[i].id,
-            };
-
-            let idEvaluacionCambio = evaluacionesPorNombre[i].id;
-
-            // Requests
-            axios
-              .put(
-                `http://localhost:8000/update/evaluacion/${idEvaluacionCambio}`,
-                nuevaEvaluacion
-              )
-              .then(function (responseTwo) {
-                axios
-                  .post(
-                    "http://localhost:8000/add/cambioPonderacion",
-                    tuplaCambioPonderacion
-                  )
-                  .then(function (responseThird) {
-                    that.$swal
-                      .fire({
-                        icon: "success",
-                        title: "Modificación exitosa",
-                        text: `La evaluacion ${nombreEvaluacion} fue modificada satisfactoriamente. La nueva ponderación de la evaluación es ${
-                          ponderacionEvaluacion * 100
-                        }%`,
-                      })
-                      .then((result) => {
-                        location.reload();
-                      });
-                  });
-              });
-          }
-        });
-      } */
     },
   },
 };

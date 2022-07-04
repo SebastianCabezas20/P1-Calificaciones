@@ -49,7 +49,7 @@
             <td>{{ evaluacion[0].fechaEvActual }}</td>
             <td v-if="evaluacion[0].estado == 'E'">Evaluada</td>
             <td v-else>Pendiente</td>
-            <td>{{ evaluacion[0].ponderacion * 100 }}%</td>
+            <td>{{ parseFloat(evaluacion[0].ponderacion * 100).toFixed(1) }}%</td>
             <td>
               <div class="text-center">
                 <!-- Pasar nombre de la evaluacion en vez de id -->
@@ -270,7 +270,7 @@
                   <div class="mb-3">
                     <label class="form-label">Ponderación actual</label>
                       <input
-                        :value="this.evaluacionesFull[modalIndex][0].ponderacion * 100"
+                        :value="parseFloat(this.evaluacionesFull[modalIndex][0].ponderacion * 100).toFixed(1)"
                         class="form-control"
                         disabled
                       />
@@ -547,7 +547,7 @@ export default {
 
       // Caso 3: Es posible modificar la ponderación.
       else{
-        let ponderacionEvaluacion = this.nuevaPonderacionEv / 100;
+        let ponderacionEvaluacion = parseFloat(this.nuevaPonderacionEv / 100).toFixed(3);
         let ponderacionAnterior = this.evaluacionesFull[index][0].ponderacion;
         let fechaActual = new Date();
         fechaActual = fechaActual.toISOString().slice(0, 10);
@@ -582,7 +582,7 @@ export default {
 
     crearEvaluacion: function (event) {
       // Se transforma el porcentaje 40% -> 0.4
-      let porcentajeEvaluacionIngresado = this.porcentajeEvaluacion / 100;
+      let porcentajeEvaluacionIngresado = parseFloat(this.porcentajeEvaluacion / 100).toFixed(3);
 
       // Caso 1: La fecha ingresada es igual o menor a la fecha actual.
       if (moment().startOf('day') >= moment(this.fechaEvActual)){

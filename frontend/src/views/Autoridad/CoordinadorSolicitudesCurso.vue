@@ -168,7 +168,6 @@ export default {
     axios
       .get(`http://localhost:8000/coordinacion/solicitudes/${IDcurso}`)
       .then(function (response) {
-        console.log(response.data);
         ins.solicitudes = response.data;
       });
   },

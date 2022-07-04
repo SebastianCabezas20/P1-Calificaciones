@@ -147,7 +147,6 @@ export default {
     axios
       .get(`http://localhost:8000/get/cambio/calificacion/curso/${IDcurso}`)
       .then(function (response) {
-        console.log(response.data);
         ins.cambio_notas = response.data;
       });
   },

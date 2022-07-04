@@ -71,7 +71,6 @@ export default {
     axios
     .get(`http://localhost:8000/get/asignaturasAtrasadas`)
     .then(function (response) {
-      console.log(response.data);
       ins.asignaturas_atrasadas = response.data[0];
       ins.numero_Atrasos = response.data[1];
     });

@@ -179,7 +179,7 @@
               :key="evaluacion.id"
             >
               <td>{{ evaluacion.nombre }}</td>
-              <td>{{ evaluacion.ponderacion * 100 }}%</td>
+              <td>{{ parseFloat(evaluacion.ponderacion * 100).toFixed(1) }}%</td>
               <td>{{ evaluacion.fechaEvActual }}</td>
               <td>{{ evaluacion.fechaEntrega }}</td>
             </tr>
@@ -292,7 +292,7 @@
                 :key="evaluacion.id"
               >
               <td>{{ evaluacion.nombre }}</td>
-              <td>{{ evaluacion.ponderacion * 100 }}%</td>
+              <td>{{ parseFloat(evaluacion.ponderacion * 100).toFixed(1) }}%</td>
               <td>{{ evaluacion.fechaEvActual }}</td>
               <td>{{ evaluacion.fechaEntrega }}</td>
               </tr>

@@ -302,7 +302,6 @@ export default {
       .get(`http://localhost:8000/evaluacion/${identificacionEvaluacion}/${identificacionCurso}/${identificacionDocente}/CE`)
       .then(function (response) {
         ins.informacionEvaluacion = response.data;
-        console.log(ins.informacionEvaluacion)
       });
   },
 

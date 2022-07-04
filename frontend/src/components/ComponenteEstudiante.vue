@@ -22,7 +22,7 @@
       <tr v-for="calificacion in calificaciones" :key="calificacion.id">
         <td>{{ calificacion.id_evaluacion.nombre }}</td>
         <td>{{ calificacion.nota }}</td>
-        <td>{{ calificacion.id_evaluacion.ponderacion * 100 }}%</td>
+        <td>{{ parseFloat(calificacion.id_evaluacion.ponderacion * 100).toFixed(1) }}%</td>
         <td>{{ calificacion.id_evaluacion.fechaEvActual }}</td>
         <td>{{ calificacion.fecha_entrega }}</td>
       </tr>
@@ -46,7 +46,7 @@
     <tbody>
       <tr v-for="evaluacion in evaluaciones" :key="evaluacion.id">
         <td>{{ evaluacion.nombre }}</td>
-        <td>{{ evaluacion.ponderacion * 100 }}%</td>
+        <td>{{ parseFloat(evaluacion.ponderacion * 100).toFixed(1) }}%</td>
         <td>{{ evaluacion.fechaEvActual }}</td>
         <td>{{ evaluacion.fechaEntrega }}</td>
       </tr>

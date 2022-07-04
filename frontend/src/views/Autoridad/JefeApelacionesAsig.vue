@@ -127,12 +127,9 @@ props:['idAsignatura'],
     let ins = this;
     let IDasignatura  = this.idAsignatura;
     axios.get(`http://localhost:8000/jefe/asignatura/solicitudes/${IDasignatura}`).then(function (response) {
-      console.log(response.data);
       ins.solicitudes = response.data[0];
       ins.coordinaciones = response.data[1];
-      //ins.coordinacionesChecked = response.data[1];
       ins.secciones = response.data[2]
-      //ins.seccionesChecked = response.data[2]
     });
   },
  

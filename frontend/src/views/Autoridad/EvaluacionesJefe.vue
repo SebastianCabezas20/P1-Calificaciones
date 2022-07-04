@@ -40,7 +40,7 @@
                 <!--V-for para obtener todas las tuplas con los distintos profesores-->
                 <td> {{evaluacion.fechaEvActual }} </td>
                 <td>{{evaluacion.fechaEntrega}}</td>
-                <td>{{evaluacion.ponderacion * 100}}% </td>    
+                <td>{{ parseFloat(evaluacion.ponderacion * 100).toFixed(1) }}% </td>    
                 <td v-if="evaluacion.estado == 'P' "> Pendiente </td>
                 <td v-else > Evaluada </td>                       
                 <td> {{evaluacion.observacion}} </td>

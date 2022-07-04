@@ -1,7 +1,7 @@
 <template>
   <td>{{ calificacion.id_evaluacion.nombre }}</td>
   <td>{{ calificacion.nota }}</td>
-  <td>{{ calificacion.id_evaluacion.ponderacion * 100}}%</td>
+  <td>{{ parseFloat(calificacion.id_evaluacion.ponderacion * 100).toFixed(1) }}%</td>
   <td>{{ calificacion.id_evaluacion.fechaEvActual }}</td>
   <td>{{ calificacion.fecha_entrega }}</td>
   <td>{{ calcularPromedio(this.allCalificaciones, calificacion.id_evaluacion.nombre) }}</td>
@@ -119,14 +119,11 @@ export default {
         if(calificaciones[i].id_evaluacion.nombre == nombreEvaluacion && calificaciones[i].id_evaluacion.estado == "E") {
           acum = acum + parseInt(calificaciones[i].nota);
           cantNotas++;
-          console.log("acum va en ", acum);
-          console.log("cantNotas va en ", cantNotas);
         }
       }
       if(acum != 0) {
         const promedio = acum/cantNotas;
         const promedioDecimal = promedio.toFixed(1);
-        console.log("el promedio es ", promedioDecimal);
         return promedioDecimal
       }
       else{

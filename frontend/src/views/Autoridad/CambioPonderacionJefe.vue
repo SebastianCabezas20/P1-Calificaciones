@@ -72,8 +72,8 @@
               <td>{{ cambio.id_evaluacion.id_coordinacion.coordinacion }}-{{cambio.id_evaluacion.id_coordinacion.seccion}}</td>
               <td>{{cambio.id_evaluacion.id_docente.id_usuario.first_name}} {{cambio.id_evaluacion.id_docente.id_usuario.last_name}}</td>
               <td>{{ cambio.id_evaluacion.nombre }}</td>
-              <td>{{ cambio.ponderacionAnterior * 100 }}%</td>
-              <td>{{ cambio.ponderacionNueva * 100}}%</td>
+              <td>{{ parseFloat(cambio.ponderacionAnterior * 100).toFixed(1) }}%</td>
+              <td>{{ parseFloat(cambio.ponderacionNueva * 100).toFixed(1) }}%</td>
               <td>{{ cambio.fecha_cambio }}</td>
               <td>{{ cambio.motivo }}</td>
             </tr>
@@ -112,12 +112,9 @@ export default {
     let idAsignaturaURL = this.idAsignatura
     axios.get(`http://localhost:8000/get/cambio/ponderacion/asignatura/${idAsignaturaURL}`)
     .then(function (response) {
-      console.log(response.data);
       ins.cambios = response.data[0];
       ins.coordinaciones = response.data[1]
       ins.secciones = response.data[2]
-      //ins.coordinacionesChecked = response.data[1]
-      //ins.seccionesChecked = response.data[2]
     });
   },
   methods: {
@@ -136,7 +133,6 @@ export default {
     },
     filterDocente(nombre,apellido){
       let n = Array(nombre+' '+apellido)
-      console.log(n)
       return n[0].indexOf(this.docenteFiltro) >= 0
     }
   },

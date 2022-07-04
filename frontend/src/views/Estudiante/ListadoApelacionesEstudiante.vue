@@ -270,7 +270,6 @@ export default {
             axios
               .put(`http://localhost:8000/actualizar/solicitud/${this.solicitud.id}`, solicitudActualizada)
               .then(function (response) {
-                console.log(response.data)
                 that.$swal.fire({
                       icon: "success",
                       title: "Modificación exitosa",

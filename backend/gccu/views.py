@@ -396,7 +396,6 @@ def addCambioPonderacion(request):
         return Response(cambioPonderacion.data)
     return Response(cambioPonderacion.errors)
 
-##Falta un filter para que solo muestre los cambios del semestre actual
 @api_view(['GET'])
 def getCambiosNota(request, idCoordinador = None):
     cambiosNota = Cambio_nota.objects.filter(id_calificacion__id_evaluacion__id_coordinacion__id_asignatura__id_coordinador__id_usuario = idCoordinador)
@@ -524,7 +523,7 @@ def getInfoDashboardEstudiante(request, idUsuario = None):
     cursosActuales = Coordinacion_Estudiante.objects.filter(id_estudiante__id_usuario = idUsuario, id_coordinacion__isActive = True).all()
     serializer = CoordinacionEstudianteSerializer(cursosActuales, many = "true")
     
-    solTotales = Solicitud_Revision.objects.filter(Q(estado = 'A') | Q(estado = 'R'), id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True).all().order_by('fecha_respuesta')
+    solTotales = Solicitud_Revision.objects.filter(Q(estado = 'A') | Q(estado = 'R'), id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True).all().order_by('-fecha_respuesta')
     serializerTwo = SolicitudSerializer(solTotales, many = "true")
     solicitudesRealizadas = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True).count()
     solicitudesPendientes = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'P').count()

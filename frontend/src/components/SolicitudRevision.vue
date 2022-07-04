@@ -16,8 +16,5 @@ export default {
     props:{ 
         solicitud_revision: Array,
     },
-    created(){
-        console.log(this.solicitud_revision)
-    }
 }
 </script>

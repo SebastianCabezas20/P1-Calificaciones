@@ -116,12 +116,9 @@ export default {
     let idAsignaturaURL = this.idAsignatura
     axios.get(`http://localhost:8000/get/cambio/calificacion/asignatura/${idAsignaturaURL}`)
     .then(function (response) {
-      console.log(response.data);
       ins.cambios = response.data[0];
       ins.coordinaciones = response.data[1]
       ins.secciones = response.data[2]
-      //ins.coordinacionesChecked = response.data[1]
-      //ins.seccionesChecked = response.data[2]
     });
   },
   methods: {
@@ -140,7 +137,6 @@ export default {
     },
     filterDocente(nombre,apellido){
       let n = Array(nombre+' '+apellido)
-      console.log(n)
       return n[0].indexOf(this.docenteFiltro) >= 0
     }
   },

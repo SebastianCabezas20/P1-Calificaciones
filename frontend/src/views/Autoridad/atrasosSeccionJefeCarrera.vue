@@ -65,12 +65,9 @@
       axios
       .get(`http://localhost:8000/get/seccionesAsignaturaAtrasadas/${idAsignaturaURL}`)
       .then(function (response) {
-        console.log(response.data);
         ins.secciones_atrasadas = response.data[0];
         ins.numero_Atrasos = response.data[1];
       });
-  
-  
     }
   };
   </script>

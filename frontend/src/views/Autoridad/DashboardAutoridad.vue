@@ -87,16 +87,9 @@ export default {
     axios
       .get(`http://localhost:8000/get/infodashboardautoridadsub/${identificacionUsuario}`)
       .then(function (response) {
-        console.log(response.data);
         ins.Info = response.data;
-
       });
-    
-      },
-    
-  methods: {
-
-  }
+  },
 };
 </script>
 

@@ -15,8 +15,5 @@ export default {
     props:{ 
         asignatura: Array,
     },
-    created(){
-        console.log(this.asignatura)
-    }
 }
 </script>
