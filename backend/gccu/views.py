@@ -7,6 +7,7 @@ from .models import *
 from .serializers import *
 from django.contrib.auth.models import User, Group
 from datetime import date
+from django.db.models import Q
 
 @api_view(['GET'])
 def getDocente(request, idUsuario = None):
@@ -37,7 +38,7 @@ def getIdEstudiante(request, idUsuario = None):
 
 @api_view(['GET'])
 def getCalificacionesEstudiante(request, idUsuario = None):
-    calificaciones = Calificacion.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__id_semetre__isActual = True).all()
+    calificaciones = Calificacion.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__id_semetre__isActual = True).all().order_by('-fecha_entrega')
     serializer = CalificacionSerializer(calificaciones, many = "true")
     return Response(serializer.data)
 
@@ -153,24 +154,6 @@ def getCursosByDocente(request, idUsuario = None):
     ## Se cambio de order_by a distinct por bloque de horario para cursos espejo
     cursosDocente = Coordinacion_Docente.objects.filter(id_docente__id_usuario__id = idUsuario, id_coordinacion__isActive = True).distinct('id_coordinacion__bloques_horario')
     serializer = CoordinacionDocenteSerializer(cursosDocente, many="true")
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def getEstudiante(request):
-    estudiantes = Estudiante.objects.filter(id=3)
-    serializer = EstudianteSerializer(estudiantes, many="true")
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def getCalificacionesPerAsignaturaEvaluacion(request, idAsignatura, idEvaluacion):
-    calificaciones = Calificacion.objects.filter(id_evaluacion__id_coordinacion = idAsignatura, id_evaluacion = idEvaluacion ).all()
-    serializer = CalificacionSerializer(calificaciones, many='true')
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def getAsignaturastoCoordinador(request, idCoordinador = None):
-    coordinador = Asignatura.objects.filter(id_coordinador = 1)
-    serializer = AsignaturaSerializer(coordinador, many = 'true')
     return Response(serializer.data)
 
 ## Obtener informacion para realizar la respuesta a una apelacion
@@ -413,18 +396,6 @@ def addCambioPonderacion(request):
         return Response(cambioPonderacion.data)
     return Response(cambioPonderacion.errors)
 
-######
-# #########
-# #### Nose si funciona ya que se agrega la vista aparte para ver los cambios de fecha a jefe de carrera
-@api_view(['GET'])
-def getCambiosFecha(request):
-    cambiosFecha = Cambio_Fecha.objects.all()
-    serializer = CambioFechaDashboardSerializer(cambiosFecha, many="true")
-    return Response(serializer.data)
-##########3
-###########
-###########
-
 ##Falta un filter para que solo muestre los cambios del semestre actual
 @api_view(['GET'])
 def getCambiosNota(request, idCoordinador = None):
@@ -550,14 +521,18 @@ def getInfoDashboardCoordinador(request, idUsuario = None):
 
 @api_view(['GET'])
 def getInfoDashboardEstudiante(request, idUsuario = None):
-    cursosActuales = Coordinacion_Estudiante.objects.filter(id_estudiante__id_usuario = idUsuario, id_coordinacion__isActive = True).count()
-    evaluacionesRealizadas = Calificacion.objects.filter(id_estudiante__id_usuario = idUsuario).count()
+    cursosActuales = Coordinacion_Estudiante.objects.filter(id_estudiante__id_usuario = idUsuario, id_coordinacion__isActive = True).all()
+    serializer = CoordinacionEstudianteSerializer(cursosActuales, many = "true")
+    
+    solTotales = Solicitud_Revision.objects.filter(Q(estado = 'A') | Q(estado = 'R'), id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True).all().order_by('fecha_respuesta')
+    serializerTwo = SolicitudSerializer(solTotales, many = "true")
     solicitudesRealizadas = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True).count()
     solicitudesPendientes = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'P').count()
     solicitudesAprobadas = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'A').count()
     solicitudesRechazadas = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'R').count()
+    solicitudesRevision = Solicitud_Revision.objects.filter(id_estudiante__id_usuario = idUsuario, id_evaluacion__id_coordinacion__isActive = True, estado = 'E').count()
 
-    return Response([cursosActuales, evaluacionesRealizadas, solicitudesRealizadas, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas])
+    return Response([serializer.data, solicitudesRevision, solicitudesRealizadas, solicitudesPendientes, solicitudesAprobadas, solicitudesRechazadas, serializerTwo.data])
 
 @api_view(['GET'])
 def getInfoDashboardJefeCarrera(request, idUsuario = None):
