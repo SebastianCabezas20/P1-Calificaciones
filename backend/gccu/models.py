@@ -64,7 +64,7 @@ class Facultad(models.Model):
 class Departamento(models.Model):
     nombre = models.CharField(max_length = 50, blank = False)
     id_subdirector = models.ForeignKey(Subdirector_Docente, blank = False , null = False, on_delete = models.CASCADE)
-    id_vicedecano = models.ForeignKey(Vicedecano_Docencia, blank = False, null = False, on_delete = models.CASCADE)
+    id_facultad = models.ForeignKey(Facultad, blank = False, null = True, on_delete = models.CASCADE)
 
     def __str__(self):
         return self.nombre
@@ -79,7 +79,7 @@ class Carrera(models.Model):
 
 class Plan_Estudio(models.Model):
     codigo = models.CharField(max_length = 10, blank = False)
-    year_crecion = models.CharField(max_length = 4, validators = [MinLengthValidator(4)])
+    year_creacion = models.CharField(max_length = 4, validators = [MinLengthValidator(4)])
     id_carrera = models.ForeignKey(Carrera, blank = False, null = False, on_delete = models.CASCADE)
 
     def __str__(self):
@@ -149,7 +149,7 @@ class Estudiante(models.Model):
         return '%s Rut: %s-%s' % (self.id_usuario, self.rut, self.dig_verificador)
 
 class Coordinacion_Estudiante(models.Model):
-    promedioEstudiante = models.DecimalField(max_digits = 4, decimal_places = 3, null = True, blank = True)
+    promedioEstudiante = models.DecimalField(max_digits = 2, decimal_places = 1, null = True, blank = True)
     id_estudiante = models.ForeignKey(Estudiante, null = False, on_delete = models.CASCADE)
     id_coordinacion = models.ForeignKey(Coordinacion_Seccion, null = False, on_delete = models.CASCADE)
     
